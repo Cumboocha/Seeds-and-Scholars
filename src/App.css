@@ -1,3 +1,18 @@
+/* Cool Transitions and Animations */
+@keyframes float {
+  0% {
+      transform: translateY(0);
+  }
+
+  50% {
+      transform: translateY(-10px);
+  }
+
+  100% {
+      transform: translateY(0);
+  }
+}
+
 /* Landing Screen */
 .landing-body {
   background-image: url(assets/landing_bg.png);
@@ -40,8 +55,8 @@
   height: auto;
   margin: 0 auto;
   padding-bottom: 50px;
+  animation: float 3s ease-in-out infinite;
 }
-
 
 .landing-buttons {
   display: flex;
@@ -82,6 +97,151 @@ button.login-btn:hover {
 button.signup-btn:hover {
   border: 6px solid #744400;
   color: #744400;
+}
+
+/* Login Screen */
+.login-body, .signup-body {
+  background-color: rgba(0,0,0,0.75);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: row;
+}
+
+.login-container, .login-logo-container, .signup-container, .signup-logo-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.login-container img, .signup-container img {
+  width: 87.5%;
+  height: auto;
+  margin-top: auto;
+}
+
+.login-container form, .signup-container form {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container form {
+  gap: 50px;
+}
+
+.signup-container form {
+  gap: 35px;
+}
+
+.login-container form input {
+  width: 100%;
+  height: 50px;
+  background-color: #89bd2e;
+  font-family: "Montserrat", sans-serif;
+  font-size: 24px;
+  letter-spacing: 6px;
+  border: none;
+  border-radius: 12px;
+  padding-left: 20px;
+}
+
+.first-last-name-row {
+  width: 104%;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.signup-container form input {
+  width: 100%;
+  height: 50px;
+  background-color: #f28d01;
+  font-family: "Montserrat", sans-serif;
+  font-size: 24px;
+  letter-spacing: 6px;
+  border: none;
+  border-radius: 12px;
+  padding-left: 20px;
+}
+
+.login-container form input:focus {
+  outline: none;
+}
+
+.login-container form input::placeholder {
+  color: #d5f0a8;
+}
+
+.signup-container form input::placeholder {
+  color: #ffe099;
+}
+
+.login-container form button, .signup-container form button{
+  border-radius: 20px;
+  background-color: transparent !important;
+  font-family: "Montserrat", sans-serif;
+  font-size: 175%;
+  font-weight: 400;
+  text-align: center;
+  letter-spacing: 10px;
+  margin: 100;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.login-container form button {
+  border: 6px solid #89bd2e;
+  color: #89bd2e;
+}
+
+.signup-container form button {
+  border: 6px solid #f28d01;
+  color: #f28d01;
+}
+
+.login-logo-container img, .signup-logo-container img {
+  width: 75%;
+  height: auto;
+}
+
+.login-x-btn, .signup-x-btn {
+  width: 4% !important;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+/* Dashboard Screen */
+.dashboard-body {
+  background-image: url(assets/landing_bg.png);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 

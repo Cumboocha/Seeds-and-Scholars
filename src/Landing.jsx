@@ -1,4 +1,4 @@
-export default function Landing() {
+export default function Landing({ onLoginBtnClick, onSignupBtnClick }) {
     return (
         <div className="landing-body">
             <div className="landing-side">
@@ -8,8 +8,8 @@ export default function Landing() {
                 <img src="assets/landing_logo.png"/>
 
                 <div className="landing-buttons">
-                    <button className="login-btn">&nbsp;LOG IN</button>
-                    <button className="signup-btn">&nbsp;SIGN UP</button>
+                    <button className="login-btn" onClick={onLoginBtnClick}>&nbsp;LOG IN</button>
+                    <button className="signup-btn" onClick={onSignupBtnClick}>&nbsp;SIGN UP</button>
                 </div>
             </div>
         </div>
