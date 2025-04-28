@@ -79,27 +79,17 @@
   padding-bottom: 10px;
 }
 
-.login-btn {
+.login-btn, .login-btn:hover {
   border: 6px solid #89bd2e;
   color: #89bd2e;
 }
 
-.signup-btn {
+.signup-btn, .signup-btn:hover {
   border: 6px solid #f28d01;
   color: #f28d01;
 }
 
-button.login-btn:hover {
-  border: 6px solid #476219;
-  color: #476219;
-}
-
-button.signup-btn:hover {
-  border: 6px solid #744400;
-  color: #744400;
-}
-
-/* Login Screen */
+/* Login and Signup Screen */
 .login-body, .signup-body {
   background-color: rgba(0,0,0,0.75);
   width: 100%;
@@ -226,9 +216,98 @@ button.signup-btn:hover {
   margin-right: 20px;
 }
 
+.login-x-btn:hover, .signup-x-btn:hover, .login-btn:hover, .signup-btn:hover, .login-container form button:hover, .signup-container form button:hover, .button-container img:hover {
+  transform: scale(1.05);
+  transition: .2s;
+}
+
+/* NavBar */
+.navbar {
+  background-image: url(assets/navbar_bg.png);
+  width: 100%;
+  height: 15%;
+  display: flex;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.logo-container {
+  width: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-logo {
+  width: 60%;
+  height: auto;
+}
+
+.search-container {
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.search-bar {
+  width: 100%;
+  height: 50px;
+  border-radius: 25px;
+  border: none;
+  background-color: #ecffcb;
+  padding: 0 20px;
+  font-size: 20px;
+  font-family: "Montserrat", sans-serif;
+  border: none;
+  color: #89bd2e;
+  padding-left: 80px;
+}
+
+.search-bar::placeholder {
+  font-family: "Montserrat", sans-serif;
+  font-size: 20px;
+  font-style: italic;
+  color: #89bd2e;
+}
+
+.search-bar:focus {
+  outline: none;
+}
+
+.search-container img {
+  width: 35px;
+  height: auto;
+  position: absolute; 
+  left: 30px
+
+}
+
+.button-container {
+  width: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 35px;
+}
+
+.button-container div {
+  border-radius: 50%;
+}
+
+.button-container a img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #ecffcb;
+  object-fit: contain;
+}
+
 /* Dashboard Screen */
 .dashboard-body {
-  background-image: url(assets/landing_bg.png);
+  background-image: url(assets/dashboard_bg.png);
   width: 100%;
   height: 100%;
   position: fixed;
@@ -244,6 +323,32 @@ button.signup-btn:hover {
   flex-direction: column;
 }
 
+.dashboard-main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
+.map-container {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
 
+.map-container .leaflet-container {
+  z-index: 10;
+  position: absolute; 
+  top: 30;
+  left: 30;
+}
 
+.map-container img {
+  width: 85%;
+  height: auto;
+  z-index: 0;
+  position: absolute; 
+}

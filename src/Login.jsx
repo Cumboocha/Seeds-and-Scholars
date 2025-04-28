@@ -1,4 +1,6 @@
-export default function Login({onLoginClose, onLogin}) {
+import { Link } from "react-router-dom";
+
+export default function Login({onLoginClose}) {
     return (
         <div className="login-body">
             {/*Left Side*/}
@@ -7,7 +9,9 @@ export default function Login({onLoginClose, onLogin}) {
                 <form>
                     <input placeholder="Email"/>
                     <input placeholder="Password"/>
-                    <button onClick={onLogin}>&nbsp;LOG IN</button>
+                    <Link to={"dashboard"}>
+                        <button>&nbsp;LOG IN</button>
+                    </Link>
                 </form>
             </div>
 
