@@ -1,4 +1,4 @@
-/* Cool Transitions and Animations */
+/* Cool Transitions, Animations, and Fonts */
 @keyframes float {
   0% {
       transform: translateY(0);
@@ -12,6 +12,13 @@
       transform: translateY(0);
   }
 }
+
+.sigmar-regular {
+  font-family: "Sigmar", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 
 /* Landing Screen */
 .landing-body {
@@ -216,7 +223,7 @@
   margin-right: 20px;
 }
 
-.login-x-btn:hover, .signup-x-btn:hover, .login-btn:hover, .signup-btn:hover, .login-container form button:hover, .signup-container form button:hover, .button-container img:hover {
+.login-x-btn:hover, .signup-x-btn:hover, .login-btn:hover, .signup-btn:hover, .login-container form button:hover, .signup-container form button:hover, .button-container img:hover, .add-marker-btn:hover, .map-filter-btn:hover {
   transform: scale(1.05);
   transition: .2s;
 }
@@ -230,6 +237,7 @@
   position: relative;
   top: 0;
   left: 0;
+  outline: 5px solid #ecffcb;
 }
 
 .logo-container {
@@ -316,7 +324,7 @@
   left: 0;
   right: 0;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100% 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -327,7 +335,7 @@
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .map-container {
@@ -342,13 +350,76 @@
 .map-container .leaflet-container {
   z-index: 10;
   position: absolute; 
-  top: 30;
-  left: 30;
 }
 
-.map-container img {
+.map-bg {
+  position: absolute;
+  display: flex;
   width: 85%;
-  height: auto;
+  height: 95%;
   z-index: 0;
-  position: absolute; 
+  object-fit: cover;
+}
+
+
+.map-buttons-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  position: absolute;
+  bottom: 8%;
+  left: 25%;
+}
+
+.add-marker-btn {
+  width: 10%;
+  height: auto;
+  z-index: 100;
+}
+
+.map-filter-btn {
+  width: 10%;
+  height: auto;
+  z-index: 100;
+}
+
+.resto-container {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  margin-top: 50px;
+
+}
+
+.resto-container-green-part {
+  width: 90%;
+  height: auto;
+  min-height: 120%;
+  border-radius: 35px;
+  background-image: url(assets/navbar_bg.png);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.resto-name-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 50px;
+}
+
+.resto-container-white-part {
+  width: 93%;
+  height: auto;
+  overflow: hidden;
+  border-radius: 35px;
+  background-image: url(assets/grid_bg.png);
 }
