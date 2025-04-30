@@ -14,17 +14,16 @@ export default function Login({onSignupClose}) {
                 <img src="assets/signup_bg.png" />
                 <form>
                     <div className="first-last-name-row">
-                        <input placeholder="First Name"/>
-                        <input placeholder="Last Name"/>
+                        <input placeholder="First Name*"/>
+                        <input placeholder="Last Name*"/>
                     </div>
                     
-                    <input placeholder="Email"/>
-                    <input placeholder="Password"/>
-                    <input placeholder="Confirm Password"/>
+                    <input placeholder="Email*"/>
+                    <input placeholder="Password*"/>
+                    <input placeholder="Confirm Password*"/>
                     <button>&nbsp;SIGN UP</button>
                 </form>
             </div>
-
         </div>
     );
 }
