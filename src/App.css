@@ -225,7 +225,7 @@
   margin-right: 20px;
 }
 
-.login-x-btn:hover, .signup-x-btn:hover, .login-btn:hover, .signup-btn:hover, .login-container form button:hover, .signup-container form button:hover, .button-container img:hover, .add-marker-btn:hover, .map-filter-btn:hover, .reg-est-btn:hover, .reg-est-container button:hover {
+.login-x-btn:hover, .signup-x-btn:hover, .reg-est-x-btn:hover, .login-btn:hover, .signup-btn:hover, .login-container form button:hover, .signup-container form button:hover, .button-container img:hover, .add-marker-btn:hover, .map-filter-btn:hover, .reg-est-btn:hover, .reg-est-container button:hover {
   transform: scale(1.05);
   transition: .2s;
 }
@@ -422,12 +422,22 @@
 
 .resto-container {
   width: 50%;
+  height: 100%; 
   display: flex;
   justify-content: center;
   align-items: flex-start;
   position: relative;
   margin-top: 40px;
-  height: 100%; 
+}
+
+#resto-container-nf {
+  align-items: center;
+  margin-top: 0px !important;
+}
+
+.resto-not-found {
+  width: 50%;
+  height: auto;
 }
 
 .resto-container-green-part {

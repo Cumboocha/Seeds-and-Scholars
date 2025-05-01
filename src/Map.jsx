@@ -3,33 +3,36 @@ import L from "leaflet";
 import { useState } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 
-export default function Map({ isAddingMarker, setIsAddingMarker, setDashboardScreen }) {
+export default function Map({isAddingMarker, setIsAddingMarker, setDashboardScreen, setRestoProfileScreen}) {
   delete L.Icon.Default.prototype._getIconUrl;
   L.Icon.Default.mergeOptions({
-    iconRetinaUrl:
-      "assets/marker.png",
-    iconUrl:
-      "assets/marker_sd.png",
+    iconRetinaUrl: "assets/marker.png",
+    iconUrl: "assets/marker_sd.png",
     shadowUrl: "",
   });
 
   const [markers, setMarkers] = useState([]);
+  const [tempPosition, setTempPosition] = useState(null);
+  
 
-  const addMarker = (position) => {
-    setMarkers([...markers, position]);
-    setIsAddingMarker(false);
+  window.addMarkerFromForm = () => {
+    if (tempPosition) {
+      setMarkers([...markers, tempPosition]);
+      setTempPosition(null);
+      setIsAddingMarker(false);
+    }
   };
 
   function AddMarkerOnClick() {
     useMapEvents({
       click(e) {
         if (isAddingMarker) {
-          setDashboardScreen("reg-est");
-          addMarker(e.latlng);
+          setTempPosition(e.latlng); // Stores lat/lng of clicked position, then uses it later if na-submit na
+          setDashboardScreen("reg-est"); 
         }
       },
     });
-    return null;
+    return null; 
   }
 
   const toggleAddMarkerMode = () => {
@@ -41,10 +44,7 @@ export default function Map({ isAddingMarker, setIsAddingMarker, setDashboardScr
       <MapContainer
         center={[14.609565164088995, 120.9893454570484]}
         zoom={17}
-        maxBounds={[
-          [14.616973453895913, 120.98267171224315],
-          [14.596743606775185, 121.00135332969086],
-        ]}
+        maxBounds={[[14.616, 120.982],[14.596, 121.001]]}
         maxBoundsViscosity={0.5}
         minZoom={15}
         style={{ width: "78%", height: "87%" }}
@@ -52,7 +52,14 @@ export default function Map({ isAddingMarker, setIsAddingMarker, setDashboardScr
         <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" />
         <AddMarkerOnClick />
         {markers.map((position, idx) => (
-          <Marker key={`marker-${idx}`} position={position} />
+          <Marker 
+            key={`marker-${idx}`} 
+            position={position} 
+            eventHandlers={{
+              click: () => {
+                setRestoProfileScreen("resto-show")}
+            }}
+            />
         ))}
       </MapContainer>
 

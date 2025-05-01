@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 export default function Dashboard() {
   const [isAddingMarker, setIsAddingMarker] = useState(false);
   const [dashboardScreen, setDashboardScreen] = useState(null);
+  const [RestoProfileScreen, setRestoProfileScreen] = useState("resto-not-found");
   // "reg-est"
 
   const handleRegEstClose = () => setDashboardScreen(null);
@@ -21,8 +22,13 @@ export default function Dashboard() {
             isAddingMarker={isAddingMarker}
             setIsAddingMarker={setIsAddingMarker}
             setDashboardScreen={setDashboardScreen}
+            setRestoProfileScreen={setRestoProfileScreen}
           />
-          <RestoProfile />
+
+          {RestoProfileScreen === "resto-not-found" ? 
+          <div className="resto-container" id="resto-container-nf">
+                <img src="assets/no_establishment_found.png" className="resto-not-found"/>
+          </div> : <RestoProfile/> }
         </div>
 
         <AnimatePresence>
@@ -39,6 +45,7 @@ export default function Dashboard() {
           )}
         </AnimatePresence>
       </div>
+
       {dashboardScreen === "reg-est" && (
         <motion.div
           initial={{ opacity: 0 }}
