@@ -35,6 +35,8 @@ export default function Map({isAddingMarker, setIsAddingMarker, setDashboardScre
     return null; 
   }
 
+  
+
   const toggleAddMarkerMode = () => {
     setIsAddingMarker(!isAddingMarker);
   };
@@ -57,7 +59,9 @@ export default function Map({isAddingMarker, setIsAddingMarker, setDashboardScre
             position={position} 
             eventHandlers={{
               click: () => {
-                setRestoProfileScreen("resto-show")}
+                setRestoProfileScreen("resto-show");
+              } // Function that opens resto profile when clicked
+                
             }}
             />
         ))}
@@ -65,7 +69,7 @@ export default function Map({isAddingMarker, setIsAddingMarker, setDashboardScre
 
       <img className="map-bg" src="assets/map_bg.png" />
       <div className="map-buttons-container">
-        <img className="map-filter-btn" src="assets/filter_btn.png" />
+        {/*<img className="map-filter-btn" src="assets/filter_btn.png" />*/}
         <img
           className="add-marker-btn"
           src="assets/add_marker_btn.png"

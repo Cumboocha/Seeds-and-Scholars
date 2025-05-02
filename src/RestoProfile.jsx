@@ -1,86 +1,37 @@
+import { useState } from "react";
+import RestoAbout from './RestoAbout';
+import RestoMenu from './RestoMenu';
+import RestoReviews from './RestoReviews';
+
 export default function RestoProfile() {
-    return (
-        <div className="resto-container">
-          <div className="resto-container-green-part">
-            <div className="resto-header">
-              <div className="resto-name">
-                <h1>Kusinang Bayan</h1>
-              </div>
+  const [restoProfileScreen, setRestoProfileScreen] = useState("about");
+  // "about" | "menu" | "reviews"
 
-              <div className="resto-pfp">
-                <img src="assets/resto_default_pfp.png" />
-              </div>
-            </div>
-            <div className="resto-container-white-part">
-              <p className="resto-desc">
-                "Isang makabayan at masarap na kainan na naghahain ng mga
-                paboritong lutong-bahay tulad ng adobo, siningang, at kare-kare,
-                gamit and sariwang sangkap mula sa palengke"
-              </p>
-              <hr />
+  const handleRestoScreenChange = (screen) => setRestoProfileScreen(screen);
 
-              <div className="resto-address-container">
-                <div className="address-img-container">
-                  <img src="assets/address_symbol.png" />
-                </div>
+  return (
+    <div className="resto-container">
+      <div className="resto-container-green-part">
+        <div className="resto-header">
+          <div className="resto-name">
+            <h1>Kusinang Bayan</h1>
+          </div>
 
-                <div className="address-details-container">
-                  <p>45 Mabini Street, Barangay Malinis, Quezon City, Manila</p>
-                </div>
-              </div>
-
-              <div className="resto-phone-container">
-                <div className="phone-img-container">
-                  <img src="assets/phone_symbol.png" />
-                </div>
-
-                <div className="phone-details-container">
-                  <p>0977 406 9840</p>
-                </div>
-              </div>
-
-              <div className="resto-schedule-container">
-                <div className="schedule-img-container">
-                  <img src="assets/clock_symbol.png" />
-                </div>
-
-                <div className="schedule-details-container">
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>Sunday</td>
-                        <td className="second-col">10AM-9PM</td>
-                      </tr>
-                      <tr>
-                        <td>Monday</td>
-                        <td className="second-col">10AM-9PM</td>
-                      </tr>
-                      <tr>
-                        <td>Tuesday</td>
-                        <td className="second-col">10AM-9PM</td>
-                      </tr>
-                      <tr>
-                        <td>Wednesday</td>
-                        <td className="second-col">10AM-9PM</td>
-                      </tr>
-                      <tr>
-                        <td>Thursday</td>
-                        <td className="second-col">10AM-9PM</td>
-                      </tr>
-                      <tr>
-                        <td>Friday</td>
-                        <td className="second-col">10AM-9PM</td>
-                      </tr>
-                      <tr>
-                        <td>Saturday</td>
-                        <td className="second-col">10AM-9PM</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+          <div className="resto-pfp">
+            <img src="assets/resto_default_pfp.png" />
           </div>
         </div>
-    );
+        
+        {restoProfileScreen === "about" && <RestoAbout />}
+        {restoProfileScreen === "menu" && <RestoMenu />}
+        {restoProfileScreen === "reviews" && <RestoReviews />}
+
+        <div className="resto-profile-tabs">
+          <img src={restoProfileScreen === "about" ? "assets/about_tab_selected.png" : "assets/about_tab.png"} onClick={() => handleRestoScreenChange("about")} />
+          <img src={restoProfileScreen === "menu" ? "assets/menu_tab_selected.png" : "assets/menu_tab.png"} onClick={() => handleRestoScreenChange("menu")}/>
+          <img src={restoProfileScreen === "reviews" ? "assets/reviews_tab_selected.png" : "assets/reviews_tab.png"} onClick={() => handleRestoScreenChange("reviews")}/>
+        </div>
+      </div>
+    </div>
+  );
 }

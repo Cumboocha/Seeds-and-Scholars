@@ -63,7 +63,7 @@ export default function RegisterEstablishment({ onRegEstablishClose }) {
                 &lt;
               </button>
               <button onClick={handleSubmit} type="button">
-                &nbsp;SUBMIT
+                &nbsp;REGISTER
               </button>
             </div>
           </form>
