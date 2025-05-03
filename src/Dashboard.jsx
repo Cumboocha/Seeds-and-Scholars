@@ -2,6 +2,7 @@ import NavBar from "./NavBar";
 import Map from "./Map";
 import RestoProfile from "./RestoProfile";
 import RegisterEstablishment from "./RegisterEstablishment";
+import ListResto from "./ListResto";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -9,21 +10,31 @@ export default function Dashboard() {
   const [isAddingMarker, setIsAddingMarker] = useState(false);
   const [dashboardScreen, setDashboardScreen] = useState(null);
   const [RestoProfileScreen, setRestoProfileScreen] = useState("resto-not-found");
+  const [activeScreen, setActiveScreen] = useState("map");
   // "reg-est"
 
   const handleRegEstClose = () => setDashboardScreen(null);
+  const handleScreenChange = (maplist) => setActiveScreen(maplist)
 
   return (
     <>
       <div className="dashboard-body">
         <NavBar />
         <div className="dashboard-main">
+        {activeScreen === "map" ? (
           <Map
             isAddingMarker={isAddingMarker}
             setIsAddingMarker={setIsAddingMarker}
             setDashboardScreen={setDashboardScreen}
             setRestoProfileScreen={setRestoProfileScreen}
+            handleScreenChange={handleScreenChange}
           />
+        ) : (
+          <ListResto 
+          setRestoProfileScreen={setRestoProfileScreen}
+          handleScreenChange={handleScreenChange}
+          />
+        )}
 
           {RestoProfileScreen === "resto-not-found" ? 
           <div className="resto-container" id="resto-container-nf">

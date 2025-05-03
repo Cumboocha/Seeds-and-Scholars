@@ -2,9 +2,9 @@ export default function RestoAbout() {
   return (
     <div className="resto-container-white-part">
       <p className="resto-desc">
-        "Isang makabayan at masarap na kainan na naghahain ng mga paboritong
-        lutong-bahay tulad ng adobo, siningang, at kare-kare, gamit and sariwang
-        sangkap mula sa palengke"
+        Isang makabayan at masarap na kainan na naghahain ng mga paboritong
+        lutong-bahay tulad ng adobo, siningang, at kare-kare, gamit ang sariwang
+        sangkap mula sa palengke
       </p>
       <hr />
 

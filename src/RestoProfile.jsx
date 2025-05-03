@@ -6,15 +6,25 @@ import RestoReviews from './RestoReviews';
 export default function RestoProfile() {
   const [restoProfileScreen, setRestoProfileScreen] = useState("about");
   // "about" | "menu" | "reviews"
+  const [favorite, setFavorite] = useState("unfavorited");
 
   const handleRestoScreenChange = (screen) => setRestoProfileScreen(screen);
+
+  const handleFavorite = (fav) => setFavorite(fav);
 
   return (
     <div className="resto-container">
       <div className="resto-container-green-part">
         <div className="resto-header">
-          <div className="resto-name">
+          <div className="resto-name-fav">
             <h1>Kusinang Bayan</h1>
+            {favorite === "unfavorited" && (
+              <img className="favorite-btn" src="assets/favorite_btn.png" onClick={() => handleFavorite("favorited")}/>
+            )}
+
+            {favorite === "favorited" && (
+              <img className="favorite-btn" src="assets/favorite_btn_selected.png" onClick={() => handleFavorite("unfavorited")} />
+            )}
           </div>
 
           <div className="resto-pfp">
