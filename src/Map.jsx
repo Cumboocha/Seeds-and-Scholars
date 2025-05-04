@@ -7,8 +7,7 @@ export default function Map({
   isAddingMarker,
   setIsAddingMarker,
   setDashboardScreen,
-  setRestoProfileScreen,
-  handleScreenChange
+  setRightScreen
 }) {
   delete L.Icon.Default.prototype._getIconUrl;
   L.Icon.Default.mergeOptions({
@@ -66,7 +65,7 @@ export default function Map({
             position={position}
             eventHandlers={{
               click: () => {
-                setRestoProfileScreen("resto-show");
+                setRightScreen("resto-profile");
               }, // Function that opens resto profile when clicked
             }}
           />
@@ -74,9 +73,6 @@ export default function Map({
       </MapContainer>
 
       <img className="map-bg" src="assets/map_bg.png" />
-      <div className="map-buttons-container-left">
-        <img className="list-btn" src="assets/list_btn.png" onClick={() => handleScreenChange("list")} />
-      </div>
       <div className="map-buttons-container-right">
         {/*<img className="map-filter-btn" src="assets/filter_btn.png" />*/}
         <img

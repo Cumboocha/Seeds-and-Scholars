@@ -275,7 +275,7 @@
 .reg-est-container button:hover,
 .resto-profile-tabs img:hover,
 .add-menu-submit-btn:hover,
-.map-btn:hover, .sort-btn:hover, .resto-card:hover {
+.map-btn:hover, .sort-btn:hover, .resto-card:hover, .sort-btn-asc:hover, .sort-btn-desc:hover, .resto-x-btn:hover {
   transform: scale(1.05);
   transition: .2s;
 }
@@ -554,7 +554,7 @@
 }
 
 .resto-name-fav {
-  width: 60%;
+  width: 70%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -567,7 +567,7 @@
   font-size: 56px;
   -webkit-text-stroke: 1.5px black;
   margin: 0;
-  margin-left: 40px;
+  margin-left: 20px;
   letter-spacing: -1px;
   line-height: 48px;
   word-wrap: break-word;
@@ -577,11 +577,11 @@
 .resto-name-fav img {
   width: 40px;
   height: auto;
-  margin-left: 40px;
+  margin-left: 20px;
 }
 
 .resto-pfp {
-  width: 40%;
+  width: 225px;
   height: auto;
   display: flex;
   justify-content: center;
@@ -594,6 +594,8 @@
   box-shadow: 15px 15px #ecffcb;
   position: absolute;
   top: -3%;
+  left: 8%; 
+  border-radius: 25px;
 }
 
 .resto-container-white-part {
@@ -661,7 +663,7 @@ table {
   padding-left: 40px;
 }
 
-.resto-profile-tabs {
+.resto-profile-tabs, .sort-btn-container {
   width: 16%;
   height: auto;
   display: flex;
@@ -674,9 +676,20 @@ table {
   gap: 10px;
 }
 
-.resto-profile-tabs img {
+.resto-profile-tabs img, .sort-btn-container img {
   width: 100px;
   height: auto;
+}
+
+.resto-x-btn {
+  width: 75px;
+  position: absolute;
+  right: 3%;
+  top: -15px;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 1px 1px 2px #7e7e7e;
+
 }
 
 ::-webkit-scrollbar {
@@ -1046,7 +1059,7 @@ table {
 }
 
 .sort-btn {
-  left: 37.5%;
+  right: 13.5%;
   bottom: 6.75%;
   border-radius: 50%;
 }

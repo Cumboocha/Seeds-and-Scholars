@@ -9,37 +9,30 @@ import { AnimatePresence, motion } from "framer-motion";
 export default function Dashboard() {
   const [isAddingMarker, setIsAddingMarker] = useState(false);
   const [dashboardScreen, setDashboardScreen] = useState(null);
-  const [RestoProfileScreen, setRestoProfileScreen] = useState("resto-not-found");
-  const [activeScreen, setActiveScreen] = useState("map");
-  // "reg-est"
+  const [RightScreen, setRightScreen] = useState("list");
 
   const handleRegEstClose = () => setDashboardScreen(null);
-  const handleScreenChange = (maplist) => setActiveScreen(maplist)
+  const handleRightScreenChange = (right) => setRightScreen(right);
 
   return (
     <>
       <div className="dashboard-body">
         <NavBar />
         <div className="dashboard-main">
-        {activeScreen === "map" ? (
           <Map
             isAddingMarker={isAddingMarker}
             setIsAddingMarker={setIsAddingMarker}
             setDashboardScreen={setDashboardScreen}
-            setRestoProfileScreen={setRestoProfileScreen}
-            handleScreenChange={handleScreenChange}
+            setRightScreen={setRightScreen}
           />
-        ) : (
-          <ListResto 
-          setRestoProfileScreen={setRestoProfileScreen}
-          handleScreenChange={handleScreenChange}
-          />
-        )}
 
-          {RestoProfileScreen === "resto-not-found" ? 
-          <div className="resto-container" id="resto-container-nf">
-                <img src="assets/no_establishment_found.png" className="resto-not-found"/>
-          </div> : <RestoProfile/> }
+          {RightScreen === "list" && (
+            <ListResto setRightScreen={handleRightScreenChange} />
+          )}
+
+          {RightScreen === "resto-profile" && (
+            <RestoProfile setRightScreen={setRightScreen} />
+          )}
         </div>
 
         <AnimatePresence>

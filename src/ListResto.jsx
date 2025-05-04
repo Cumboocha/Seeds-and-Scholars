@@ -1,17 +1,31 @@
 import CardResto from "./CardResto";
+import { useState } from "react";
 
-export default function ListResto({setRestoProfileScreen, handleScreenChange}) {
-    
-    return (
-        <div className="resto-list-container">
-            <CardResto setRestoProfileScreen={setRestoProfileScreen}/>
-            <CardResto setRestoProfileScreen={setRestoProfileScreen}/>
-            <CardResto setRestoProfileScreen={setRestoProfileScreen}/>
-            <CardResto setRestoProfileScreen={setRestoProfileScreen}/>
-            <CardResto setRestoProfileScreen={setRestoProfileScreen}/>
+export default function ListResto({ setRightScreen }) {
+    const [currentSort, setCurrentSort] = useState("asc")
 
-            <img className="map-btn" src="assets/map_btn.png" onClick={() => handleScreenChange("map")}/>
-            <img className="sort-btn" src="assets/sort_btn.png" />
-        </div>
-    );
+    const handleSort = (sort) => setCurrentSort(sort);
+
+  return (
+    <div className="resto-list-container">
+      <CardResto setRightScreen={setRightScreen} />
+      <CardResto setRightScreen={setRightScreen} />
+      <CardResto setRightScreen={setRightScreen} />
+      <CardResto setRightScreen={setRightScreen} />
+      <CardResto setRightScreen={setRightScreen} />
+
+      <div className="sort-btn-container">
+        {currentSort === "asc" && (
+            <img src="assets/sort_btn_asc.png" 
+            onClick={() => handleSort("desc")} 
+            className="sort-btn-asc"/>
+        )}
+
+        {currentSort === "desc" && (
+            <img src="assets/sort_btn_desc.png" 
+            onClick={() => handleSort("asc")} className="sort-btn-desc"/>
+        )}
+      </div>
+    </div>
+  );
 }

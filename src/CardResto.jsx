@@ -1,6 +1,6 @@
-export default function CardResto({setRestoProfileScreen}) {
+export default function CardResto({setRightScreen}) {
     return (
-        <div className="resto-card" onClick={() => setRestoProfileScreen("resto-show")}>
+        <div className="resto-card" onClick={() => setRightScreen("resto-profile")}>
             <div className="resto-card-img">
                 <img src="assets/resto_default_pfp.png" />
             </div>
