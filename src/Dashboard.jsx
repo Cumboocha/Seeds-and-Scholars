@@ -9,30 +9,30 @@ import { AnimatePresence, motion } from "framer-motion";
 export default function Dashboard() {
   const [isAddingMarker, setIsAddingMarker] = useState(false);
   const [dashboardScreen, setDashboardScreen] = useState(null);
-  const [RightScreen, setRightScreen] = useState("list");
+  const [RightScreen, setLeftScreen] = useState("list");
 
   const handleRegEstClose = () => setDashboardScreen(null);
-  const handleRightScreenChange = (right) => setRightScreen(right);
+  const handleRightScreenChange = (right) => setLeftScreen(right);
 
   return (
     <>
       <div className="dashboard-body">
         <NavBar />
         <div className="dashboard-main">
+
+          {RightScreen === "list" && (
+            <ListResto setLeftScreen={handleRightScreenChange} />
+          )}
+
+          {RightScreen === "resto-profile" && (
+            <RestoProfile setLeftScreen={setLeftScreen} />
+          )}
           <Map
             isAddingMarker={isAddingMarker}
             setIsAddingMarker={setIsAddingMarker}
             setDashboardScreen={setDashboardScreen}
-            setRightScreen={setRightScreen}
+            setLeftScreen={setLeftScreen}
           />
-
-          {RightScreen === "list" && (
-            <ListResto setRightScreen={handleRightScreenChange} />
-          )}
-
-          {RightScreen === "resto-profile" && (
-            <RestoProfile setRightScreen={setRightScreen} />
-          )}
         </div>
 
         <AnimatePresence>

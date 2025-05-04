@@ -434,6 +434,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
+  box-sizing: border-box;
 }
 
 .map-container .leaflet-container {
@@ -669,10 +670,10 @@ table {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
+  align-items: flex-start;
   position: absolute;
   bottom: 10%;
-  right: -0.75%;
+  left: -0.7%;
   gap: 10px;
 }
 
@@ -791,7 +792,7 @@ table {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 50px;
+  padding-top: 30px;
 }
 
 .nothing-here img {
@@ -1058,8 +1059,6 @@ table {
   border-radius: 50%;
 }
 
-.sort-btn {
-  right: 13.5%;
-  bottom: 6.75%;
-  border-radius: 50%;
+.sort-btn-container img {
+  margin-left: 1%;
 }

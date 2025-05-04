@@ -1,18 +1,18 @@
 import CardResto from "./CardResto";
 import { useState } from "react";
 
-export default function ListResto({ setRightScreen }) {
+export default function ListResto({ setLeftScreen }) {
     const [currentSort, setCurrentSort] = useState("asc")
 
     const handleSort = (sort) => setCurrentSort(sort);
 
   return (
     <div className="resto-list-container">
-      <CardResto setRightScreen={setRightScreen} />
-      <CardResto setRightScreen={setRightScreen} />
-      <CardResto setRightScreen={setRightScreen} />
-      <CardResto setRightScreen={setRightScreen} />
-      <CardResto setRightScreen={setRightScreen} />
+      <CardResto setLeftScreen={setLeftScreen} />
+      <CardResto setLeftScreen={setLeftScreen} />
+      <CardResto setLeftScreen={setLeftScreen} />
+      <CardResto setLeftScreen={setLeftScreen} />
+      <CardResto setLeftScreen={setLeftScreen} />
 
       <div className="sort-btn-container">
         {currentSort === "asc" && (

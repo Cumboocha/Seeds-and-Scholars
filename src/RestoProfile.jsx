@@ -3,7 +3,7 @@ import RestoAbout from "./RestoAbout";
 import RestoMenu from "./RestoMenu";
 import RestoReviews from "./RestoReviews";
 
-export default function RestoProfile({ setRightScreen }) {
+export default function RestoProfile({ setLeftScreen }) {
   const [restoProfileScreen, setRestoProfileScreen] = useState("about");
   // "about" | "menu" | "reviews"
   const [favorite, setFavorite] = useState("unfavorited");
@@ -76,7 +76,7 @@ export default function RestoProfile({ setRightScreen }) {
         <img
           src="assets/resto_profile_x_btn.png"
           className="resto-x-btn"
-          onClick={() => setRightScreen("list")}
+          onClick={() => setLeftScreen("list")}
         />
       </div>
     </div>

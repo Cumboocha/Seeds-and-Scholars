@@ -7,7 +7,7 @@ export default function Map({
   isAddingMarker,
   setIsAddingMarker,
   setDashboardScreen,
-  setRightScreen
+  setLeftScreen
 }) {
   delete L.Icon.Default.prototype._getIconUrl;
   L.Icon.Default.mergeOptions({
@@ -65,7 +65,7 @@ export default function Map({
             position={position}
             eventHandlers={{
               click: () => {
-                setRightScreen("resto-profile");
+                setLeftScreen("resto-profile");
               }, // Function that opens resto profile when clicked
             }}
           />
