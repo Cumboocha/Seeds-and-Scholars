@@ -275,7 +275,7 @@
 .reg-est-container button:hover,
 .resto-profile-tabs img:hover,
 .add-menu-submit-btn:hover,
-.map-btn:hover, .sort-btn:hover, .resto-card:hover, .sort-btn-asc:hover, .sort-btn-desc:hover, .resto-x-btn:hover {
+.map-btn:hover, .sort-btn:hover, .resto-card:hover, .sort-btn-asc:hover, .sort-btn-desc:hover, .resto-x-btn:hover, .gen-x-btn:hover, .menu-x-btn:hover {
   transform: scale(1.05);
   transition: .2s;
 }
@@ -689,7 +689,7 @@ table {
   top: -15px;
   cursor: pointer;
   border-radius: 50%;
-  box-shadow: 1px 1px 2px #7e7e7e;
+  box-shadow: 1px 1px 2px #c7c7c7;
 
 }
 
@@ -801,6 +801,15 @@ table {
   animation: float 3s ease-in-out infinite;
 }
 
+.menu-x-btn {
+  width: 40px;
+  height: auto;
+  margin-bottom: 425%;
+  margin-left: 55%;
+  box-shadow: 1px 1px 2px #c7c7c7;
+  border-radius: 50%;
+}
+
 /* Add Menu Item */
 
 .add-menu-item-body {
@@ -824,8 +833,9 @@ table {
 }
 
 .add-menu-item-body h1 {
-  font-family: "Montserrat";
+  font-family: "Sigmar";
   font-size: 64px;
+  -webkit-text-stroke: 1.5px black;
 }
 
 .menu-item-form {
@@ -913,12 +923,13 @@ table {
   font-family: "Montserrat";
   font-size: 18px;
   color: black;
+  resize: none;
 }
 
 .add-comment-body textarea::placeholder {
   font-family: "Montserrat";
   font-size: 18px;
-  color: rgb(80, 80, 80);
+  color: #f28d01;
 }
 
 .add-comment-body textarea:focus {
@@ -969,96 +980,106 @@ table {
 }
 
 /* Resto Card */
-.resto-card {
-  width: 100%;
-  height: 150px;
-  border: 5px solid #89bd2e;
-  background-color: rgba(223, 255, 195, 0.4);
-  margin-top: 15px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  border-radius: 25px;
-  position: relative;
-  cursor: pointer;
-}
+  .resto-card {
+    width: 100%;
+    height: 150px;
+    border: 5px solid #89bd2e;
+    background-color: rgba(223, 255, 195, 0.4);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 25px;
+    position: relative;
+    cursor: pointer;
+    margin-top: 15px;
+  }
 
-.resto-card-img {
-  width: 30%;
-  height: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-left: -5px;
-}
+  .resto-card-img {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: -5px;
+  }
 
-.resto-card-img img {
-  width: auto;
-  height: 98%;
-  border: 5px solid #89bd2e;
-  border-radius: 22px;
-}
+  .resto-card-img img {
+    width: auto;
+    height: 98%;
+    border: 5px solid #89bd2e;
+    border-radius: 22px;
+  }
 
-.resto-card-info {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 30px;
-}
+  .resto-card-info {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 30px;
+  }
 
-.resto-card-name {
-  font-family: "Sigmar";
-  font-size: 36px;
-  -webkit-text-stroke: 1.5px black;
-  margin: 0;
-}
+  .resto-card-name {
+    font-family: "Sigmar";
+    font-size: 36px;
+    -webkit-text-stroke: 1.5px black;
+    margin: 0;
+  }
 
-.resto-card-desc {
-  margin: 0;
-  font-family: "Montserrat";
-  font-style: italic;
-  color: black;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-}
+  .resto-card-desc {
+    margin: 0;
+    font-family: "Montserrat";
+    font-style: italic;
+    color: black;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
 
-.resto-card-desc::before, .resto-card-desc::after {
-  content: '"';
-}
+  .resto-card-desc::before, .resto-card-desc::after {
+    content: '"';
+  }
 
 
 
-.resto-card-arrow {
-  width: 10%;
-  height: 100%;
-  display: flex;
-  justify-content: flex-start;
-}
+  .resto-card-arrow {
+    width: 10%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+  }
 
-.resto-card-arrow img {
-  width: 70%;
-}
+  .resto-card-arrow img {
+    width: 30px;
+  }
 
-.map-btn,
-.sort-btn {
-  width: 5%;
-  height: auto;
-  z-index: 1;
-  cursor: pointer;
-  position: absolute;
-  box-shadow: 1px 1px 2px #7e7e7e;
-}
+  .map-btn,
+  .sort-btn {
+    width: 5%;
+    height: auto;
+    z-index: 1;
+    cursor: pointer;
+    position: absolute;
+    box-shadow: 1px 1px 2px #7e7e7e;
+  }
 
-.map-btn {
-  left: 7.5%;
-  bottom: 6.75%;
-  border-radius: 50%;
-}
+  .map-btn {
+    left: 7.5%;
+    bottom: 6.75%;
+    border-radius: 50%;
+  }
 
-.sort-btn-container img {
-  margin-left: 1%;
-}
+  .sort-btn-container img {
+    margin-left: 1%;
+  }
+
+  .gen-x-btn {
+    width: 40px;
+    height: auto;
+    position: absolute;
+    right: -22px;
+    top: -20px;
+    box-shadow: 1px 1px 2px #c7c7c7;
+    border-radius: 50%;
+  }

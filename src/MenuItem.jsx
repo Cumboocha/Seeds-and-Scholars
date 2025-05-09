@@ -12,6 +12,9 @@ export default function MenuItem() {
           black pepper.
         </p>
       </div>
+      <div className="menu-x-btn-wrapper" onClick={(e) => e.stopPropagation()}>
+        <img src="assets/gen_x_btn.png" className="menu-x-btn" />
+      </div>
     </div>
   );
 }
