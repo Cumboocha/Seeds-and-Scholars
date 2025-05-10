@@ -6,7 +6,8 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 export default function Map({
   isAddingMarker,
   setIsAddingMarker,
-  setDashboardScreen
+  setDashboardScreen,
+  setScreen,
 }) {
   delete L.Icon.Default.prototype._getIconUrl;
   L.Icon.Default.mergeOptions({
@@ -23,12 +24,6 @@ export default function Map({
   const [markers, setMarkers] = useState([]);
   const [tempPosition, setTempPosition] = useState(null);
   const [tileUrl, setTileUrl] = useState(CARTO_URL);
-
-   const toggleTile = () => {
-    setTileUrl(prev =>
-      prev === CARTO_URL ? SATELLITE_URL : CARTO_URL
-    );
-  };
 
   window.addMarkerFromForm = () => {
     if (tempPosition) {
@@ -54,6 +49,12 @@ export default function Map({
     setIsAddingMarker(!isAddingMarker);
   };
 
+  const toggleTile = () => {
+    setTileUrl(prev =>
+      prev === CARTO_URL ? SATELLITE_URL : CARTO_URL
+    );
+  };
+
   return (
     <div className="map-container" style={{ flex: 1, position: "relative" }}>
       <MapContainer
@@ -67,15 +68,25 @@ export default function Map({
         minZoom={15}
         style={{ width: "78%", height: "87%" }}
       >
-         <TileLayer url={tileUrl} />
-        {/* Markers, etc. */}
+        <TileLayer url={tileUrl} />
+        <AddMarkerOnClick />
+        {markers.map((position, idx) => (
+          <Marker
+            key={`marker-${idx}`}
+            position={position}
+            eventHandlers={{
+              click: () => {
+                setScreen("resto-profile");
+              }, // Function that opens resto profile when clicked
+            }}
+          />
+        ))}
       </MapContainer>
 
       <img className="map-bg" src="assets/map_bg.png" />
-
-      <div className="map-buttons-container-left">
+        <div className="map-buttons-container-left">
         <img
-          className="list-btn"
+          className="map-btn"
           src="assets/map_btn.png"
           onClick={toggleTile}
         />

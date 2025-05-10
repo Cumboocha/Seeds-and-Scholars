@@ -294,7 +294,7 @@
 .login-container form button:hover,
 .signup-container form button:hover,
 .button-container img:hover,
-.list-btn:hover,
+.map-btn:hover,
 .add-marker-btn:hover,
 .map-filter-btn:hover,
 .reg-est-btn:hover,
@@ -509,7 +509,7 @@
   right: 15%;
 }
 
-.list-btn {
+.map-btn {
   width: 20%;
   height: auto;
   z-index: 1;
@@ -523,11 +523,6 @@
   cursor: pointer;
 }
 
-.map-filter-btn {
-  width: 20%;
-  height: auto;
-  z-index: 1;
-}
 
 .resto-text-header {
   font-family: "Montserrat";
@@ -1107,15 +1102,6 @@ table {
   width: 30px;
 }
 
-.map-btn,
-.sort-btn {
-  width: 5%;
-  height: auto;
-  z-index: 1;
-  cursor: pointer;
-  position: absolute;
-  box-shadow: 1px 1px 2px #7e7e7e;
-}
 
 .map-btn {
   left: 7.5%;
