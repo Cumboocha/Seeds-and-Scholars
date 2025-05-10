@@ -3,7 +3,7 @@ import RestoAbout from "./RestoAbout";
 import RestoMenu from "./RestoMenu";
 import RestoReviews from "./RestoReviews";
 
-export default function RestoProfile({ setScreen }) {
+export default function RestoProfile({ setScreen, showPopup }) {
   const [restoProfileScreen, setRestoProfileScreen] = useState("about");
   // "about" | "menu" | "reviews"
   const [favorite, setFavorite] = useState("unfavorited");
@@ -22,15 +22,29 @@ export default function RestoProfile({ setScreen }) {
 
           <div className="resto-name-fav">
             <h1>Kusinang Bayan</h1>
-            {favorite === "unfavorited" && (
+
+            {window.location.pathname === "/admin" ? ( // Accept/Decline button for admin page
+              <div className="admin-buttons">
+                <button
+                  className="login-btn"
+                  onClick={() => showPopup?.("Establishment accepted!")}
+                >
+                  ACCEPT
+                </button>
+                <button
+                  className="login-btn"
+                  onClick={() => showPopup?.("Establishment declined.")}
+                >
+                  DECLINE
+                </button>
+              </div>
+            ) : favorite === "unfavorited" ? ( // Favorite button otherwise
               <img
                 className="favorite-btn"
                 src="assets/favorite_btn.png"
                 onClick={() => handleFavorite("favorited")}
               />
-            )}
-
-            {favorite === "favorited" && (
+            ) : (
               <img
                 className="favorite-btn"
                 src="assets/favorite_btn_selected.png"
@@ -53,22 +67,27 @@ export default function RestoProfile({ setScreen }) {
             }
             onClick={() => handleRestoScreenChange("about")}
           />
-          <img
-            src={
-              restoProfileScreen === "menu"
-                ? "assets/menu_tab_selected.png"
-                : "assets/menu_tab.png"
-            }
-            onClick={() => handleRestoScreenChange("menu")}
-          />
-          <img
-            src={
-              restoProfileScreen === "reviews"
-                ? "assets/reviews_tab_selected.png"
-                : "assets/reviews_tab.png"
-            }
-            onClick={() => handleRestoScreenChange("reviews")}
-          />
+
+          {window.location.pathname !== "/admin" && (
+            <>
+              <img
+                src={
+                  restoProfileScreen === "menu"
+                    ? "assets/menu_tab_selected.png"
+                    : "assets/menu_tab.png"
+                }
+                onClick={() => handleRestoScreenChange("menu")}
+              />
+              <img
+                src={
+                  restoProfileScreen === "reviews"
+                    ? "assets/reviews_tab_selected.png"
+                    : "assets/reviews_tab.png"
+                }
+                onClick={() => handleRestoScreenChange("reviews")}
+              />
+            </>
+          )}
         </div>
       </div>
 

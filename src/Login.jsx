@@ -9,7 +9,7 @@ export default function Login({onLoginClose}) {
                 <form>
                     <input placeholder="Email"/>
                     <input placeholder="Password"/>
-                    <Link to={"dashboard"}>
+                    <Link to={"dashboard"} viewTransition>
                         <button>&nbsp;LOG IN</button>
                     </Link>
                 </form>

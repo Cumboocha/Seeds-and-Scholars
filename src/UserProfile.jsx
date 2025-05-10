@@ -1,4 +1,4 @@
-import Favorites from "./ListFavorites";
+import ListFavorites from "./ListFavorites";
 import NavBar from "./NavBar";
 import RestoProfile from "./RestoProfile";
 import { useState } from "react";
@@ -7,7 +7,7 @@ export default function Profile() {
   const [rightScreen, setScreen] = useState("list");
 
   return (
-    <div className="dashboard-body">
+    <div className="profile-body">
       <NavBar />
       <div className="profile-main">
         <div className="user-left-wrapper">
@@ -22,7 +22,7 @@ export default function Profile() {
 
         <div className="user-right">
           {rightScreen === "list" && (
-            <Favorites setScreen={setScreen} />
+            <ListFavorites setScreen={setScreen} />
           )}
 
           {rightScreen === "resto-profile" && (

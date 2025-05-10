@@ -2,8 +2,6 @@ import "./App.css";
 import Landing from "./Landing";
 import Login from "./Login";
 import Signup from "./Signup";
-import Dashboard from "./Dashboard";
-import RegisterEstablishment from "./RegisterEstablishment";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 

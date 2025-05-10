@@ -1,8 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function NavBar() {
-  const location = useLocation();
-
   return (
     <nav className="navbar">
       <div className="logo-container">
@@ -19,18 +17,38 @@ export default function NavBar() {
 
       <div className="button-container">
         <div>
-          {location.pathname === "/profile" ? (
-            <Link to="/dashboard">
+          {" "}
+          {/*Admin Button: Pls hide if not admin*/}
+          {window.location.pathname === "/admin" ? (
+            <Link to="/dashboard" viewTransition>
               <img src="assets/home_symbol.png" />
             </Link>
-          ) : location.pathname === "/dashboard" ? (
-            <Link to="/profile">
+          ) : (
+            <Link to="/admin" viewTransition>
+              <img src="assets/admin_symbol.png" />
+            </Link>
+          )}
+        </div>
+
+        <div>
+          {" "}
+          {/*Profile Button: switches to home button when in profile*/}
+          {window.location.pathname === "/profile" ? (
+            <Link to="/dashboard" viewTransition>
+              <img src="assets/home_symbol.png" />
+            </Link>
+          ) : window.location.pathname === "/dashboard" ||
+            window.location.pathname === "/admin" ? (
+            <Link to="/profile" viewTransition>
               <img src="assets/profile_symbol.png" />
             </Link>
-          ): null}
+          ) : null}
         </div>
+
         <div>
-          <Link to="/">
+          {" "}
+          {/*Logout Button*/}
+          <Link to="/" viewTransition>
             <img src="assets/logout_symbol.png" />
           </Link>
         </div>
