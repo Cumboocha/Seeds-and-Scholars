@@ -25,7 +25,33 @@
   font-style: normal;
 }
 
+@-moz-keyframes swing {
+  0% {
+    -moz-transform: rotate(-3deg)
+  }
 
+  50% {
+    -moz-transform: rotate(3deg)
+  }
+
+  100% {
+    -moz-transform: rotate(-3deg)
+  }
+}
+
+@-webkit-keyframes swing {
+  0% {
+    -webkit-transform: rotate(-3deg)
+  }
+
+  50% {
+    -webkit-transform: rotate(3deg)
+  }
+
+  100% {
+    -webkit-transform: rotate(-3deg)
+  }
+}
 
 /* Landing Screen */
 .landing-body {
@@ -275,7 +301,14 @@
 .reg-est-container button:hover,
 .resto-profile-tabs img:hover,
 .add-menu-submit-btn:hover,
-.map-btn:hover, .sort-btn:hover, .resto-card:hover, .sort-btn-asc:hover, .sort-btn-desc:hover, .resto-x-btn:hover, .gen-x-btn:hover, .menu-x-btn:hover {
+.map-btn:hover,
+.sort-btn:hover,
+.resto-card:hover,
+.sort-btn-asc:hover,
+.sort-btn-desc:hover,
+.resto-x-btn:hover,
+.gen-x-btn:hover,
+.menu-x-btn:hover {
   transform: scale(1.05);
   transition: .2s;
 }
@@ -327,7 +360,7 @@
   top: 0;
   left: 0;
   outline: 5px solid #ecffcb;
-  z-index: 0;
+  z-index: 5;
 }
 
 .logo-container {
@@ -420,7 +453,8 @@
   flex-direction: column;
 }
 
-.dashboard-main {
+.dashboard-main,
+.profile-main {
   width: 100%;
   height: 85%;
   display: flex;
@@ -495,6 +529,13 @@
   z-index: 1;
 }
 
+.resto-text-header {
+  font-family: "Montserrat";
+  color: #643e27;
+  letter-spacing: -2px;
+  margin: 0;
+}
+
 .resto-container {
   width: 50%;
   height: 100%;
@@ -502,7 +543,7 @@
   justify-content: center;
   align-items: flex-start;
   position: relative;
-  margin-top: 40px;
+  margin-top: 50px;
 }
 
 #resto-container-nf {
@@ -595,7 +636,7 @@
   box-shadow: 15px 15px #ecffcb;
   position: absolute;
   top: -3%;
-  left: 8%; 
+  left: 8%;
   border-radius: 25px;
 }
 
@@ -622,6 +663,7 @@ table {
   color: black;
   letter-spacing: -0.3px;
   font-weight: 500;
+  margin: 0;
 }
 
 .resto-desc {
@@ -629,7 +671,8 @@ table {
   text-align: center;
 }
 
-.resto-desc::before, .resto-desc::after {
+.resto-desc::before,
+.resto-desc::after {
   content: '"';
 }
 
@@ -664,7 +707,8 @@ table {
   padding-left: 40px;
 }
 
-.resto-profile-tabs, .sort-btn-container {
+.resto-profile-tabs,
+.sort-btn-container {
   width: 16%;
   height: auto;
   display: flex;
@@ -677,7 +721,8 @@ table {
   gap: 10px;
 }
 
-.resto-profile-tabs img, .sort-btn-container img {
+.resto-profile-tabs img,
+.sort-btn-container img {
   width: 100px;
   height: auto;
 }
@@ -731,12 +776,18 @@ table {
   height: 150px;
   border: 5px solid #f28d01;
   background-color: rgba(255, 230, 195, 0.4);
-  margin-top: 15px;
+  margin-top: 30px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   border-radius: 25px;
+}
+
+.menu-item {
+  margin-top: 0 !important;
+  margin-bottom: 15px;
+
 }
 
 .menu-item-img {
@@ -808,6 +859,7 @@ table {
   margin-left: 55%;
   box-shadow: 1px 1px 2px #c7c7c7;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 /* Add Menu Item */
@@ -949,7 +1001,7 @@ table {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 30px;
+  margin-bottom: 30px;
   border: 5px solid #f28d01;
   border-radius: 25px;
   padding: 20px;
@@ -980,106 +1032,189 @@ table {
 }
 
 /* Resto Card */
-  .resto-card {
-    width: 100%;
-    height: 150px;
-    border: 5px solid #89bd2e;
-    background-color: rgba(223, 255, 195, 0.4);
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    border-radius: 25px;
-    position: relative;
-    cursor: pointer;
-    margin-top: 15px;
-  }
+.resto-card {
+  width: 100%;
+  height: 150px;
+  border: 5px solid #89bd2e;
+  background-color: rgba(223, 255, 195, 0.4);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 25px;
+  position: relative;
+  cursor: pointer;
+  margin-top: 15px;
+}
 
-  .resto-card-img {
-    width: 30%;
-    height: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin-left: -5px;
-  }
+.resto-card-img {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: -5px;
+}
 
-  .resto-card-img img {
-    width: auto;
-    height: 98%;
-    border: 5px solid #89bd2e;
-    border-radius: 22px;
-  }
+.resto-card-img img {
+  width: auto;
+  height: 98%;
+  border: 5px solid #89bd2e;
+  border-radius: 22px;
+}
 
-  .resto-card-info {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 30px;
-  }
+.resto-card-info {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 30px;
+}
 
-  .resto-card-name {
-    font-family: "Sigmar";
-    font-size: 36px;
-    -webkit-text-stroke: 1.5px black;
-    margin: 0;
-  }
+.resto-card-name {
+  font-family: "Sigmar";
+  font-size: 36px;
+  -webkit-text-stroke: 1.5px black;
+  margin: 0;
+}
 
-  .resto-card-desc {
-    margin: 0;
-    font-family: "Montserrat";
-    font-style: italic;
-    color: black;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-  }
+.resto-card-desc {
+  margin: 0;
+  font-family: "Montserrat";
+  font-style: italic;
+  color: black;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
 
-  .resto-card-desc::before, .resto-card-desc::after {
-    content: '"';
-  }
+.resto-card-desc::before,
+.resto-card-desc::after {
+  content: '"';
+}
 
 
 
-  .resto-card-arrow {
-    width: 10%;
-    height: 100%;
-    display: flex;
-    justify-content: flex-start;
-  }
+.resto-card-arrow {
+  width: 10%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
 
-  .resto-card-arrow img {
-    width: 30px;
-  }
+.resto-card-arrow img {
+  width: 30px;
+}
 
-  .map-btn,
-  .sort-btn {
-    width: 5%;
-    height: auto;
-    z-index: 1;
-    cursor: pointer;
-    position: absolute;
-    box-shadow: 1px 1px 2px #7e7e7e;
-  }
+.map-btn,
+.sort-btn {
+  width: 5%;
+  height: auto;
+  z-index: 1;
+  cursor: pointer;
+  position: absolute;
+  box-shadow: 1px 1px 2px #7e7e7e;
+}
 
-  .map-btn {
-    left: 7.5%;
-    bottom: 6.75%;
-    border-radius: 50%;
-  }
+.map-btn {
+  left: 7.5%;
+  bottom: 6.75%;
+  border-radius: 50%;
+}
 
-  .sort-btn-container img {
-    margin-left: 1%;
-  }
+.sort-btn-container img {
+  margin-left: 1%;
+}
 
-  .gen-x-btn {
-    width: 40px;
-    height: auto;
-    position: absolute;
-    right: -22px;
-    top: -20px;
-    box-shadow: 1px 1px 2px #c7c7c7;
-    border-radius: 50%;
-  }
+.gen-x-btn {
+  width: 40px;
+  height: auto;
+  position: absolute;
+  right: -22px;
+  top: -20px;
+  box-shadow: 1px 1px 2px #c7c7c7;
+  border-radius: 50%;
+}
+
+/* Profile */
+.user-left-wrapper {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  -moz-animation: 5s ease 0s normal none infinite swing;
+  -moz-transform-origin: center top;
+  -webkit-animation: swing 5s infinite ease-in-out;
+  -webkit-transform-origin: top;
+}
+
+.user-left {
+  width: 50%;
+  height: 100%;
+}
+
+.profile-bg {
+  width: 50%;
+  height: auto;
+  position: absolute;
+  margin-bottom: 150px;
+  z-index: -1;
+}
+
+.profile-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+  margin-top: 60%;
+  text-align: center;
+}
+
+.user-pfp {
+  width: 50%;
+  border-radius: 15px;
+}
+
+.user-name {
+  font-family: "Sigmar";
+  font-size: 3vw;
+  -webkit-text-stroke: 1.5px black;
+  letter-spacing: -1px;
+  margin: 0;
+  line-height: 45px;
+  margin-top: 20px;
+}
+
+.user-right {
+  width: 50%;
+  height: 100%;
+   display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.list-favs-container {
+  padding-left: 5%;
+  padding-right: 5%;
+  margin-right: 1%;
+  padding-bottom: 5%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.favorites-text {
+  font-family: "Montserrat";
+  color: #643e27;
+  letter-spacing: -5px;
+  margin: 0;
+  margin-right: auto;
+  margin-top: 25px;
+}
+
+.fav-resto-container {
+  margin-top: 50px;
+}

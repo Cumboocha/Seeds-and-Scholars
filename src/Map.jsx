@@ -6,8 +6,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 export default function Map({
   isAddingMarker,
   setIsAddingMarker,
-  setDashboardScreen,
-  setLeftScreen
+  setDashboardScreen
 }) {
   delete L.Icon.Default.prototype._getIconUrl;
   L.Icon.Default.mergeOptions({
@@ -16,8 +15,20 @@ export default function Map({
     shadowUrl: "",
   });
 
+  const CARTO_URL =
+    "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png";
+  const SATELLITE_URL =
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
+
   const [markers, setMarkers] = useState([]);
   const [tempPosition, setTempPosition] = useState(null);
+  const [tileUrl, setTileUrl] = useState(CARTO_URL);
+
+   const toggleTile = () => {
+    setTileUrl(prev =>
+      prev === CARTO_URL ? SATELLITE_URL : CARTO_URL
+    );
+  };
 
   window.addMarkerFromForm = () => {
     if (tempPosition) {
@@ -42,7 +53,6 @@ export default function Map({
   const toggleAddMarkerMode = () => {
     setIsAddingMarker(!isAddingMarker);
   };
-  
 
   return (
     <div className="map-container" style={{ flex: 1, position: "relative" }}>
@@ -57,24 +67,21 @@ export default function Map({
         minZoom={15}
         style={{ width: "78%", height: "87%" }}
       >
-        <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" />
-        <AddMarkerOnClick />
-        {markers.map((position, idx) => (
-          <Marker
-            key={`marker-${idx}`}
-            position={position}
-            eventHandlers={{
-              click: () => {
-                setLeftScreen("resto-profile");
-              }, // Function that opens resto profile when clicked
-            }}
-          />
-        ))}
+         <TileLayer url={tileUrl} />
+        {/* Markers, etc. */}
       </MapContainer>
 
       <img className="map-bg" src="assets/map_bg.png" />
+
+      <div className="map-buttons-container-left">
+        <img
+          className="list-btn"
+          src="assets/map_btn.png"
+          onClick={toggleTile}
+        />
+      </div>
+
       <div className="map-buttons-container-right">
-        {/*<img className="map-filter-btn" src="assets/filter_btn.png" />*/}
         <img
           className="add-marker-btn"
           src="assets/add_marker_btn.png"

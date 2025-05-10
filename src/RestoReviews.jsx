@@ -15,8 +15,8 @@ export default function RestiReviews() {
   return (
       <div className="resto-container-white-part">
         <AddComment handleAddComment={handleAddComment}/>
-        <br />
         <hr/>
+        <h2 className="resto-text-header">Reviews</h2>
         {comments.length === 0 ? 
         <div className="nothing-here"> <img src="assets/nothing_here.png" /> </div>:
         comments.map((comments, index) => <div key={index}>{comments}</div>)

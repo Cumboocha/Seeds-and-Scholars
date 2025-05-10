@@ -1,6 +1,7 @@
 export default function RestoAbout() {
   return (
     <div className="resto-container-white-part">
+      <h2 className="resto-text-header" style={{marginTop: "25px"}}>About the Establishment</h2>
       <p className="resto-desc">
         Isang makabayan at masarap na kainan na naghahain ng mga paboritong
         lutong-bahay tulad ng adobo, siningang, at kare-kare, gamit ang sariwang

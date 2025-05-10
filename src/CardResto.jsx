@@ -1,6 +1,6 @@
-export default function CardResto({ setLeftScreen }) {
+export default function CardResto({ setScreen }) {
   return (
-    <div className="resto-card" onClick={() => setLeftScreen("resto-profile")}>
+    <div className="resto-card" onClick={() => setScreen("resto-profile")}>
       <div className="resto-card-img">
         <img src="assets/resto_default_pfp.png" />
       </div>
@@ -16,10 +16,6 @@ export default function CardResto({ setLeftScreen }) {
 
       <div className="resto-card-arrow">
         <img src="assets/arrow.svg" />
-      </div>
-
-      <div className="gen-x-btn-wrapper" onClick={(e) => e.stopPropagation()}>
-        <img src="assets/gen_x_btn.png" className="gen-x-btn" />
       </div>
     </div>
   );

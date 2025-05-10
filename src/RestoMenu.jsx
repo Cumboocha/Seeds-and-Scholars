@@ -20,6 +20,7 @@ export default function RestoMenu() {
         <p> + </p> 
       </div>
       <hr />
+      <h2 className="resto-text-header">Menu</h2>
       {menuItems.length === 0 ? (
         <div className="nothing-here">
           <img src="assets/nothing_here.png" />
