@@ -11,6 +11,7 @@ export default function MenuItem() {
           Stir-fried water spinach in soy sauce, vinegar, garlic, and a hint of
           black pepper.
         </p>
+        <p className="menu-item-price">100</p>
       </div>
       <div className="menu-x-btn-wrapper" onClick={(e) => e.stopPropagation()}>
         <img src="assets/gen_x_btn.png" className="menu-x-btn" />

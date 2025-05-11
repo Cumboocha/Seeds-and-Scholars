@@ -821,6 +821,14 @@ table {
   margin: 0;
 }
 
+.menu-item-price {
+  font-weight: bolder !important;
+}
+
+.menu-item-price::before {
+  content: "₱"
+}
+
 .add-item-container {
   height: 75px;
   border: 5px dotted #f28d01;
@@ -902,8 +910,7 @@ table {
 
 .menu-item-form-info input,
 .menu-item-form-info textarea {
-  width: auto;
-  min-width: 50%;
+  width: 80%;
   height: 50px;
   background-color: rgba(242, 141, 1, 0.5);
   font-family: "Montserrat", sans-serif;
@@ -913,6 +920,7 @@ table {
   border-radius: 12px;
   padding-left: 20px;
   text-align: center;
+  resize: none;
 }
 
 .menu-item-form-info input {
@@ -924,17 +932,28 @@ table {
 
 .menu-item-form-info textarea {
   font-size: 18px;
-  width: 75%;
+  width: 75% !important;
   color: black;
   font-weight: 600;
   letter-spacing: 0;
+}
 
+.price-input {
+  width: 30% !important;
+  height: 24px !important;
+   font-family: "Montserrat", sans-serif !important;
+  font-size: 18px !important;
+  letter-spacing: 0 !important;
+}
+
+.price-input::placeholder {
+  font-weight: bolder;
 }
 
 .menu-item-form-info textarea::placeholder,
 .menu-item-form-info input::placeholder {
   font-family: "Montserrat" !important;
-  letter-spacing: 6px !important;
+  letter-spacing: 1px !important;
   -webkit-text-stroke: white !important;
   text-align: center !important;
   color: white;

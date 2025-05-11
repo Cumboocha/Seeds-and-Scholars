@@ -10,6 +10,7 @@ export default function AddMenuItem({handleMenuClose, handleMenuAdd}) {
         <div className="menu-item-form-info">
           <input placeholder="Item Name" />
           <textarea placeholder="Item Description" />
+          <input placeholder="Price (₱)" type="number" className="price-input"/>
         </div>
       </div>
       <div className="add-item-btns-container">
