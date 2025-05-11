@@ -6,26 +6,44 @@ import ListResto from "./ListResto";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-export default function Dashboard() {
+export default function Dashboard({ userId, handleLogout }) {
+  if (userId) {
+    localStorage.setItem("userId", userId);
+    console.log("Logged in user ID:", userId);
+  }
+
   const [isAddingMarker, setIsAddingMarker] = useState(false);
   const [dashboardScreen, setDashboardScreen] = useState(null);
   const [screen, setScreen] = useState("list");
+  const [resto, setResto] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleRegEstClose = () => setDashboardScreen(null);
-  const handlescreenChange = (left) => setScreen(left);
+  const handlescreenChange = (screenName, restoData) => {
+    setScreen(screenName);
+    if (screenName === "resto-profile") setResto(restoData);
+  };
 
   return (
     <>
       <div className="dashboard-body">
-        <NavBar />
+        <NavBar
+          userId={userId}
+          handleLogout={handleLogout}
+          onSearch={setSearchTerm} 
+        />
         <div className="dashboard-main">
           {screen === "list" && (
-            <ListResto onscreenChange={handlescreenChange} />
+            <ListResto
+              onscreenChange={handlescreenChange}
+              userId={userId}
+              searchTerm={searchTerm} 
+            />
           )}
 
           {screen === "resto-profile" && (
             <div className="resto-container">
-              <RestoProfile setScreen={setScreen} />
+              <RestoProfile setScreen={setScreen} resto={resto} userId={userId} />
             </div>
           )}
           <Map
@@ -33,6 +51,7 @@ export default function Dashboard() {
             setIsAddingMarker={setIsAddingMarker}
             setDashboardScreen={setDashboardScreen}
             setScreen={setScreen}
+            userId={userId}
           />
         </div>
 
@@ -57,7 +76,7 @@ export default function Dashboard() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <RegisterEstablishment onRegEstablishClose={handleRegEstClose} />
+          <RegisterEstablishment onRegEstablishClose={handleRegEstClose} userId={userId} />
         </motion.div>
       )}
     </>

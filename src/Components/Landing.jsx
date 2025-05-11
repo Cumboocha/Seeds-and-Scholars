@@ -1,4 +1,13 @@
+import { useEffect } from "react";
+
 export default function Landing({ onLoginBtnClick, onSignupBtnClick }) {
+  useEffect(() => {
+    if (!sessionStorage.getItem("landingReloaded")) {
+      sessionStorage.setItem("landingReloaded", "true");
+      window.location.replace(window.location.pathname); 
+    }
+  }, []);
+
   return (
     <div className="landing-body">
       <div className="landing-side">

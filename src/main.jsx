@@ -3,9 +3,9 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import './index.css'
 import App from './App.jsx'
-import Dashboard from './Dashboard.jsx'
-import Profile from './UserProfile.jsx'
-import DashboardAdmin from './DashboardAdmin.jsx'
+import Dashboard from './Components/Dashboard.jsx'
+import Profile from './Components/UserProfile.jsx'
+import DashboardAdmin from './Components/DashboardAdmin.jsx'
 
 const router = createBrowserRouter([
   { path: "/", element: <App /> },
