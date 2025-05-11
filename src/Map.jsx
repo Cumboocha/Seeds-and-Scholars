@@ -58,14 +58,14 @@ export default function Map({
   return (
     <div className="map-container" style={{ flex: 1, position: "relative" }}>
       <MapContainer
-        center={[14.609565164088995, 120.9893454570484]}
+        center={[14.609822938539528, 120.98966181354407]}
         zoom={17}
         maxBounds={[
-          [14.616, 120.982],
-          [14.596, 121.001],
+          [14.6221294420654, 120.96390938862099],
+          [14.5650967182169, 121.01913999773225],
         ]}
         maxBoundsViscosity={0.5}
-        minZoom={15}
+        minZoom={14}
         style={{ width: "78%", height: "87%" }}
       >
         <TileLayer url={tileUrl} />
