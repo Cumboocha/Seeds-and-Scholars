@@ -5,6 +5,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function DashboardAdmin() {
+  const userId = sessionStorage.getItem("userId") || localStorage.getItem("userId");
   const [rightScreen, setScreen] = useState("list");
   const [popupMessage, setPopupMessage] = useState(null);
 
@@ -15,7 +16,7 @@ export default function DashboardAdmin() {
 
   return (
     <div className="admin-body">
-      <NavBar />
+      <NavBar userId={userId} />
       <div className="admin-main">
         <div className="admin-left">
           <img src="assets/admin_img.png" className="admin-left-img" />
@@ -23,13 +24,14 @@ export default function DashboardAdmin() {
 
         <div className="admin-right">
           {rightScreen === "list" && (
-            <ListPending setScreen={setScreen} />
+            <ListPending setScreen={setScreen} userId={userId} />
           )}
 
           {rightScreen === "resto-profile" && (
             <div className="resto-container" style={{width: "100%", marginTop: "100px"}}>
               <RestoProfile
                 setScreen={setScreen}
+                userId={userId}
                 showPopup={showPopup}
                 style={{ width: "100%" }}
               />

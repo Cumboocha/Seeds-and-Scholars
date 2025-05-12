@@ -5,20 +5,52 @@ import RegisterEstablishment from "./RegisterEstablishment";
 import ListResto from "./ListResto";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+
+const db = getFirestore();
 
 export default function Dashboard({ handleLogout }) {
-  const userId = sessionStorage.getItem("userId") 
+  const userId = sessionStorage.getItem("userId") || localStorage.getItem("userId");
 
   const [isAddingMarker, setIsAddingMarker] = useState(false);
   const [dashboardScreen, setDashboardScreen] = useState(null);
   const [screen, setScreen] = useState("list");
   const [resto, setResto] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [markerCoords, setMarkerCoords] = useState(null);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const handleRegEstClose = () => setDashboardScreen(null);
   const handlescreenChange = (screenName, restoData) => {
     setScreen(screenName);
     if (screenName === "resto-profile") setResto(restoData);
+  };
+
+  // console.log("markerCoords", markerCoords);
+
+  const handleProfileClose = () => {
+    setScreen("list");
+    setIsProfileOpen(false); 
+  };
+
+  const handleMarkerPlaced = async (marker) => {
+    if (marker.lat && marker.lng) {
+      setMarkerCoords({ lat: marker.lat, lng: marker.lng });
+    }
+
+    if (marker.id) {
+      const docRef = doc(db, "restaurants", marker.id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setResto({ id: marker.id, ...docSnap.data() }); 
+      } else {
+        setResto(marker); 
+      }
+    } else {
+      setResto(marker); 
+    }
+    setScreen("resto-profile");
+    setIsProfileOpen(true);
   };
 
   return (
@@ -38,9 +70,14 @@ export default function Dashboard({ handleLogout }) {
             />
           )}
 
-          {screen === "resto-profile" && (
+          {screen === "resto-profile" && resto && (
             <div className="resto-container">
-              <RestoProfile setScreen={setScreen} resto={resto} userId={userId} />
+              <RestoProfile
+                setScreen={setScreen}
+                resto={resto} 
+                userId={userId}
+                onClose={handleProfileClose}
+              />
             </div>
           )}
           <Map
@@ -49,6 +86,8 @@ export default function Dashboard({ handleLogout }) {
             setDashboardScreen={setDashboardScreen}
             setScreen={setScreen}
             userId={userId}
+            onMarkerPlaced={handleMarkerPlaced}
+            isProfileOpen={isProfileOpen} 
           />
         </div>
 
@@ -73,7 +112,11 @@ export default function Dashboard({ handleLogout }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <RegisterEstablishment onRegEstablishClose={handleRegEstClose} userId={userId} />
+          <RegisterEstablishment
+            onRegEstablishClose={handleRegEstClose}
+            userId={userId}
+            markerCoords={markerCoords}
+          />
         </motion.div>
       )}
     </>

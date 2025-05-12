@@ -9,8 +9,8 @@ const db = getFirestore(app);
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-export default function RegisterEstablishment({ onRegEstablishClose }) {
-  const userId = sessionStorage.getItem("userId")
+export default function RegisterEstablishment({ onRegEstablishClose, markerCoords }) {
+  const userId = sessionStorage.getItem("userId") || localStorage.getItem("userId");
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -19,6 +19,7 @@ export default function RegisterEstablishment({ onRegEstablishClose }) {
     openingHours: "",
     closingHours: "",
   });
+  //console.log("Marker Coordinates:", markerCoords);
 
   const [daysClosed, setDaysClosed] = useState([]);
 
@@ -50,8 +51,9 @@ export default function RegisterEstablishment({ onRegEstablishClose }) {
         updatedAt: serverTimestamp(),
         createdBy: userId || "admin",
         updatedBy: userId || "admin",
-        latitude: 0,
-        longitude: 0,
+        latitude: markerCoords?.lat || 0,
+        longitude: markerCoords?.lng || 0,
+        isAccepted: false,
       });
 
       if (userId) {

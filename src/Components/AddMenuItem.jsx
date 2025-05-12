@@ -1,6 +1,5 @@
 export default function AddMenuItem({handleMenuClose, handleMenuAdd}) {
-    const userId = sessionStorage.getItem("userId") 
-    console.log(userId);
+    //const userId = sessionStorage.getItem("userId") 
 
   return (
     <div className="add-menu-item-body">

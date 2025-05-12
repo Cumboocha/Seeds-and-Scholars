@@ -72,8 +72,9 @@ export default function NavBar({ handleLogout, onSearch }) {
   return (
     <nav className="navbar">
       <div className="logo-container">
-        <img className="navbar-logo" src="assets/navbar_logo.png" />
-        <Link to="/dashboard" />
+        <Link to="/dashboard">
+          <img className="navbar-logo" src="assets/navbar_logo.png" alt="Logo" />
+        </Link>
       </div>
 
       <div className="search-container">
@@ -100,7 +101,6 @@ export default function NavBar({ handleLogout, onSearch }) {
       <div className="button-container">
         {userType === "WcjOVRmHYXKZHsMzAVY2" && (
           <div>
-            {/*Admin Button: Pls hide if not admin*/}
             {window.location.pathname === "/admin" ? (
               <Link to="/dashboard" viewTransition>
                 <img src="assets/home_symbol.png" />
@@ -113,7 +113,6 @@ export default function NavBar({ handleLogout, onSearch }) {
           </div>
         )}
         <div>
-          {/* Profile Button: display firstName and lastName */}
           <Link to={`/profile?userId=${userName}`}>
             <img
               src="assets/user_default_pfp.png"
@@ -127,7 +126,6 @@ export default function NavBar({ handleLogout, onSearch }) {
         </div>
 
         <div>
-          {/*Logout Button*/}
           <a href="/" onClick={onLogoutClick}>
             <img src="assets/logout_symbol.png" alt="Logout" />
           </a>

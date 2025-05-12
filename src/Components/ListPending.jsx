@@ -1,15 +1,43 @@
 import CardResto from "./CardResto";
+import { useState, useEffect } from "react";
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { firebaseConfig } from "../firebaseConfig";
 
-export default function ListPending({ setScreen }) {
-  const userId = sessionStorage.getItem("userId") || localStorage.getItem("userId");
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+export default function ListPending({ setScreen, userId, onSelectResto }) {
+  const [restaurants, setRestaurants] = useState([]);
+
+  useEffect(() => {
+    async function fetchRestaurants() {
+      const querySnapshot = await getDocs(collection(db, "restaurants"));
+      setRestaurants(
+        querySnapshot.docs
+          .map(doc => ({ id: doc.id, ...doc.data() }))
+          .filter(resto => resto.isAccepted === false) // Only show pending
+      );
+    }
+    fetchRestaurants();
+  }, []);
 
   return (
     <div className="list-admin-container">
       <h1 className="pending-text">To Approve</h1>
-      <CardResto setScreen={setScreen} userId={userId} />
-      <CardResto setScreen={setScreen} userId={userId} />
-      <CardResto setScreen={setScreen} userId={userId} />
-      <CardResto setScreen={setScreen} userId={userId} />
+      {restaurants.length === 0 ? (
+        <p>No pending restaurants.</p>
+      ) : (
+        restaurants.map(resto => (
+          <CardResto
+            key={resto.id}
+            setScreen={setScreen}
+            userId={userId}
+            resto={resto}
+            onClick={() => onSelectResto && onSelectResto(resto)}
+          />
+        ))
+      )}
     </div>
   );
 }

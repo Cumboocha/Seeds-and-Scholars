@@ -1,22 +1,42 @@
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { firebaseConfig } from "../firebaseConfig";
+import { initializeApp } from "firebase/app";
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const defaultIcon = new L.Icon({
+  iconUrl: "assets/marker_sd.png",
+  iconRetinaUrl: "assets/marker.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowUrl: "",
+  shadowSize: [41, 41],
+});
+
+const largeIcon = new L.Icon({
+  iconUrl: "assets/marker_sd.png",
+  iconRetinaUrl: "assets/marker.png",
+  iconSize: [40, 65], 
+  iconAnchor: [20, 65],
+  popupAnchor: [1, -34],
+  shadowUrl: "",
+  shadowSize: [41, 41],
+});
 
 export default function Map({
   isAddingMarker,
   setIsAddingMarker,
   setDashboardScreen,
   setScreen,
+  onMarkerPlaced,
+  isProfileOpen 
 }) {
-  const userId = sessionStorage.getItem("userId") || localStorage.getItem("userId");
-
-  delete L.Icon.Default.prototype._getIconUrl;
-  L.Icon.Default.mergeOptions({
-    iconRetinaUrl: "assets/marker.png",
-    iconUrl: "assets/marker_sd.png",
-    shadowUrl: "",
-  });
 
   const CARTO_URL =
     "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png";
@@ -26,10 +46,40 @@ export default function Map({
   const [markers, setMarkers] = useState([]);
   const [tempPosition, setTempPosition] = useState(null);
   const [tileUrl, setTileUrl] = useState(CARTO_URL);
+  const [selectedMarkerId, setSelectedMarkerId] = useState(null); 
+  useEffect(() => {
+    async function fetchRestaurantMarkers() {
+      const querySnapshot = await getDocs(collection(db, "restaurants"));
+      const restoMarkers = [];
+      querySnapshot.forEach(doc => {
+        const data = doc.data();
+        if (
+          typeof data.latitude === "number" &&
+          typeof data.longitude === "number"
+        ) {
+          restoMarkers.push({
+            id: doc.id,
+            lat: data.latitude,
+            lng: data.longitude,
+            name: data.name || "",
+          });
+        }
+      });
+      setMarkers(restoMarkers);
+      // console.log("Fetched restaurant markers:", restoMarkers);
+    }
+    fetchRestaurantMarkers();
+  }, []);
+
+  useEffect(() => {
+    if (!isProfileOpen) {
+      setSelectedMarkerId(null);
+    }
+  }, [isProfileOpen]);
 
   window.addMarkerFromForm = () => {
     if (tempPosition) {
-      setMarkers([...markers, tempPosition]);
+      setMarkers([...markers, { lat: tempPosition.lat, lng: tempPosition.lng }]);
       setTempPosition(null);
       setIsAddingMarker(false);
     }
@@ -39,8 +89,11 @@ export default function Map({
     useMapEvents({
       click(e) {
         if (isAddingMarker) {
-          setTempPosition(e.latlng); // Stores lat/lng of clicked position, then uses it later if na-submit na
+          setTempPosition(e.latlng);
           setDashboardScreen("reg-est");
+          if (onMarkerPlaced) {
+            onMarkerPlaced({ lat: e.latlng.lat, lng: e.latlng.lng });
+          }
         }
       },
     });
@@ -72,21 +125,31 @@ export default function Map({
       >
         <TileLayer url={tileUrl} />
         <AddMarkerOnClick />
-        {markers.map((position, idx) => (
+        {/* Show all restaurant markers */}
+        {markers.map((marker, idx) => (
           <Marker
-            key={`marker-${idx}`}
-            position={position}
+            key={marker.id || idx}
+            position={{ lat: marker.lat, lng: marker.lng }}
+            icon={selectedMarkerId === marker.id ? largeIcon : defaultIcon}
             eventHandlers={{
               click: () => {
-                setScreen("resto-profile");
-              }, // Function that opens resto profile when clicked
+                setSelectedMarkerId(marker.id);
+                if (onMarkerPlaced) {
+                  onMarkerPlaced({ lat: marker.lat, lng: marker.lng, id: marker.id, name: marker.name });
+                }
+                setScreen && setScreen("resto-profile");
+              },
             }}
           />
         ))}
+        {/* Show temp marker if adding */}
+        {tempPosition && (
+          <Marker position={tempPosition} icon={largeIcon} />
+        )}
       </MapContainer>
 
       <img className="map-bg" src="assets/map_bg.png" />
-        <div className="map-buttons-container-left">
+      <div className="map-buttons-container-left">
         <img
           className="map-btn"
           src="assets/map_btn.png"

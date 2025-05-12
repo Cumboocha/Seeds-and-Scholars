@@ -18,7 +18,11 @@ export default function ListResto({ onscreenChange, searchTerm }) {
   useEffect(() => {
     async function fetchRestaurants() {
       const querySnapshot = await getDocs(collection(db, "restaurants"));
-      setRestaurants(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setRestaurants(
+        querySnapshot.docs
+          .map(doc => ({ id: doc.id, ...doc.data() }))
+          .filter(resto => resto.isAccepted === true) // Only accepted restaurants
+      );
     }
     fetchRestaurants();
   }, []);

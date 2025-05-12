@@ -1,6 +1,5 @@
 export default function CardResto({ resto, setScreen }) {
-  const userId = sessionStorage.getItem("userId") 
-      console.log(userId);
+  // const userId = sessionStorage.getItem("userId") 
 
 
   return (

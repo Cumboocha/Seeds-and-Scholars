@@ -9,8 +9,7 @@ import { initializeApp } from "firebase/app";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export default function RestoProfile({ setScreen, resto }) {
-  // Get userId from sessionStorage or localStorage
+export default function RestoProfile({ setScreen, resto, onClose }) {
   const userId = sessionStorage.getItem("userId") 
   const [restoProfileScreen, setRestoProfileScreen] = useState("about");
   const [favorite, setFavorite] = useState("unfavorited");
@@ -107,7 +106,13 @@ export default function RestoProfile({ setScreen, resto }) {
         <img
           src="assets/resto_profile_x_btn.png"
           className="resto-x-btn"
-          onClick={() => setScreen("list")}
+          onClick={() => {
+            if (onClose) {
+              onClose(); 
+            } else {
+              setScreen("list");
+            }
+          }}
           alt="Close"
         />
       </div>
