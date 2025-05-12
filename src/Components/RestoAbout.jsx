@@ -1,6 +1,8 @@
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 export default function RestoAbout({ resto }) {
+  const userId = sessionStorage.getItem("userId") 
+  console.log(userId)
 
   if (!resto) return <div>Loading...</div>;
 

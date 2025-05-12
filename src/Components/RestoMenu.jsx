@@ -8,7 +8,8 @@ import { initializeApp } from "firebase/app";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export default function RestoMenu({ userId, resto }) {
+export default function RestoMenu({ resto }) {
+  const userId = sessionStorage.getItem("userId")
   const [menuItems, setMenuItems] = useState([]);
   const [menuScreen, setMenuScreen] = useState(null);
   const [isOwner, setIsOwner] = useState(false);

@@ -1,7 +1,8 @@
-export default function CardResto({ resto, setScreen, userId }) {
-    if (userId) {
-    sessionStorage.setItem("userId", userId);
-  }
+export default function CardResto({ resto, setScreen }) {
+  const userId = sessionStorage.getItem("userId") 
+      console.log(userId);
+
+
   return (
     <div
       className="resto-card"
@@ -14,7 +15,10 @@ export default function CardResto({ resto, setScreen, userId }) {
       <div className="resto-card-info">
         <h1 className="resto-card-name">{resto.name}</h1>
         <p className="resto-card-desc">
-          {resto.description}
+          {resto.address}
+        </p>
+        <p className="resto-card-desc">          
+          {resto.contactNumber}
         </p>
       </div>
 

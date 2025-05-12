@@ -9,6 +9,8 @@ export default function Map({
   setDashboardScreen,
   setScreen,
 }) {
+  const userId = sessionStorage.getItem("userId") || localStorage.getItem("userId");
+
   delete L.Icon.Default.prototype._getIconUrl;
   L.Icon.Default.mergeOptions({
     iconRetinaUrl: "assets/marker.png",

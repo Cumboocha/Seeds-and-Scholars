@@ -7,16 +7,13 @@ import { firebaseConfig } from "../firebaseConfig";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const PAGE_SIZE = 4;
+const PAGE_SIZE = 10;
 
-export default function ListResto({ onscreenChange, userId, searchTerm }) {
+export default function ListResto({ onscreenChange, searchTerm }) {
+  const userId = sessionStorage.getItem("userId")
   const [restaurants, setRestaurants] = useState([]);
   const [currentSort, setCurrentSort] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
-
-  if (userId) {
-    sessionStorage.setItem("userId", userId);
-  }
 
   useEffect(() => {
     async function fetchRestaurants() {

@@ -1,19 +1,56 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { firebaseConfig } from "../firebaseConfig";
+import { initializeApp } from "firebase/app";
 
-export default function NavBar({ handleLogout, userId, onSearch }) {
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+export default function NavBar({ handleLogout, onSearch }) {
   const navigate = useNavigate();
+  const userId = sessionStorage.getItem("userId")
   const [searchTerm, setSearchTerm] = useState("");
   const [logoutMessage, setLogoutMessage] = useState("");
+  const [userType, setUserType] = useState(null);
+  const [userName, setUserName] = useState(""); 
+
+  useEffect(() => {
+    async function fetchUserTypeAndName() {
+      if (userId) {
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          const data = userSnap.data();
+          setUserType(data.userType);
+          setUserName(`${data.firstName || ""} ${data.lastName || ""}`.trim());
+        }
+      }
+    }
+    fetchUserTypeAndName();
+  }, [userId]);
 
   const onLogoutClick = (e) => {
     e.preventDefault();
     const confirmed = window.confirm("Are you sure you want to logout?");
     if (!confirmed) return;
     if (handleLogout) handleLogout();
+
+    sessionStorage.removeItem("userId");
+    localStorage.removeItem("userId");
+
     setLogoutMessage("Logout successful!");
     setTimeout(() => setLogoutMessage(""), 2000);
+
+    window.history.pushState(null, "", window.location.pathname);
+    window.history.replaceState(null, "", window.location.pathname);
     navigate("/");
+
+    window.onpopstate = () => {
+      if (!sessionStorage.getItem("userId") && !localStorage.getItem("userId")) {
+        window.location.href = "/"; 
+      }
+    };
   };
 
   const handleSearchInput = (e) => {
@@ -27,9 +64,8 @@ export default function NavBar({ handleLogout, userId, onSearch }) {
     e.preventDefault();
     if (searchTerm.trim()) {
       if (onSearch) {
-        onSearch(searchTerm.trim()); 
+        onSearch(searchTerm.trim());
       }
-    
     }
   };
 
@@ -37,23 +73,22 @@ export default function NavBar({ handleLogout, userId, onSearch }) {
     <nav className="navbar">
       <div className="logo-container">
         <img className="navbar-logo" src="assets/navbar_logo.png" />
+        <Link to="/dashboard" />
       </div>
 
       <div className="search-container">
-        <form onSubmit={handleSearchSubmit} style={{ display: "flex", alignItems: "center" }}>
-          <input
-            className="search-bar"
-            placeholder="Looking for a specific restaurant?"
-            value={searchTerm}
-            onChange={handleSearchInput}
-          />
-          <img
-            src="assets/search_symbol.png"
-            alt="Search"
-            style={{ cursor: "pointer", marginLeft: "8px" }}
-            onClick={handleSearchSubmit}
-          />
-        </form>
+        <input
+          className="search-bar"
+          placeholder="Looking for a specific restaurant?"
+          value={searchTerm}
+          onChange={handleSearchInput}
+        />
+        <img
+          src="assets/search_symbol.png"
+          alt="Search"
+          className="search-icon"
+          onClick={handleSearchSubmit}
+        />
       </div>
 
       {logoutMessage && (
@@ -63,22 +98,32 @@ export default function NavBar({ handleLogout, userId, onSearch }) {
       )}
 
       <div className="button-container">
+        {userType === "WcjOVRmHYXKZHsMzAVY2" && (
+          <div>
+            {/*Admin Button: Pls hide if not admin*/}
+            {window.location.pathname === "/admin" ? (
+              <Link to="/dashboard" viewTransition>
+                <img src="assets/home_symbol.png" />
+              </Link>
+            ) : (
+              <Link to="/admin" viewTransition>
+                <img src="assets/admin_symbol.png" />
+              </Link>
+            )}
+          </div>
+        )}
         <div>
-          {/*Admin Button: Pls hide if not admin*/}
-          {window.location.pathname === "/admin" ? (
-            <Link to="/dashboard" viewTransition>
-              <img src="assets/home_symbol.png" />
-            </Link>
-          ) : (
-            <Link to="/admin" viewTransition>
-              <img src="assets/admin_symbol.png" />
-            </Link>
-          )}
-        </div>
-
-        <div>
-          {/*Profile Button: render UserProfile directly and pass userId*/}
-          {/* <UserProfile userId={userId} /> */}
+          {/* Profile Button: display firstName and lastName */}
+          <Link to={`/profile?userId=${userName}`}>
+            <img
+              src="assets/user_default_pfp.png"
+              alt="Profile"
+              className="user-pfp-navbar"
+              style={{ marginRight: "8px" }}
+            />
+            <span style={{ verticalAlign: "middle" }}>
+            </span>
+          </Link>
         </div>
 
         <div>

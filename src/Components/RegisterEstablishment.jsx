@@ -9,7 +9,8 @@ const db = getFirestore(app);
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-export default function RegisterEstablishment({ onRegEstablishClose, userId }) {
+export default function RegisterEstablishment({ onRegEstablishClose }) {
+  const userId = sessionStorage.getItem("userId")
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -20,10 +21,6 @@ export default function RegisterEstablishment({ onRegEstablishClose, userId }) {
   });
 
   const [daysClosed, setDaysClosed] = useState([]);
-
-  if (userId) {
-    localStorage.setItem("userId", userId);
-  }
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -63,7 +60,7 @@ export default function RegisterEstablishment({ onRegEstablishClose, userId }) {
       }
 
       alert("Establishment registered successfully!");
-      window.location.reload({userId});
+      window.location.reload();
     } catch (error) {
       alert("Failed to register establishment: " + error.message);
     }

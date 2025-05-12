@@ -6,11 +6,8 @@ import ListResto from "./ListResto";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-export default function Dashboard({ userId, handleLogout }) {
-  if (userId) {
-    localStorage.setItem("userId", userId);
-    console.log("Logged in user ID:", userId);
-  }
+export default function Dashboard({ handleLogout }) {
+  const userId = sessionStorage.getItem("userId") 
 
   const [isAddingMarker, setIsAddingMarker] = useState(false);
   const [dashboardScreen, setDashboardScreen] = useState(null);

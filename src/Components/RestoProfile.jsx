@@ -9,13 +9,11 @@ import { initializeApp } from "firebase/app";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export default function RestoProfile({ setScreen, resto, userId }) {
+export default function RestoProfile({ setScreen, resto }) {
+  // Get userId from sessionStorage or localStorage
+  const userId = sessionStorage.getItem("userId") 
   const [restoProfileScreen, setRestoProfileScreen] = useState("about");
   const [favorite, setFavorite] = useState("unfavorited");
-
-  if (userId) {
-    localStorage.setItem("userId", userId);
-  }
 
   const handleRestoScreenChange = (screen) => setRestoProfileScreen(screen);
 

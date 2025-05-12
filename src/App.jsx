@@ -56,17 +56,27 @@ function App() {
   }, []);
 
   return (
-    <>
-      {activeScreen === null && (
-        <Landing
-          onLoginBtnClick={handleLoginShow}
-          onSignupBtnClick={handleSignupShow}
-        />
-      )}
+    <div style={{ position: "relative", minHeight: "100vh" }}>
+      <Landing
+        onLoginBtnClick={handleLoginShow}
+        onSignupBtnClick={handleSignupShow}
+      />
 
       <AnimatePresence>
         {activeScreen === "login" && (
           <motion.div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              zIndex: 10,
+              background: "rgba(0,0,0,0.4)", 
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -77,6 +87,18 @@ function App() {
 
         {activeScreen === "signup" && (
           <motion.div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              zIndex: 10,
+              background: "rgba(0,0,0,0.4)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}>
@@ -84,7 +106,6 @@ function App() {
           </motion.div>
         )}
 
-        {/* Only show Dashboard if logged in and activeScreen is dashboard */}
         {activeScreen === "dashboard" && userId && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -94,7 +115,7 @@ function App() {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 }
 

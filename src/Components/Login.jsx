@@ -46,7 +46,6 @@ export default function Login({ onLoginClose, onLoginSuccess }) {
         return;
       }
       await signInWithEmailAndPassword(auth, form.email, form.password);
-      sessionStorage.setItem("userId", userId);
       console.log("Logged in user ID:", userId);
       alert("Login successful!");
       if (onLoginSuccess) onLoginSuccess(userId);
