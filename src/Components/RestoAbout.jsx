@@ -1,4 +1,4 @@
-const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
 export default function RestoAbout({ resto }) {
   // const userId = sessionStorage.getItem("userId") 

@@ -53,6 +53,7 @@
   }
 }
 
+
 /* Landing Screen */
 .landing-body {
   background-image: url(assets/landing_bg.png);
@@ -134,11 +135,28 @@
   color: #f28d01;
 }
 
+.custom-marker .marker-inner {
+  width: 100%;
+  height: 100%;
+  background-image: url('assets/marker_sd.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: transform 0.2s ease;
+}
+
+.custom-marker.default .marker-inner {
+  transform: scale(1);
+}
+
+.custom-marker.large .marker-inner {
+  transform: scale(1.5); /* Smooth growth */
+}
+
 /* Login, Signup, and Register Establishment Screen */
 .login-body,
 .signup-body,
 .reg-est-body {
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.60);
   width: 100%;
   height: 100%;
   position: fixed;
@@ -188,9 +206,12 @@
   gap: 50px;
 }
 
-.signup-container form,
-.reg-est-container form {
+.signup-container form {
   gap: 35px;
+}
+
+.reg-est-container form {
+  gap: 10px;
 }
 
 .login-container form input,
@@ -201,7 +222,6 @@
   background-color: #89bd2e;
   font-family: "Montserrat", sans-serif;
   font-size: 24px;
-  letter-spacing: 6px;
   border: none;
   border-radius: 12px;
   padding-left: 20px;
@@ -220,7 +240,6 @@
   background-color: #f28d01;
   font-family: "Montserrat", sans-serif;
   font-size: 24px;
-  letter-spacing: 6px;
   border: none;
   border-radius: 12px;
   padding-left: 20px;
@@ -348,6 +367,77 @@
   gap: 10px;
 }
 
+.opening-closing-container {
+  width: 105%;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  padding: 0 10px;
+}
+
+.opening-input, .closing-input {
+  width: 100%;
+}
+
+.closed-days {
+  width: 120%;
+  font-family: "Montserrat";
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.closed-days p {
+  font-size: 30px;
+  color: #89bd2e;
+  font-weight: 800 !important;
+  margin: 0;
+}
+
+.closed-days label {
+  font-size: 24px;
+  letter-spacing: -2px;
+}
+
+.checkbox-box {
+  display: none;
+}
+
+.custom-checkbox {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #89bd2e;
+  background-color: white;
+  display: inline-block;
+  margin-bottom: 5px;
+  position: relative;
+  transition: background-color 0.2s, border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.custom-checkbox-label:hover .custom-checkbox {
+  background-color: #ecffcb;
+}
+
+.checkbox-box:checked + .custom-checkbox {
+  background-color: #89bd2e;
+  border-color: #89bd2e;
+}
+
+.checkbox-box:checked + .custom-checkbox::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 10px;
+  width: 10px;
+  height: 18px;
+  border: solid white;
+  border-width: 0 4px 4px 0;
+  transform: rotate(45deg);
+}
+
 
 
 
@@ -366,6 +456,10 @@
 
 .logo-container {
   width: 15%;
+  display: flex;
+}
+
+.logo-link {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -419,9 +513,8 @@
 .button-container {
   width: 15%;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
-  gap: 15px;
 }
 
 .button-container div {
@@ -915,7 +1008,6 @@ table {
   background-color: rgba(242, 141, 1, 0.5);
   font-family: "Montserrat", sans-serif;
   font-size: 36px;
-  letter-spacing: 6px;
   border: none;
   border-radius: 12px;
   padding-left: 20px;
@@ -1047,6 +1139,22 @@ table {
 }
 
 /* Resto Card */
+.establishments-text {
+  font-family: "Montserrat";
+  color: #643e27;
+  font-weight: 800;
+  font-size: 36px;
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+.results-list, .resto-list-summary {
+  font-family: "Montserrat";
+  color: #643e27;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
 .resto-card {
   width: 100%;
   height: 150px;
@@ -1063,7 +1171,6 @@ table {
 }
 
 .resto-card-img {
-  width: 30%;
   height: 100%;
   display: flex;
   justify-content: flex-start;
@@ -1079,6 +1186,8 @@ table {
 }
 
 .resto-card-info {
+  width: 90%;
+  max-width: 90%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -1114,6 +1223,7 @@ table {
   height: 100%;
   display: flex;
   justify-content: flex-start;
+  margin-right: auto;
 }
 
 .resto-card-arrow img {
@@ -1181,6 +1291,7 @@ table {
 .user-pfp {
   width: 50%;
   border-radius: 15px;
+  background-color: white;
 }
 
 .user-name {
@@ -1271,3 +1382,8 @@ table {
   color: white;
 }
 
+.error-login {
+  font-family: "Montserrat";
+  font-size: 24px;
+  margin: 0;
+}

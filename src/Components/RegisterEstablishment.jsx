@@ -1,16 +1,35 @@
 import { useState } from "react";
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, serverTimestamp, doc, updateDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { firebaseConfig } from "../firebaseConfig";
 
 // Initialize Firebase app and Firestore (ensure this is only called once in your app)
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const DAYS = [
+  "SUN",
+  "MON",
+  "TUE",
+  "WED",
+  "THU",
+  "FRI",
+  "SAT",
+];
 
-export default function RegisterEstablishment({ onRegEstablishClose, markerCoords }) {
-  const userId = sessionStorage.getItem("userId") || localStorage.getItem("userId");
+export default function RegisterEstablishment({
+  onRegEstablishClose,
+  markerCoords,
+}) {
+  const userId =
+    sessionStorage.getItem("userId") || localStorage.getItem("userId");
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -32,7 +51,7 @@ export default function RegisterEstablishment({ onRegEstablishClose, markerCoord
     if (checked) {
       setDaysClosed([...daysClosed, value]);
     } else {
-      setDaysClosed(daysClosed.filter(day => day !== value));
+      setDaysClosed(daysClosed.filter((day) => day !== value));
     }
   };
 
@@ -110,39 +129,46 @@ export default function RegisterEstablishment({ onRegEstablishClose, markerCoord
             onChange={handleChange}
             required
           />
-          <input
-            name="openingHours"
-            placeholder="Opening Hours (e.g. 08:00 AM)*"
-            value={form.openingHours}
-            onChange={handleChange}
-            required
-          />
-          <input
-            name="closingHours"
-            placeholder="Closing Hours (e.g. 10:00 PM)*"
-            value={form.closingHours}
-            onChange={handleChange}
-            required
-          />
-          <div style={{ margin: "10px 0" }}>
-            <label style={{ fontWeight: "bold" }}>Closed Days:</label>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-              {DAYS.map(day => (
-                <label key={day} style={{ display: "flex", alignItems: "center" }}>
+          <div className="opening-closing-container">
+            <input
+              name="openingHours"
+              placeholder="Opening Hours (e.g. 08:00 AM)*"
+              value={form.openingHours}
+              onChange={handleChange}
+              required
+              className="opening-input"
+            />
+            <input
+              name="closingHours"
+              placeholder="Closing Hours (e.g. 10:00 PM)*"
+              value={form.closingHours}
+              onChange={handleChange}
+              required
+              className="closing-input"
+            />
+          </div>
+          <div className="closed-days">
+            <p style={{ fontWeight: "bold" }}>Closed Days:</p>
+            <div style={{width: "90%", display: "flex", flexWrap: "wrap", gap: "15px", justifyContent: "space-evenly"}}>
+              {DAYS.map((day) => (
+                <label
+                  key={day}
+                  style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+                >
                   <input
                     type="checkbox"
                     value={day}
                     checked={daysClosed.includes(day)}
                     onChange={handleCheckboxChange}
+                    className="checkbox-box"
                   />
+                  <span className="custom-checkbox"></span>
                   {day}
                 </label>
               ))}
             </div>
           </div>
-          <button type="submit">
-            &nbsp;REGISTER
-          </button>
+          <button type="submit">&nbsp;REGISTER</button>
         </form>
       </div>
     </div>

@@ -28,7 +28,7 @@ export default function Login({ onLoginClose, onLoginSuccess }) {
       );
       const querySnapshot = await getDocs(q);
       if (querySnapshot.empty) {
-        setError("User does not exist.");
+        setError(<p className="error-login">User does not exist.</p>);
         setLoading(false);
         return;
       }

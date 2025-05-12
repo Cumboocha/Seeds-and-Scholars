@@ -4,7 +4,7 @@ import RestoProfile from "./RestoProfile";
 import RegisterEstablishment from "./RegisterEstablishment";
 import ListResto from "./ListResto";
 import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 const db = getFirestore();

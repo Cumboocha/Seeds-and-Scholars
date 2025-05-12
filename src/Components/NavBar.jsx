@@ -73,7 +73,7 @@ export default function NavBar({ handleLogout, onSearch }) {
   return (
     <nav className="navbar">
       <div className="logo-container">
-        <Link to="/dashboard">
+        <Link to="/dashboard" className="logo-link">
           <img className="navbar-logo" src="assets/navbar_logo.png" alt="Logo" />
         </Link>
       </div>
@@ -124,7 +124,6 @@ export default function NavBar({ handleLogout, onSearch }) {
                 src="assets/user_default_pfp.png"
                 alt="Profile"
                 className="user-pfp-navbar"
-                style={{ marginRight: "8px" }}
               />
               <span style={{ verticalAlign: "middle" }}>
               </span>

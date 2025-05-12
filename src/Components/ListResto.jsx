@@ -61,11 +61,12 @@ export default function ListResto({ onscreenChange, searchTerm }) {
 
   return (
     <div className="resto-list-container">
+      <p className="establishments-text">Establishments</p>
       <div className="resto-list-summary">
         {filteredRestaurants.length === 0 ? (
           <span>No restaurants found{searchTerm && ` for "${searchTerm}"`}.</span>
         ) : (
-          <span>
+          <span className="results-list">
             Showing {paginatedRestaurants.length} result
             {paginatedRestaurants.length !== 1 && "s"}
             {searchTerm && ` for "${searchTerm}"`}
