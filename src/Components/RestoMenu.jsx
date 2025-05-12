@@ -43,7 +43,7 @@ export default function RestoMenu({ resto }) {
         </div>
       )}
       {isOwner && <hr />}
-      <h2 className="resto-text-header">Menu</h2>
+      <h2 className="resto-text-header" style={{marginTop: "25px"}}>Menu</h2>
       {menuItems.length === 0 ? (
         <div className="nothing-here">
           <img src="assets/nothing_here.png" />

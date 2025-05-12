@@ -73,7 +73,7 @@ export default function NavBar({ handleLogout, onSearch }) {
   return (
     <nav className="navbar">
       <div className="logo-container">
-        <Link to="/dashboard" className="logo-link">
+        <Link to="/dashboard" className="logo-link" viewTransition>
           <img className="navbar-logo" src="assets/navbar_logo.png" alt="Logo" />
         </Link>
       </div>
@@ -119,7 +119,7 @@ export default function NavBar({ handleLogout, onSearch }) {
               <img src="assets/home_symbol.png" alt="Home" />
             </Link>
           ) : (
-            <Link to={`/profile?userId=${userName}`}>
+            <Link to={`/profile?userId=${userName}`} viewTransition>
               <img
                 src="assets/user_default_pfp.png"
                 alt="Profile"

@@ -73,45 +73,47 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
   return (
     <>
       <div className="resto-container-green-part">
-        <div className="resto-header">
-          <div className="resto-pfp">
-            <img src="assets/resto_default_pfp.png" alt="Restaurant" />
-          </div>
+  <div className="resto-header">
+    <div className="resto-pfp">
+      <img src="assets/resto_default_pfp.png" alt="Restaurant" />
+    </div>
 
-          <div className="resto-name-fav">
-            <h1>{resto.name}</h1>
-            {window.location.pathname === "/admin" ? (
-              <div className="admin-buttons">
-                <button
-                  className="login-btn"
-                  onClick={handleAccept}
-                >
-                  ACCEPT
-                </button>
-                <button
-                  className="login-btn"
-                  onClick={handleDecline}
-                >
-                  DECLINE
-                </button>
-              </div>
-            ) : favorite === "unfavorited" ? (
-              <img
-                className="favorite-btn"
-                src="assets/favorite_btn.png"
-                onClick={() => handleFavorite("favorited")}
-                alt="Favorite"
-              />
-            ) : (
-              <img
-                className="favorite-btn"
-                src="assets/favorite_btn_selected.png"
-                onClick={() => handleFavorite("unfavorited")}
-                alt="Unfavorite"
-              />
-            )}
-          </div>
+    <div className="resto-name-fav">
+      <h1>{resto.name}</h1>
+      {window.location.pathname === "/admin" ? (
+        <div className="admin-buttons">
+          <button className="accdec-resto-btn" onClick={handleAccept}>
+            ACCEPT
+          </button>
+          <button className="accdec-resto-btn" onClick={handleDecline}>
+            DECLINE
+          </button>
         </div>
+      ) : (
+        <div className="user-buttons">
+          {favorite === "unfavorited" ? (
+            <img
+              className="favorite-btn"
+              src="assets/favorite_btn.png"
+              onClick={() => handleFavorite("favorited")}
+              alt="Favorite"
+            />
+          ) : (
+            <img
+              className="favorite-btn"
+              src="assets/favorite_btn_selected.png"
+              onClick={() => handleFavorite("unfavorited")}
+              alt="Unfavorite"
+            />
+          )}
+           <button className="delete-resto-btn">
+            DELETE
+          </button>
+        </div>
+      )}
+    </div>
+  </div>
+
 
         {restoProfileScreen === "about" && <RestoAbout resto={resto} userId={userId} />}
         {restoProfileScreen === "menu" && <RestoMenu resto={resto} userId={userId} />}

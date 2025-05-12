@@ -2,10 +2,12 @@ import ListPending from "./ListPending";
 import NavBar from "./NavBar";
 import RestoProfile from "./RestoProfile";
 import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+
 
 export default function DashboardAdmin() {
-  const userId = sessionStorage.getItem("userId") || localStorage.getItem("userId");
+  const userId =
+    sessionStorage.getItem("userId") || localStorage.getItem("userId");
   const [screen, setScreen] = useState("list");
   const [selectedResto, setSelectedResto] = useState(null);
   const [popupMessage, setPopupMessage] = useState(null);
