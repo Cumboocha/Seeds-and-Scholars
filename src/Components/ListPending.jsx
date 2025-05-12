@@ -7,7 +7,7 @@ import { firebaseConfig } from "../firebaseConfig";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export default function ListPending({ setScreen, userId, onSelectResto }) {
+export default function ListPending({ onSelectResto }) {
   const [restaurants, setRestaurants] = useState([]);
 
   useEffect(() => {
@@ -29,13 +29,11 @@ export default function ListPending({ setScreen, userId, onSelectResto }) {
         <p>No pending restaurants.</p>
       ) : (
         restaurants.map(resto => (
-          <CardResto
-            key={resto.id}
-            setScreen={setScreen}
-            userId={userId}
-            resto={resto}
-            onClick={() => onSelectResto && onSelectResto(resto)}
-          />
+      <CardResto
+        key={resto.id}
+        resto={resto}
+        onClick={() => onSelectResto && onSelectResto(resto)}
+      />
         ))
       )}
     </div>

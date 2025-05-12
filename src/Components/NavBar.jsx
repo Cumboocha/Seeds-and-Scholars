@@ -24,6 +24,7 @@ export default function NavBar({ handleLogout, onSearch }) {
           const data = userSnap.data();
           setUserType(data.userType);
           setUserName(`${data.firstName || ""} ${data.lastName || ""}`.trim());
+          console.log("Fetched userType:", data.userType); // <-- Add this
         }
       }
     }
@@ -99,7 +100,7 @@ export default function NavBar({ handleLogout, onSearch }) {
       )}
 
       <div className="button-container">
-        {userType === "WcjOVRmHYXKZHsMzAVY2" && (
+        {userType && userType.trim() === "WcjOVRmHYXKZHsMzAVY2" && (
           <div>
             {window.location.pathname === "/admin" ? (
               <Link to="/dashboard" viewTransition>
@@ -113,16 +114,22 @@ export default function NavBar({ handleLogout, onSearch }) {
           </div>
         )}
         <div>
-          <Link to={`/profile?userId=${userName}`}>
-            <img
-              src="assets/user_default_pfp.png"
-              alt="Profile"
-              className="user-pfp-navbar"
-              style={{ marginRight: "8px" }}
-            />
-            <span style={{ verticalAlign: "middle" }}>
-            </span>
-          </Link>
+          {window.location.pathname.startsWith("/profile") ? (
+            <Link to="/dashboard" viewTransition>
+              <img src="assets/home_symbol.png" alt="Home" />
+            </Link>
+          ) : (
+            <Link to={`/profile?userId=${userName}`}>
+              <img
+                src="assets/user_default_pfp.png"
+                alt="Profile"
+                className="user-pfp-navbar"
+                style={{ marginRight: "8px" }}
+              />
+              <span style={{ verticalAlign: "middle" }}>
+              </span>
+            </Link>
+          )}
         </div>
 
         <div>

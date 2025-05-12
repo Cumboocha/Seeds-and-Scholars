@@ -1,11 +1,17 @@
-export default function CardResto({ resto, setScreen }) {
-  // const userId = sessionStorage.getItem("userId") 
-
+export default function CardResto({ resto, setScreen, onClick }) {
+  // If onClick is provided, use it; otherwise, fallback to setScreen
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    } else if (setScreen) {
+      setScreen("resto-profile", resto);
+    }
+  };
 
   return (
     <div
       className="resto-card"
-      onClick={() => setScreen("resto-profile", resto)}
+      onClick={handleClick}
     >
       <div className="resto-card-img">
         <img src="assets/resto_default_pfp.png" alt="Restaurant" />

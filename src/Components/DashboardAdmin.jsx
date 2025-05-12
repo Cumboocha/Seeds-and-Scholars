@@ -2,16 +2,27 @@ import ListPending from "./ListPending";
 import NavBar from "./NavBar";
 import RestoProfile from "./RestoProfile";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 export default function DashboardAdmin() {
   const userId = sessionStorage.getItem("userId") || localStorage.getItem("userId");
-  const [rightScreen, setScreen] = useState("list");
+  const [screen, setScreen] = useState("list");
+  const [selectedResto, setSelectedResto] = useState(null);
   const [popupMessage, setPopupMessage] = useState(null);
 
   const showPopup = (msg) => {
     setPopupMessage(msg);
     setTimeout(() => setPopupMessage(null), 3000);
+  };
+
+  const handleSelectResto = (resto) => {
+    setSelectedResto(resto);
+    setScreen("resto-profile");
+  };
+
+  const handleProfileClose = () => {
+    setSelectedResto(null);
+    setScreen("list");
   };
 
   return (
@@ -23,19 +34,22 @@ export default function DashboardAdmin() {
         </div>
 
         <div className="admin-right">
-          {rightScreen === "list" && (
-            <ListPending setScreen={setScreen} userId={userId} />
+          {screen === "list" && (
+            <ListPending
+              setScreen={setScreen}
+              userId={userId}
+              onSelectResto={handleSelectResto}
+            />
           )}
 
-          {rightScreen === "resto-profile" && (
-            <div className="resto-container" style={{width: "100%", marginTop: "100px"}}>
-              <RestoProfile
-                setScreen={setScreen}
-                userId={userId}
-                showPopup={showPopup}
-                style={{ width: "100%" }}
-              />
-            </div>
+          {screen === "resto-profile" && selectedResto && (
+            <RestoProfile
+              setScreen={setScreen}
+              userId={userId}
+              resto={selectedResto}
+              showPopup={showPopup}
+              onClose={handleProfileClose}
+            />
           )}
         </div>
       </div>

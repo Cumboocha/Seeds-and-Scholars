@@ -2,15 +2,15 @@ import { useState } from "react";
 import RestoAbout from "./RestoAbout";
 import RestoMenu from "./RestoMenu";
 import RestoReviews from "./RestoReviews";
-import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { firebaseConfig } from "../firebaseConfig";
 import { initializeApp } from "firebase/app";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export default function RestoProfile({ setScreen, resto, onClose }) {
-  const userId = sessionStorage.getItem("userId") 
+export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
+  const userId = sessionStorage.getItem("userId");
   const [restoProfileScreen, setRestoProfileScreen] = useState("about");
   const [favorite, setFavorite] = useState("unfavorited");
 
@@ -29,6 +29,42 @@ export default function RestoProfile({ setScreen, resto, onClose }) {
       } catch (error) {
         alert("Failed to add favorite: " + error.message);
       }
+    } else if (fav === "unfavorited" && userId && resto && resto.id) {
+      try {
+        const favQuery = query(
+          collection(db, "favorites"),
+          where("userId", "==", userId),
+          where("restoId", "==", resto.id)
+        );
+        const favSnapshot = await getDocs(favQuery);
+        favSnapshot.forEach(async (docSnap) => {
+          await deleteDoc(doc(db, "favorites", docSnap.id));
+        });
+      } catch (error) {
+        alert("Failed to remove favorite: " + error.message);
+      }
+    }
+  };
+
+  const handleAccept = async () => {
+    if (!resto?.id) return;
+    try {
+      await updateDoc(doc(db, "restaurants", resto.id), { isAccepted: true });
+      showPopup?.("Establishment accepted!");
+      if (onClose) onClose();
+    } catch (error) {
+      alert("Failed to accept establishment: " + error.message);
+    }
+  };
+
+  const handleDecline = async () => {
+    if (!resto?.id) return;
+    try {
+      await deleteDoc(doc(db, "restaurants", resto.id));
+      showPopup?.("Establishment declined.");
+      if (onClose) onClose();
+    } catch (error) {
+      alert("Failed to decline establishment: " + error.message);
     }
   };
 
@@ -44,7 +80,22 @@ export default function RestoProfile({ setScreen, resto, onClose }) {
 
           <div className="resto-name-fav">
             <h1>{resto.name}</h1>
-            {favorite === "unfavorited" ? (
+            {window.location.pathname === "/admin" ? (
+              <div className="admin-buttons">
+                <button
+                  className="login-btn"
+                  onClick={handleAccept}
+                >
+                  ACCEPT
+                </button>
+                <button
+                  className="login-btn"
+                  onClick={handleDecline}
+                >
+                  DECLINE
+                </button>
+              </div>
+            ) : favorite === "unfavorited" ? (
               <img
                 className="favorite-btn"
                 src="assets/favorite_btn.png"
