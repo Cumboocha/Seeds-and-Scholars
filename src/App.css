@@ -149,7 +149,8 @@
 }
 
 .custom-marker.large .marker-inner {
-  transform: scale(1.5); /* Smooth growth */
+  transform: scale(1.5);
+  /* Smooth growth */
 }
 
 /* Login, Signup, and Register Establishment Screen */
@@ -175,7 +176,7 @@
 .signup-container,
 .signup-logo-container,
 .reg-est-container,
-.reg-est-logo-container {
+.reg-est-logo-container, .edit-right {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -247,7 +248,7 @@
 
 .login-container form input:focus,
 .reg-est-container form input:focus,
-.reg-est-container form textarea:focus {
+.reg-est-container form textarea:focus, .resto-edit-textarea:focus, .resto-edit-input:focus {
   outline: none;
 }
 
@@ -328,10 +329,21 @@
 .resto-x-btn:hover,
 .gen-x-btn:hover,
 .menu-x-btn:hover,
-.comment-x-btn:hover, .delete-resto-btn:hover, .accdec-resto-btn:hover {
+.comment-x-btn:hover,
+.delete-resto-btn:hover,
+.accdec-resto-btn:hover, .edit-save:hover, .edit-cancel:hover, .edit-resto-btn:hover, .resto-about-header img:hover {
   transform: scale(1.05);
   transition: .2s;
 }
+
+.delete-resto-btn, .edit-resto-btn {
+  width: 125px;
+}
+
+.edit-cancel:hover, .edit-save:hover{
+  border: none;
+}
+
 
 .favorite-btn:hover {
   transform: scale(1.3);
@@ -375,7 +387,8 @@
   padding: 0 10px;
 }
 
-.opening-input, .closing-input {
+.opening-input,
+.closing-input {
   width: 100%;
 }
 
@@ -421,12 +434,12 @@
   background-color: #ecffcb;
 }
 
-.checkbox-box:checked + .custom-checkbox {
+.checkbox-box:checked+.custom-checkbox {
   background-color: #89bd2e;
   border-color: #89bd2e;
 }
 
-.checkbox-box:checked + .custom-checkbox::after {
+.checkbox-box:checked+.custom-checkbox::after {
   content: "";
   position: absolute;
   top: 4px;
@@ -530,7 +543,9 @@
 }
 
 /* Dashboard Screen */
-.dashboard-body, .profile-body, .admin-body {
+.dashboard-body,
+.profile-body,
+.admin-body {
   background-image: url(assets/dashboard_bg.png);
   width: 100%;
   height: 100%;
@@ -545,12 +560,11 @@
 
 .dashboard-main,
 .profile-main,
-.admin-main {
-  width: 100%;
-  height: 85%;
-  display: flex;
+.admin-main, .edit-main {
+  width: 100% !important;
+  height: 85% !important;
+  display: flex !important;
   flex-direction: row;
-
 }
 
 .map-container {
@@ -615,6 +629,19 @@
   cursor: pointer;
 }
 
+.resto-about-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.resto-about-header img {
+  width: 30px !important;
+  height: 30px !important;
+  cursor: pointer;
+}
 
 .resto-text-header {
   font-family: "Montserrat";
@@ -623,7 +650,7 @@
   margin: 0;
 }
 
-.resto-container {
+.resto-container, .edit-left {
   width: 50%;
   height: 100%;
   display: flex;
@@ -703,8 +730,8 @@
 }
 
 .resto-pfp img {
-  width: 175px;
-  height: 175px;
+  width: 175px !important;
+  height: 175px !important;
   outline: 5px solid #89bd2e;
   box-shadow: 15px 15px #ecffcb;
   position: absolute;
@@ -757,12 +784,27 @@ table {
 
 .resto-address-container,
 .resto-phone-container,
-.resto-schedule-container {
+.resto-schedule-container, .resto-closed-container {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
   gap: 20px;
+}
+
+.address-details-container, .phone-details-container, .closed-details-container {
+  width: 85%;
+}
+
+.schedule-details-container {
+  width: 88%;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.schedule-details-container input {
+  width: 100% !important;
 }
 
 .resto-address-container p,
@@ -1016,7 +1058,7 @@ table {
 .price-input {
   width: 30% !important;
   height: 24px !important;
-   font-family: "Montserrat", sans-serif !important;
+  font-family: "Montserrat", sans-serif !important;
   font-size: 18px !important;
   letter-spacing: 0 !important;
 }
@@ -1131,7 +1173,8 @@ table {
   letter-spacing: -1px;
 }
 
-.results-list, .resto-list-summary {
+.results-list,
+.resto-list-summary {
   font-family: "Montserrat";
   color: #643e27;
   font-weight: 600;
@@ -1308,7 +1351,8 @@ table {
   width: 90%;
 }
 
-.favorites-text, .pending-text {
+.favorites-text,
+.pending-text {
   font-family: "Montserrat";
   color: #643e27;
   letter-spacing: -5px;
@@ -1317,15 +1361,15 @@ table {
   margin-top: 25px;
 }
 
-.fav-resto-container{
+.fav-resto-container {
   margin-top: 50px;
 }
 
 /* Admin Dashboard */
 .admin-body {
   filter: hue-rotate(128deg) saturate(50%);
-  
-} 
+
+}
 
 .admin-left {
   width: 50%;
@@ -1351,13 +1395,15 @@ table {
   animation: float 3s ease-in-out infinite;
 }
 
-.admin-buttons, .user-buttons {
+.admin-buttons,
+.user-buttons {
   margin-left: 20px;
   align-items: center;
   gap: 10px;
 }
 
-.admin-buttons button, .user-buttons button {
+.admin-buttons button,
+.user-buttons button {
   font-family: "Montserrat";
   background-color: white;
   font-weight: bolder;
@@ -1398,4 +1444,107 @@ table {
   font-family: "Montserrat";
   font-size: 24px;
   margin: 0;
+}
+
+/* Edit Resto */
+.edit-body {
+  background-color: rgba(0, 0, 0, 0.60);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 20;
+}
+
+.navbar-fake {
+  width: 100% !important;
+  height: 15%;
+  display: flex;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.edit-main {
+  margin-top: 0;
+}
+
+.resto-edit-textarea {
+  width: 100%;
+  min-height: 100px;
+  background-color: rgba(137, 189, 46, 0.4);
+  font-family: "Montserrat", sans-serif;
+  font-size: 100%;
+  border: none;
+  border-radius: 12px;
+  resize: none;
+  color: black;
+  text-align: center;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.resto-edit-textarea::placeholder, .resto-edit-input::placeholder {
+  color: rgb(48, 78, 60);
+  font-style: normal;
+}
+
+.resto-edit-input {
+  width: 100%;
+  min-height: 25px;
+  background-color: rgba(137, 189, 46, 0.4);
+  font-family: "Montserrat", sans-serif;
+  font-size: 100%;
+  border: none;
+  border-radius: 8px;
+  resize: none;
+  color: black;
+  text-align: left;
+  font-weight: 500;
+  padding-left: 20px;
+}
+
+.closed-days-img-container {
+  width: 35px;
+  height: 100px;
+}
+
+.closed-days-checkboxes label {
+  font-family: "Montserrat";
+  color: black;
+}
+
+.edit-logo {
+  width: 80% !important;
+  margin-bottom: 25px;
+}
+
+.edit-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-bottom: 65px;
+}
+
+.edit-save {
+  width: 250px;
+  background-color: #89bd2e;
+  border: 5px solid #89bd2e;
+  font-family: "Montserrat";
+  font-weight: bolder;
+  color: white;
+}
+
+.edit-cancel {
+  width: 250px;
+  background-color: #f56767;
+  border: 5px solid #f56767;
+  font-family: "Montserrat";
+  font-weight: bolder;
+  color: white;
 }

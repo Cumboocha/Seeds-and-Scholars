@@ -6,11 +6,13 @@ import ListResto from "./ListResto";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
+import EditResto from "./EditResto";
 
 const db = getFirestore();
 
 export default function Dashboard({ handleLogout }) {
-  const userId = sessionStorage.getItem("userId") || localStorage.getItem("userId");
+  const userId =
+    sessionStorage.getItem("userId") || localStorage.getItem("userId");
 
   const [isAddingMarker, setIsAddingMarker] = useState(false);
   const [dashboardScreen, setDashboardScreen] = useState(null);
@@ -35,7 +37,7 @@ export default function Dashboard({ handleLogout }) {
 
   const handleProfileClose = () => {
     setScreen("list");
-    setIsProfileOpen(false); 
+    setIsProfileOpen(false);
   };
 
   const handleMarkerPlaced = async (marker) => {
@@ -47,12 +49,12 @@ export default function Dashboard({ handleLogout }) {
       const docRef = doc(db, "restaurants", marker.id);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        setResto({ id: marker.id, ...docSnap.data() }); 
+        setResto({ id: marker.id, ...docSnap.data() });
       } else {
-        setResto(marker); 
+        setResto(marker);
       }
     } else {
-      setResto(marker); 
+      setResto(marker);
     }
     setScreen("resto-profile");
     setIsProfileOpen(true);
@@ -64,22 +66,22 @@ export default function Dashboard({ handleLogout }) {
         <NavBar
           userId={userId}
           handleLogout={handleLogout}
-          onSearch={setSearchTerm} 
+          onSearch={setSearchTerm}
         />
         <div className="dashboard-main">
           {screen === "list" && (
             <ListResto
               onscreenChange={handlescreenChange}
               userId={userId}
-              searchTerm={searchTerm} 
+              searchTerm={searchTerm}
             />
           )}
 
-          {screen === "resto-profile" && resto  && (
+          {screen === "resto-profile" && resto && (
             <div className="resto-container">
               <RestoProfile
                 setScreen={setScreen}
-                resto={resto} 
+                resto={resto}
                 userId={userId}
                 onClose={handleProfileClose}
               />
@@ -92,7 +94,7 @@ export default function Dashboard({ handleLogout }) {
             setScreen={setScreen}
             userId={userId}
             onMarkerPlaced={handleMarkerPlaced}
-            isProfileOpen={isProfileOpen} 
+            isProfileOpen={isProfileOpen}
           />
         </div>
 
@@ -105,7 +107,9 @@ export default function Dashboard({ handleLogout }) {
               exit={{ y: 100, opacity: 0 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
-            <p style={{ color: "white" }}>Click on the map to register your food establishment.</p>
+              <p style={{ color: "white" }}>
+                Click on the map to register your food establishment.
+              </p>
             </motion.div>
           )}
         </AnimatePresence>

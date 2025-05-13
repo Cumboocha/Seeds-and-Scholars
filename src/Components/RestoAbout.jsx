@@ -1,25 +1,37 @@
+import { useState } from "react";
+import EditResto from "./EditResto";
 const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
 export default function RestoAbout({ resto }) {
-  // const userId = sessionStorage.getItem("userId") 
+  // const userId = sessionStorage.getItem("userId")
   // console.log(userId)
+  const [isEditing, setIsEditing] = useState(false);
 
   if (!resto) return <div>Loading...</div>;
+  if (isEditing) {
+    return <EditResto resto={resto} onClose={() => setIsEditing(false)} />;
+  }
 
   let daysClosed = [];
   if (Array.isArray(resto.daysClosed)) {
     daysClosed = resto.daysClosed;
   } else if (typeof resto.daysClosed === "string") {
-    daysClosed = resto.daysClosed.split(",").map(day => day.trim()).filter(Boolean);
+    daysClosed = resto.daysClosed
+      .split(",")
+      .map((day) => day.trim())
+      .filter(Boolean);
   }
 
   const allDays = Array.from(new Set([...DAYS, ...daysClosed]));
 
   return (
     <div className="resto-container-white-part">
-      <h2 className="resto-text-header" style={{ marginTop: "25px" }}>
-        About the Establishment
-      </h2>
+      <div className="resto-about-header">
+        <h2 className="resto-text-header">
+          About the Establishment
+        </h2>
+        <img src="assets/edit_btn.png" onClick={() => setIsEditing(true)}/>
+      </div>
       <p className="resto-desc">{resto.description}</p>
       <hr />
 
@@ -47,21 +59,22 @@ export default function RestoAbout({ resto }) {
         </div>
         <div className="schedule-details-container">
           <div style={{ marginBottom: "10px", fontWeight: "bold" }}>
-            Schedule: {resto.openingHours && resto.closingHours
+            Schedule:{" "}
+            {resto.openingHours && resto.closingHours
               ? `${resto.openingHours} - ${resto.closingHours}`
               : "No schedule set"}
           </div>
           <table>
             <tbody>
-              {allDays.map(day => (
+              {allDays.map((day) => (
                 <tr key={day}>
                   <td>{day}</td>
                   <td className="second-col">
                     {daysClosed.includes(day)
                       ? "Closed"
-                      : (resto.openingHours && resto.closingHours
-                        ? `${resto.openingHours} - ${resto.closingHours}`
-                        : "Open")}
+                      : resto.openingHours && resto.closingHours
+                      ? `${resto.openingHours} - ${resto.closingHours}`
+                      : "Open"}
                   </td>
                 </tr>
               ))}

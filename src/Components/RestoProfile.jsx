@@ -2,7 +2,18 @@ import { useState } from "react";
 import RestoAbout from "./RestoAbout";
 import RestoMenu from "./RestoMenu";
 import RestoReviews from "./RestoReviews";
-import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp,
+  query,
+  where,
+  getDocs,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { firebaseConfig } from "../firebaseConfig";
 import { initializeApp } from "firebase/app";
 
@@ -11,12 +22,19 @@ const db = getFirestore(app);
 
 export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
   const userId = sessionStorage.getItem("userId");
-  const userType = sessionStorage.getItem("userType") || localStorage.getItem("userType");
+  const userType =
+    sessionStorage.getItem("userType") || localStorage.getItem("userType");
   const [restoProfileScreen, setRestoProfileScreen] = useState("about");
   const [favorite, setFavorite] = useState("unfavorited");
-  
-      console.log("userId:", userId, "resto.createdBy:", resto.createdBy, "userType:", userType);
 
+  console.log(
+    "userId:",
+    userId,
+    "resto.createdBy:",
+    resto.createdBy,
+    "userType:",
+    userType
+  );
 
   const handleRestoScreenChange = (screen) => setRestoProfileScreen(screen);
 
@@ -74,7 +92,8 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
 
   const handleDelete = async () => {
     if (!resto?.id) return;
-    if (!window.confirm("Are you sure you want to delete this restaurant?")) return;
+    if (!window.confirm("Are you sure you want to delete this restaurant?"))
+      return;
     try {
       await deleteDoc(doc(db, "restaurants", resto.id));
       alert("Restaurant deleted.");
@@ -93,53 +112,59 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
   return (
     <>
       <div className="resto-container-green-part">
-  <div className="resto-header">
-    <div className="resto-pfp">
-      <img src="assets/resto_default_pfp.png" alt="Restaurant" />
-    </div>
+        <div className="resto-header">
+          <div className="resto-pfp">
+            <img src="assets/resto_default_pfp.png" alt="Restaurant" />
+          </div>
 
-    <div className="resto-name-fav">
-      <h1>{resto.name}</h1>
-      {window.location.pathname === "/admin" ? (
-        <div className="admin-buttons">
-          <button className="accdec-resto-btn" onClick={handleAccept}>
-            ACCEPT
-          </button>
-          <button className="accdec-resto-btn" onClick={handleDecline}>
-            DECLINE
-          </button>
+          <div className="resto-name-fav">
+            <h1>{resto.name}</h1>
+            {window.location.pathname === "/admin" ? (
+              <div className="admin-buttons">
+                <button className="accdec-resto-btn" onClick={handleAccept}>
+                  ACCEPT
+                </button>
+                <button className="accdec-resto-btn" onClick={handleDecline}>
+                  DECLINE
+                </button>
+              </div>
+            ) : (
+              <div className="user-buttons">
+                {favorite === "unfavorited" ? (
+                  <img
+                    className="favorite-btn"
+                    src="assets/favorite_btn.png"
+                    onClick={() => handleFavorite("favorited")}
+                    alt="Favorite"
+                  />
+                ) : (
+                  <img
+                    className="favorite-btn"
+                    src="assets/favorite_btn_selected.png"
+                    onClick={() => handleFavorite("unfavorited")}
+                    alt="Unfavorite"
+                  />
+                )}
+                {(userId === resto.createdBy ||
+                  userType === "WcjOVRmHYXKZHsMzAVY2") && (
+                  <button className="delete-resto-btn" onClick={handleDelete}>
+                    DELETE
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
         </div>
-      ) : (
-        <div className="user-buttons">
-          {favorite === "unfavorited" ? (
-            <img
-              className="favorite-btn"
-              src="assets/favorite_btn.png"
-              onClick={() => handleFavorite("favorited")}
-              alt="Favorite"
-            />
-          ) : (
-            <img
-              className="favorite-btn"
-              src="assets/favorite_btn_selected.png"
-              onClick={() => handleFavorite("unfavorited")}
-              alt="Unfavorite"
-            />
-          )}
-          {(userId === resto.createdBy || userType === "WcjOVRmHYXKZHsMzAVY2") && (
-            <button className="delete-resto-btn" onClick={handleDelete}>
-              DELETE
-            </button>
-          )}
-        </div>
-      )}
-    </div>
-  </div>
 
-
-        {restoProfileScreen === "about" && <RestoAbout resto={resto} userId={userId} />}
-        {restoProfileScreen === "menu" && <RestoMenu resto={resto} userId={userId} />}
-        {restoProfileScreen === "reviews" && <RestoReviews resto={resto} userId={userId} />}
+        {restoProfileScreen === "about" && (
+          <RestoAbout resto={resto} userId={userId} />
+        )}
+        {restoProfileScreen === "menu" && (
+          <RestoMenu resto={resto} userId={userId} />
+        )}
+        {restoProfileScreen === "reviews" && (
+          <RestoReviews resto={resto} userId={userId} />
+        )}
 
         <div className="resto-profile-tabs">
           <img
@@ -183,7 +208,7 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
           className="resto-x-btn"
           onClick={() => {
             if (onClose) {
-              onClose(); 
+              onClose();
             } else {
               setScreen("list");
             }
