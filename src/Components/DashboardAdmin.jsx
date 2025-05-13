@@ -2,12 +2,10 @@ import ListPending from "./ListPending";
 import NavBar from "./NavBar";
 import RestoProfile from "./RestoProfile";
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function DashboardAdmin() {
-  const userId =
-    sessionStorage.getItem("userId") || localStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId") || localStorage.getItem("userId");
   const [screen, setScreen] = useState("list");
   const [selectedResto, setSelectedResto] = useState(null);
   const [popupMessage, setPopupMessage] = useState(null);
@@ -24,6 +22,10 @@ export default function DashboardAdmin() {
 
   const handleProfileClose = () => {
     setSelectedResto(null);
+    setScreen("list");
+  };
+
+  const handleRegEstablishClose = () => {
     setScreen("list");
   };
 
@@ -51,6 +53,14 @@ export default function DashboardAdmin() {
               resto={selectedResto}
               showPopup={showPopup}
               onClose={handleProfileClose}
+            />
+          )}
+
+          {screen === "register" && (
+            <RegEstablish
+              userId={userId}
+              onRegEstablishClose={handleRegEstablishClose}
+              showPopup={showPopup}
             />
           )}
         </div>

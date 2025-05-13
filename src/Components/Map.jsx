@@ -35,7 +35,9 @@ export default function Map({
   setDashboardScreen,
   setScreen,
   onMarkerPlaced,
-  isProfileOpen 
+  isProfileOpen,
+  selectedMarkerId,
+  setSelectedMarkerId,
 }) {
 
   const CARTO_URL =
@@ -46,7 +48,6 @@ export default function Map({
   const [markers, setMarkers] = useState([]);
   const [tempPosition, setTempPosition] = useState(null);
   const [tileUrl, setTileUrl] = useState(CARTO_URL);
-  const [selectedMarkerId, setSelectedMarkerId] = useState(null); 
   useEffect(() => {
     async function fetchRestaurantMarkers() {
       const querySnapshot = await getDocs(collection(db, "restaurants"));
@@ -72,10 +73,10 @@ export default function Map({
   }, []);
 
   useEffect(() => {
-    if (!isProfileOpen) {
+    if (!isProfileOpen && setSelectedMarkerId) {
       setSelectedMarkerId(null);
     }
-  }, [isProfileOpen]);
+  }, [isProfileOpen, setSelectedMarkerId]);
 
   window.addMarkerFromForm = () => {
     if (tempPosition) {
@@ -133,7 +134,9 @@ export default function Map({
             icon={selectedMarkerId === marker.id ? largeIcon : defaultIcon}
             eventHandlers={{
               click: () => {
-                setSelectedMarkerId(marker.id);
+                // Emphasize the marker
+                if (setSelectedMarkerId) setSelectedMarkerId(marker.id);
+                // Show the resto profile
                 if (onMarkerPlaced) {
                   onMarkerPlaced({ lat: marker.lat, lng: marker.lng, id: marker.id, name: marker.name });
                 }

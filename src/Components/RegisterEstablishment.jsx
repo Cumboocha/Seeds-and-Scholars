@@ -41,6 +41,12 @@ export default function RegisterEstablishment({
   //console.log("Marker Coordinates:", markerCoords);
 
   const [daysClosed, setDaysClosed] = useState([]);
+  const [openingHour, setOpeningHour] = useState("");
+  const [openingMinute, setOpeningMinute] = useState("");
+  const [openingPeriod, setOpeningPeriod] = useState("AM");
+  const [closingHour, setClosingHour] = useState("");
+  const [closingMinute, setClosingMinute] = useState("");
+  const [closingPeriod, setClosingPeriod] = useState("PM");
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -57,14 +63,16 @@ export default function RegisterEstablishment({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const openingHours = `${openingHour.padStart(2, "0")}:${openingMinute.padStart(2, "0")} ${openingPeriod}`;
+    const closingHours = `${closingHour.padStart(2, "0")}:${closingMinute.padStart(2, "0")} ${closingPeriod}`;
     try {
       await addDoc(collection(db, "restaurants"), {
         name: form.name,
         description: form.description,
         address: form.address,
         contactNumber: form.contactNumber,
-        openingHours: form.openingHours,
-        closingHours: form.closingHours,
+        openingHours: openingHours,
+        closingHours: closingHours,
         daysClosed: daysClosed,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
@@ -130,22 +138,58 @@ export default function RegisterEstablishment({
             required
           />
           <div className="opening-closing-container">
+            <label>Opening Hours*</label>
             <input
-              name="openingHours"
-              placeholder="Opening Hours (e.g. 08:00 AM)*"
-              value={form.openingHours}
-              onChange={handleChange}
+              type="number"
+              min="1"
+              max="12"
+              placeholder="HH"
+              value={openingHour}
+              onChange={e => setOpeningHour(e.target.value)}
               required
-              className="opening-input"
             />
+            :
             <input
-              name="closingHours"
-              placeholder="Closing Hours (e.g. 10:00 PM)*"
-              value={form.closingHours}
-              onChange={handleChange}
+              type="number"
+              min="0"
+              max="59"
+              placeholder="MM"
+              value={openingMinute}
+              onChange={e => setOpeningMinute(e.target.value)}
               required
-              className="closing-input"
             />
+            <select value={openingPeriod} onChange={e => setOpeningPeriod(e.target.value)}>
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+
+          </div>
+                    <div className="opening-closing-container">
+ <label>Closing Hours*</label>
+            <input
+              type="number"
+              min="1"
+              max="12"
+              placeholder="HH"
+              value={closingHour}
+              onChange={e => setClosingHour(e.target.value)}
+              required
+            />
+            :
+            <input
+              type="number"
+              min="0"
+              max="59"
+              placeholder="MM"
+              value={closingMinute}
+              onChange={e => setClosingMinute(e.target.value)}
+              required
+            />
+            <select value={closingPeriod} onChange={e => setClosingPeriod(e.target.value)}>
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+
           </div>
           <div className="closed-days">
             <p style={{ fontWeight: "bold" }}>Closed Days:</p>

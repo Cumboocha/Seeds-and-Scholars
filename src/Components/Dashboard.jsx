@@ -20,7 +20,12 @@ export default function Dashboard({ handleLogout }) {
   const [markerCoords, setMarkerCoords] = useState(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  const handleRegEstClose = () => setDashboardScreen(null);
+  const handleRegEstClose = () => {
+    setDashboardScreen(null);
+    setScreen("list");
+    setMarkerCoords(null);
+  };
+
   const handlescreenChange = (screenName, restoData) => {
     setScreen(screenName);
     if (screenName === "resto-profile") setResto(restoData);
@@ -70,7 +75,7 @@ export default function Dashboard({ handleLogout }) {
             />
           )}
 
-          {screen === "resto-profile" && resto && (
+          {screen === "resto-profile" && resto  && (
             <div className="resto-container">
               <RestoProfile
                 setScreen={setScreen}
@@ -100,7 +105,7 @@ export default function Dashboard({ handleLogout }) {
               exit={{ y: 100, opacity: 0 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
-              <p>Click on the map to register your food establishment.</p>
+            <p style={{ color: "white" }}>Click on the map to register your food establishment.</p>
             </motion.div>
           )}
         </AnimatePresence>

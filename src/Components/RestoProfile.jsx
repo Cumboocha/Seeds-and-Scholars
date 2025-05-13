@@ -11,8 +11,12 @@ const db = getFirestore(app);
 
 export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
   const userId = sessionStorage.getItem("userId");
+  const userType = sessionStorage.getItem("userType") || localStorage.getItem("userType");
   const [restoProfileScreen, setRestoProfileScreen] = useState("about");
   const [favorite, setFavorite] = useState("unfavorited");
+  
+      console.log("userId:", userId, "resto.createdBy:", resto.createdBy, "userType:", userType);
+
 
   const handleRestoScreenChange = (screen) => setRestoProfileScreen(screen);
 
@@ -68,6 +72,22 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
     }
   };
 
+  const handleDelete = async () => {
+    if (!resto?.id) return;
+    if (!window.confirm("Are you sure you want to delete this restaurant?")) return;
+    try {
+      await deleteDoc(doc(db, "restaurants", resto.id));
+      alert("Restaurant deleted.");
+      if (onClose) {
+        onClose();
+      } else {
+        setScreen("list");
+      }
+    } catch (error) {
+      alert("Failed to delete restaurant: " + error.message);
+    }
+  };
+
   if (!resto) return <div>Loading...</div>;
 
   return (
@@ -106,9 +126,11 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
               alt="Unfavorite"
             />
           )}
-           <button className="delete-resto-btn">
-            DELETE
-          </button>
+          {(userId === resto.createdBy || userType === "WcjOVRmHYXKZHsMzAVY2") && (
+            <button className="delete-resto-btn" onClick={handleDelete}>
+              DELETE
+            </button>
+          )}
         </div>
       )}
     </div>

@@ -5,6 +5,7 @@ import Signup from "./Components/Signup";
 import Dashboard from "./Components/Dashboard";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 function App() {
   useEffect(() => {
@@ -16,6 +17,7 @@ function App() {
   }, []);
 
   const [userId, setUserId] = useState(() => sessionStorage.getItem("userId"));
+  const [userType, setUserType] = useState(null);
   const [activeScreen, setActiveScreen] = useState(() =>
     sessionStorage.getItem("userId") ? "dashboard" : null
   );
@@ -27,8 +29,25 @@ function App() {
   const handleLoginSuccess = (userId) => {
     setUserId(userId);
     sessionStorage.setItem("userId", userId);
+
     setActiveScreen("dashboard");
   };
+
+  useEffect(() => {
+  const fetchUserType = async () => {
+    if (userId) {
+      const db = getFirestore();
+      const userRef = doc(db, "users", userId);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        setUserType(data.userType);
+        sessionStorage.setItem("userType", data.userType); // Save for later use
+      }
+    }
+  };
+  fetchUserType();
+}, [userId]);
 
   const handleLogout = () => {
     setUserId(null);
