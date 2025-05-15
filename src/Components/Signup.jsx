@@ -18,6 +18,9 @@ export default function Signup({ onSignupClose }) {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,6 +31,11 @@ export default function Signup({ onSignupClose }) {
     setError("");
     if (form.password !== form.confirmPassword) {
       setError("Passwords do not match.");
+      return;
+    }
+    const confirmed = window.confirm("Are you sure you want to sign up with these details?");
+    if (!confirmed) {
+      setLoading(false);
       return;
     }
     setLoading(true);
@@ -94,21 +102,60 @@ export default function Signup({ onSignupClose }) {
           />
           <input
             name="password"
-            type="password"
+              type={showPassword ? "text" : "password"}
             placeholder="Password*"
             value={form.password}
             onChange={handleChange}
             required
           />
+    <button
+      type="button"
+      onClick={() => setShowPassword((prev) => !prev)}
+      style={{
+        position: "absolute",
+        right: 8,
+        top: "48.5%",
+        transform: "translateY(-50%)",
+        fontSize: "0.8em",
+        padding: "2px 8px",
+        border: "none",
+        background: "none",
+        cursor: "pointer",
+        color: "#333"
+      }}
+      tabIndex={-1}
+    >
+      {showPassword ? "Hide" : "Show"}
+    </button>
           <input
             name="confirmPassword"
-            type="password"
+              type={showConfirmPassword ? "text" : "password"}
             placeholder="Confirm Password*"
             value={form.confirmPassword}
             onChange={handleChange}
             required
           />
-          {error && <div style={{ color: "red", marginBottom: 8 }}>{error}</div>}
+    <button
+      type="button"
+      onClick={() => setShowConfirmPassword((prev) => !prev)}
+      style={{
+        position: "absolute",
+        right: 8,
+        top: "69.5%",
+        transform: "translateY(-50%)",
+        fontSize: "0.8em",
+        padding: "2px 8px",
+        border: "none",
+        background: "none",
+        cursor: "pointer",
+        color: "#333"
+      }}
+      tabIndex={-1}
+    >
+      {showConfirmPassword ? "Hide" : "Show"}
+    </button>
+          {error &&             <div style={{ color: "red", margin: "10px 0", fontWeight: "bold" }}>
+{error}</div>}
           <button type="submit" disabled={loading}>
             {loading ? "Signing Up..." : "SIGN UP"}
           </button>

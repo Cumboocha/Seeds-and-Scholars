@@ -2,14 +2,21 @@ import { useState } from "react";
 import EditResto from "./EditResto";
 const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
-export default function RestoAbout({ resto }) {
-  // const userId = sessionStorage.getItem("userId")
-  // console.log(userId)
+export default function RestoAbout({ resto, onProfileUpdated }) {
   const [isEditing, setIsEditing] = useState(false);
+
+  const userId = sessionStorage.getItem("userId");
+  const userType = sessionStorage.getItem("userType") || localStorage.getItem("userType");
 
   if (!resto) return <div>Loading...</div>;
   if (isEditing) {
-    return <EditResto resto={resto} onClose={() => setIsEditing(false)} />;
+    return (
+      <EditResto
+        resto={resto}
+        onClose={() => setIsEditing(false)}
+        onProfileUpdated={onProfileUpdated}
+      />
+    );
   }
 
   let daysClosed = [];
@@ -30,7 +37,14 @@ export default function RestoAbout({ resto }) {
         <h2 className="resto-text-header">
           About the Establishment
         </h2>
-        <img src="assets/edit_btn.png" onClick={() => setIsEditing(true)}/>
+        {(resto.isAccepted === true) && (userId === resto.createdBy || userType === "WcjOVRmHYXKZHsMzAVY2") && (
+          <img
+            src="assets/edit_btn.png"
+            onClick={() => setIsEditing(true)}
+            style={{ cursor: "pointer" }}
+            alt="Edit"
+          />
+        )}
       </div>
       <p className="resto-desc">{resto.description}</p>
       <hr />
@@ -58,14 +72,12 @@ export default function RestoAbout({ resto }) {
           <img src="assets/clock_symbol.png" />
         </div>
         <div className="schedule-details-container">
-          <div style={{ marginBottom: "10px", fontWeight: "bold" }}>
-            Schedule:{" "}
-            {resto.openingHours && resto.closingHours
-              ? `${resto.openingHours} - ${resto.closingHours}`
-              : "No schedule set"}
-          </div>
+
           <table>
             <tbody>
+              <div style={{ marginBottom: "5px", fontWeight: "bold" }}>
+                Schedule:{" "}
+              </div>
               {allDays.map((day) => (
                 <tr key={day}>
                   <td>{day}</td>

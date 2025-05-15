@@ -54,7 +54,9 @@ export default function Map({
       const restoMarkers = [];
       querySnapshot.forEach(doc => {
         const data = doc.data();
+        // Only show markers for businesses with isAccepted === true
         if (
+          data.isAccepted === true &&
           typeof data.latitude === "number" &&
           typeof data.longitude === "number"
         ) {
@@ -67,7 +69,6 @@ export default function Map({
         }
       });
       setMarkers(restoMarkers);
-      // console.log("Fetched restaurant markers:", restoMarkers);
     }
     fetchRestaurantMarkers();
   }, []);
@@ -111,6 +112,10 @@ export default function Map({
     );
   };
 
+  // Get userType from session or local storage
+  const userType =
+    sessionStorage.getItem("userType") || localStorage.getItem("userType");
+
   return (
     <div className="map-container" style={{ flex: 1, position: "relative" }}>
       <MapContainer
@@ -134,13 +139,18 @@ export default function Map({
             icon={selectedMarkerId === marker.id ? largeIcon : defaultIcon}
             eventHandlers={{
               click: () => {
-                // Emphasize the marker
-                if (setSelectedMarkerId) setSelectedMarkerId(marker.id);
-                // Show the resto profile
-                if (onMarkerPlaced) {
-                  onMarkerPlaced({ lat: marker.lat, lng: marker.lng, id: marker.id, name: marker.name });
+                if (selectedMarkerId === marker.id) {
+                  // If already selected, close profile and remove emphasis
+                  if (setSelectedMarkerId) setSelectedMarkerId(null);
+                  if (setScreen) setScreen("list");
+                } else {
+                  // Otherwise, select and show profile
+                  if (setSelectedMarkerId) setSelectedMarkerId(marker.id);
+                  if (onMarkerPlaced) {
+                    onMarkerPlaced({ lat: marker.lat, lng: marker.lng, id: marker.id, name: marker.name });
+                  }
+                  if (setScreen) setScreen("resto-profile");
                 }
-                setScreen && setScreen("resto-profile");
               },
             }}
           />
@@ -161,11 +171,13 @@ export default function Map({
       </div>
 
       <div className="map-buttons-container-right">
-        <img
-          className="add-marker-btn"
-          src="assets/add_marker_btn.png"
-          onClick={toggleAddMarkerMode}
-        />
+        {userType == "SXduDAM4N2f9FN3bS3vZ" && (
+          <img
+            className="add-marker-btn"
+            src="assets/add_marker_btn.png"
+            onClick={toggleAddMarkerMode}
+          />
+        )}
       </div>
     </div>
   );

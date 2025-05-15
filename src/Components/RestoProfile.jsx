@@ -13,6 +13,7 @@ import {
   deleteDoc,
   doc,
   updateDoc,
+  getDoc,
 } from "firebase/firestore";
 import { firebaseConfig } from "../firebaseConfig";
 import { initializeApp } from "firebase/app";
@@ -70,6 +71,8 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
 
   const handleAccept = async () => {
     if (!resto?.id) return;
+    if (!window.confirm("Are you sure you want to accept this establishment?"))
+      return;
     try {
       await updateDoc(doc(db, "restaurants", resto.id), { isAccepted: true });
       showPopup?.("Establishment accepted!");
@@ -81,6 +84,8 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
 
   const handleDecline = async () => {
     if (!resto?.id) return;
+    if (!window.confirm("Are you sure you want to decline this establishment?"))
+      return;
     try {
       await deleteDoc(doc(db, "restaurants", resto.id));
       showPopup?.("Establishment declined.");
@@ -96,12 +101,17 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
       return;
     try {
       await deleteDoc(doc(db, "restaurants", resto.id));
-      alert("Restaurant deleted.");
-      if (onClose) {
-        onClose();
-      } else {
-        setScreen("list");
+
+      if (resto.createdBy) {
+        const userRef = doc(db, "users", resto.createdBy);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          await updateDoc(userRef, { userType: "SXduDAM4N2f9FN3bS3vZ" });
+        }
       }
+
+      alert("Restaurant deleted.");
+      window.location.reload(); 
     } catch (error) {
       alert("Failed to delete restaurant: " + error.message);
     }

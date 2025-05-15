@@ -12,6 +12,7 @@ export default function Login({ onLoginClose, onLoginSuccess }) {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); 
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -70,13 +71,33 @@ export default function Login({ onLoginClose, onLoginSuccess }) {
           />
           <input
             name="password"
-            type="password"
+              type={showPassword ? "text" : "password"}
             placeholder="Password"
             value={form.password}
             onChange={handleChange}
             required
           />
-          {error && <div style={{ color: "red", marginBottom: 8 }}>{error}</div>}
+           <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              style={{
+                position: "absolute",
+                right: 8,
+                top: "48%",
+                transform: "translateY(-50%)",
+                fontSize: "0.8em",
+                padding: "2px 8px",
+                border: "none",
+                background: "none",
+                cursor: "pointer",
+                color: "#333"
+              }}
+              tabIndex={-1}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          
+          {error &&             <div style={{ color: "red", margin: "10px 0", fontWeight: "bold" }}>{error}</div>}
           <button type="submit" disabled={loading}>
             {loading ? "Logging In..." : "LOG IN"}
           </button>

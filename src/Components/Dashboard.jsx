@@ -21,6 +21,7 @@ export default function Dashboard({ handleLogout }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [markerCoords, setMarkerCoords] = useState(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [selectedMarkerId, setSelectedMarkerId] = useState(null);
 
   const handleRegEstClose = () => {
     setDashboardScreen(null);
@@ -30,14 +31,16 @@ export default function Dashboard({ handleLogout }) {
 
   const handlescreenChange = (screenName, restoData) => {
     setScreen(screenName);
-    if (screenName === "resto-profile") setResto(restoData);
+    if (screenName === "resto-profile") {
+      setResto(restoData);
+      setSelectedMarkerId(restoData?.id); 
+    }
   };
-
-  // console.log("markerCoords", markerCoords);
 
   const handleProfileClose = () => {
     setScreen("list");
     setIsProfileOpen(false);
+    setSelectedMarkerId(null); 
   };
 
   const handleMarkerPlaced = async (marker) => {
@@ -60,9 +63,11 @@ export default function Dashboard({ handleLogout }) {
     setIsProfileOpen(true);
   };
 
+  const isRegEstOpen = dashboardScreen === "reg-est";
+
   return (
     <>
-      <div className="dashboard-body">
+      <div className={`dashboard-body${isRegEstOpen ? " modal-open" : ""}`}>
         <NavBar
           userId={userId}
           handleLogout={handleLogout}
@@ -77,13 +82,13 @@ export default function Dashboard({ handleLogout }) {
             />
           )}
 
-          {screen === "resto-profile" && resto && (
+          {screen === "resto-profile" && resto && !isRegEstOpen && (
             <div className="resto-container">
               <RestoProfile
                 setScreen={setScreen}
                 resto={resto}
                 userId={userId}
-                onClose={handleProfileClose}
+                onClose={handleProfileClose} 
               />
             </div>
           )}
@@ -95,6 +100,8 @@ export default function Dashboard({ handleLogout }) {
             userId={userId}
             onMarkerPlaced={handleMarkerPlaced}
             isProfileOpen={isProfileOpen}
+            selectedMarkerId={selectedMarkerId}
+            setSelectedMarkerId={setSelectedMarkerId}
           />
         </div>
 
@@ -115,18 +122,23 @@ export default function Dashboard({ handleLogout }) {
         </AnimatePresence>
       </div>
 
-      {dashboardScreen === "reg-est" && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          <RegisterEstablishment
-            onRegEstablishClose={handleRegEstClose}
-            userId={userId}
-            markerCoords={markerCoords}
-          />
-        </motion.div>
+      {isRegEstOpen && (
+        <>
+          <div className="dashboard-overlay" />
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="register-modal"
+            style={{ zIndex: 2000, position: "fixed", left: 0, top: 0, width: "100vw", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}
+          >
+            <RegisterEstablishment
+              onRegEstablishClose={handleRegEstClose}
+              userId={userId}
+              markerCoords={markerCoords}
+            />
+          </motion.div>
+        </>
       )}
     </>
   );

@@ -21,7 +21,7 @@ export default function ListResto({ onscreenChange, searchTerm }) {
       setRestaurants(
         querySnapshot.docs
           .map(doc => ({ id: doc.id, ...doc.data() }))
-          .filter(resto => resto.isAccepted === true) // Only accepted restaurants
+          .filter(resto => resto.isAccepted === true)
       );
     }
     fetchRestaurants();
@@ -97,20 +97,17 @@ export default function ListResto({ onscreenChange, searchTerm }) {
           />
         )}
       </div>
-      {/* Pagination Controls */}
-      {totalPages > 1 && (
-        <div className="pagination-controls">
-          <button onClick={handlePrevPage} disabled={currentPage === 1}>
-            Prev
-          </button>
-          <span style={{ margin: "0 8px" }}>
-            Page {currentPage} of {totalPages}
-          </span>
-          <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-            Next
-          </button>
-        </div>
-      )}
+      <div className="pagination-controls">
+        <button onClick={handlePrevPage} disabled={currentPage === 1}>
+          Prev
+        </button>
+        <span style={{ margin: "0 8px" }}>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          Next
+        </button>
+      </div>
     </div>
   );
 }

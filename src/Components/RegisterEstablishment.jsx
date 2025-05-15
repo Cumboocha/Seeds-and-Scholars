@@ -47,6 +47,7 @@ export default function RegisterEstablishment({
   const [closingHour, setClosingHour] = useState("");
   const [closingMinute, setClosingMinute] = useState("");
   const [closingPeriod, setClosingPeriod] = useState("PM");
+  const [error, setError] = useState(""); // <-- Add error state
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -63,8 +64,52 @@ export default function RegisterEstablishment({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const openingHours = `${openingHour.padStart(2, "0")}:${openingMinute.padStart(2, "0")} ${openingPeriod}`;
-    const closingHours = `${closingHour.padStart(2, "0")}:${closingMinute.padStart(2, "0")} ${closingPeriod}`;
+    setError(""); // Reset error
+
+    // Validate hours and minutes
+    const pad = (val) => val.toString().padStart(2, "0");
+    const oh = Number(openingHour);
+    const om = Number(openingMinute);
+    const ch = Number(closingHour);
+    const cm = Number(closingMinute);
+
+    if (
+      isNaN(oh) || isNaN(om) || isNaN(ch) || isNaN(cm) ||
+      oh < 1 || oh > 12 ||
+      ch < 1 || ch > 12 ||
+      om < 0 || om > 59 ||
+      cm < 0 || cm > 59 ||
+      openingHour.length === 0 || closingHour.length === 0 ||
+      openingMinute.length === 0 || closingMinute.length === 0 ||
+      openingHour.length > 2 || closingHour.length > 2 ||
+      openingMinute.length > 2 || closingMinute.length > 2
+    ) {
+      setError("Please enter valid hours (01-12) and minutes (00-59) in 12-hour format. Hours 1-9 must begin with 0.");
+      return;
+    }
+    if (
+      (oh < 10 && openingHour.length !== 2) ||
+      (ch < 10 && closingHour.length !== 2) ||
+      (om < 10 && openingMinute.length !== 2) ||
+      (cm < 10 && closingMinute.length !== 2)
+    ) {
+      setError("Hours and minutes from 1-9 must begin with 0 (e.g., 01, 02, ... 09).");
+      return;
+    }
+
+    // Validate contact number
+    if (!/^\d{10,12}$/.test(form.contactNumber)) {
+      setError("Contact number must be numeric and 10 to 12 digits.");
+      return;
+    }
+
+    // Confirmation before registering
+    const confirmed = window.confirm("Are you sure you want to register this business?");
+    if (!confirmed) return;
+
+    const openingHours = `${pad(openingHour)}:${pad(openingMinute)} ${openingPeriod}`;
+    const closingHours = `${pad(closingHour)}:${pad(closingMinute)} ${closingPeriod}`;
+
     try {
       await addDoc(collection(db, "restaurants"), {
         name: form.name,
@@ -88,10 +133,10 @@ export default function RegisterEstablishment({
         await updateDoc(userRef, { userType: "SHdfMU3Swb1UjJCP25VE" });
       }
 
-      alert("Establishment registered successfully!");
+      alert("Establishment registered successfully! Please wait for admin approval.");
       window.location.reload();
     } catch (error) {
-      alert("Failed to register establishment: " + error.message);
+      setError("Failed to register establishment: " + error.message);
     }
   };
 
@@ -132,10 +177,19 @@ export default function RegisterEstablishment({
           />
           <input
             name="contactNumber"
+            type="tel"
+            pattern="[0-9]*"
+            inputMode="numeric"
             placeholder="Contact Number*"
             value={form.contactNumber}
-            onChange={handleChange}
+            onChange={e => {
+              const val = e.target.value.replace(/\D/g, "");
+              if (val.length <= 11) {
+                setForm({ ...form, contactNumber: val });
+              }
+            }}
             required
+            maxLength={11}
           />
           <div className="opening-closing-container">
             <label>Opening Hours*</label>
@@ -145,8 +199,11 @@ export default function RegisterEstablishment({
               max="12"
               placeholder="HH"
               value={openingHour}
-              onChange={e => setOpeningHour(e.target.value)}
+              onChange={e => {
+                if (e.target.value.length <= 2) setOpeningHour(e.target.value);
+              }}
               required
+              maxLength={2}
             />
             :
             <input
@@ -155,8 +212,11 @@ export default function RegisterEstablishment({
               max="59"
               placeholder="MM"
               value={openingMinute}
-              onChange={e => setOpeningMinute(e.target.value)}
+              onChange={e => {
+                if (e.target.value.length <= 2) setOpeningMinute(e.target.value);
+              }}
               required
+              maxLength={2}
             />
             <select value={openingPeriod} onChange={e => setOpeningPeriod(e.target.value)}>
               <option value="AM">AM</option>
@@ -164,16 +224,19 @@ export default function RegisterEstablishment({
             </select>
 
           </div>
-                    <div className="opening-closing-container">
- <label>Closing Hours*</label>
+          <div className="opening-closing-container">
+            <label>Closing Hours*</label>
             <input
               type="number"
               min="1"
               max="12"
               placeholder="HH"
               value={closingHour}
-              onChange={e => setClosingHour(e.target.value)}
+              onChange={e => {
+                if (e.target.value.length <= 2) setClosingHour(e.target.value);
+              }}
               required
+              maxLength={2}
             />
             :
             <input
@@ -182,8 +245,11 @@ export default function RegisterEstablishment({
               max="59"
               placeholder="MM"
               value={closingMinute}
-              onChange={e => setClosingMinute(e.target.value)}
+              onChange={e => {
+                if (e.target.value.length <= 2) setClosingMinute(e.target.value);
+              }}
               required
+              maxLength={2}
             />
             <select value={closingPeriod} onChange={e => setClosingPeriod(e.target.value)}>
               <option value="AM">AM</option>
@@ -212,6 +278,12 @@ export default function RegisterEstablishment({
               ))}
             </div>
           </div>
+          {/* Error message before the register button */}
+          {error && (
+            <div style={{ color: "red", margin: "10px 0", fontWeight: "bold" }}>
+              {error}
+            </div>
+          )}
           <button type="submit">&nbsp;REGISTER</button>
         </form>
       </div>

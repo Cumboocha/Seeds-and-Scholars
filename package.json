@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "firebase": "^11.7.1",
+    "firebase": "^11.7.3",
     "jwt-simple": "^0.5.6",
     "motion": "^12.9.2",
     "react": "^19.0.0",
