@@ -25,32 +25,36 @@
   font-style: normal;
 }
 
-@-moz-keyframes swing {
+@keyframes customSwing {
   0% {
-    -moz-transform: rotate(-3deg)
+    transform: rotate(-3deg);
   }
 
   50% {
-    -moz-transform: rotate(3deg)
+    transform: rotate(3deg);
   }
 
   100% {
-    -moz-transform: rotate(-3deg)
+    transform: rotate(-3deg);
   }
 }
 
-@-webkit-keyframes swing {
-  0% {
-    -webkit-transform: rotate(-3deg)
-  }
 
-  50% {
-    -webkit-transform: rotate(3deg)
-  }
+.animate__animated.animate__fadeIn {
+  --animate-duration: 0.5s;
+}
 
-  100% {
-    -webkit-transform: rotate(-3deg)
-  }
+.animate__animated.animate__fadeOut {
+  --animate-duration: 0.5s;
+}
+
+.swal2-backdrop-show {
+  background: rgba(0, 0, 0, 0.4) !important;
+  transition: background 0.5s ease;
+}
+
+.swal2-container {
+  z-index: 99999 !important;
 }
 
 
@@ -135,6 +139,12 @@
   color: #f28d01;
 }
 
+.pass-show-hide {
+  width: 30px !important;
+  height: auto !important;
+  margin-right: auto;
+}
+
 .custom-marker .marker-inner {
   width: 100%;
   height: 100%;
@@ -176,7 +186,8 @@
 .signup-container,
 .signup-logo-container,
 .reg-est-container,
-.reg-est-logo-container, .edit-right {
+.reg-est-logo-container,
+.edit-right {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -248,7 +259,9 @@
 
 .login-container form input:focus,
 .reg-est-container form input:focus,
-.reg-est-container form textarea:focus, .resto-edit-textarea:focus, .resto-edit-input:focus {
+.reg-est-container form textarea:focus,
+.resto-edit-textarea:focus,
+.resto-edit-input:focus {
   outline: none;
 }
 
@@ -331,16 +344,22 @@
 .menu-x-btn:hover,
 .comment-x-btn:hover,
 .delete-resto-btn:hover,
-.accdec-resto-btn:hover, .edit-save:hover, .edit-cancel:hover, .edit-resto-btn:hover, .resto-about-header img:hover {
+.accdec-resto-btn:hover,
+.edit-save:hover,
+.edit-cancel:hover,
+.edit-resto-btn:hover,
+.resto-about-header img:hover {
   transform: scale(1.05);
   transition: .2s;
 }
 
-.delete-resto-btn, .edit-resto-btn {
+.delete-resto-btn,
+.edit-resto-btn {
   width: 125px;
 }
 
-.edit-cancel:hover, .edit-save:hover{
+.edit-cancel:hover,
+.edit-save:hover {
   border: none;
 }
 
@@ -383,14 +402,32 @@
   width: 105%;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
   gap: 15px;
-  padding: 0 10px;
 }
 
-.opening-input,
-.closing-input {
-  width: 100%;
+.opening-closing-container p,
+.opcl-label-container {
+  font-family: "Montserrat";
+  color: #89bd2e;
+  font-weight: bolder;
+  line-height: 20px;
+  text-align: center;
 }
+
+.opening-closing-container select {
+  height: 50px;
+  background-color: #89bd2e;
+  font-family: "Montserrat";
+  border-radius: 12px;
+  border: 0px solid white;
+}
+
+.opcl-label-container {
+  width: 80% !important;
+}
+
 
 .closed-days {
   width: 120%;
@@ -450,9 +487,6 @@
   border-width: 0 4px 4px 0;
   transform: rotate(45deg);
 }
-
-
-
 
 /* NavBar */
 .navbar {
@@ -560,7 +594,8 @@
 
 .dashboard-main,
 .profile-main,
-.admin-main, .edit-main {
+.admin-main,
+.edit-main {
   width: 100% !important;
   height: 85% !important;
   display: flex !important;
@@ -650,7 +685,8 @@
   margin: 0;
 }
 
-.resto-container, .edit-left {
+.resto-container,
+.edit-left {
   width: 50%;
   height: 100%;
   display: flex;
@@ -784,7 +820,8 @@ table {
 
 .resto-address-container,
 .resto-phone-container,
-.resto-schedule-container, .resto-closed-container {
+.resto-schedule-container,
+.resto-closed-container {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -792,7 +829,9 @@ table {
   gap: 20px;
 }
 
-.address-details-container, .phone-details-container, .closed-details-container {
+.address-details-container,
+.phone-details-container,
+.closed-details-container {
   width: 85%;
 }
 
@@ -801,7 +840,24 @@ table {
   display: flex;
   flex-direction: row;
   gap: 20px;
+  font-family: "Montserrat";
+  line-height: 20px;
+  color: black;
 }
+
+.schedule-details-container select {
+  min-height: 25px;
+  background-color: rgba(137, 189, 46, 0.4);
+  font-family: "Montserrat";
+  border-radius: 8px;
+  border: 0px solid white;
+  color: black;
+  font-weight: 500;
+}
+
+
+
+
 
 .schedule-details-container input {
   width: 100% !important;
@@ -875,6 +931,7 @@ table {
   align-items: center;
   z-index: 1;
   bottom: 0;
+  position: absolute;
 }
 
 .add-marker-mode p {
@@ -1278,6 +1335,7 @@ table {
 }
 
 /* Profile */
+
 .user-left-wrapper {
   width: 40%;
   height: 100%;
@@ -1285,10 +1343,8 @@ table {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  -moz-animation: 5s ease 0s normal none infinite swing;
-  -moz-transform-origin: center top;
-  -webkit-animation: swing 5s infinite ease-in-out;
-  -webkit-transform-origin: top;
+  animation: customSwing 3s infinite ease-in-out !important;
+  transform-origin: top !important;
 }
 
 .user-left {
@@ -1328,6 +1384,7 @@ table {
   margin: 0;
   line-height: 45px;
   margin-top: 20px;
+  color: white;
 }
 
 .user-right {
@@ -1363,6 +1420,10 @@ table {
 
 .fav-resto-container {
   margin-top: 50px;
+}
+
+.my-restos-section {
+  width: 90%;
 }
 
 /* Admin Dashboard */
@@ -1440,10 +1501,20 @@ table {
   color: white;
 }
 
-.error-login {
+.error-form {
   font-family: "Montserrat";
   font-size: 24px;
   margin: 0;
+  color: #f56767;
+}
+
+.error-est {
+  font-family: "Montserrat";
+  font-size: 16px;
+  margin: 0;
+  color: #f56767;
+  line-height: 14px;
+  text-align: center;
 }
 
 /* Edit Resto */
@@ -1474,6 +1545,7 @@ table {
   margin-top: 0;
 }
 
+
 .resto-edit-textarea {
   width: 100%;
   min-height: 100px;
@@ -1489,7 +1561,34 @@ table {
   font-style: italic;
 }
 
-.resto-edit-textarea::placeholder, .resto-edit-input::placeholder {
+#resto-name-edit {
+  font-family: "Sigmar";
+  font-size: 56px;
+  -webkit-text-stroke: 1.5px black;
+  margin: 0;
+  margin-left: 20px;
+  letter-spacing: -1px;
+  line-height: 48px;
+  word-wrap: break-word;
+  color: white;
+  margin: 0;
+  margin-bottom: 50px;
+}
+
+#resto-name-edit::placeholder {
+  font-family: "Sigmar";
+  font-size: 56px;
+  -webkit-text-stroke: 0px black;
+  margin: 0;
+  margin-left: 20px;
+  letter-spacing: -1px;
+  line-height: 48px;
+  word-wrap: break-word;
+  color: rgb(202, 243, 186);
+}
+
+.resto-edit-textarea::placeholder,
+.resto-edit-input::placeholder {
   color: rgb(48, 78, 60);
   font-style: normal;
 }
@@ -1547,4 +1646,33 @@ table {
   font-family: "Montserrat";
   font-weight: bolder;
   color: white;
+}
+
+/* Pagination */
+
+.pagination-controls,
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  font-family: "Montserrat";
+  color: black;
+}
+
+.pagination-controls button,
+.pagination button {
+  border-radius: 20%;
+  background-color: #89bd2e;
+  font-size: 15px;
+}
+
+.pagination-controls button:hover {
+  outline: none;
+  border: 1px solid #89bd2e;
+}
+
+.pagionation-controls button:disabled {
+  cursor: default;
 }

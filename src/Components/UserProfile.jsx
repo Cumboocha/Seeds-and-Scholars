@@ -15,6 +15,7 @@ import {
 import { firebaseConfig } from "../firebaseConfig";
 import { initializeApp } from "firebase/app";
 
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
@@ -96,7 +97,7 @@ export default function UserProfile() {
             <>
               {userType !== "WcjOVRmHYXKZHsMzAVY2" && (
                 <div className="my-restos-section">
-                  <h1 className="favorites-text">Your Restaurant</h1>
+                  <h1 className="favorites-text">Your Restaurants</h1>
                   {loadingMyRestos ? (
                     <p>Loading...</p>
                   ) : myRestos.length === 0 ? (

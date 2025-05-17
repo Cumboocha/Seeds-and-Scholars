@@ -48,7 +48,7 @@ export default function ListPending({ onSelectResto }) {
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
             >
-              Prev
+              &lt;
             </button>
             <span style={{ margin: "0 10px" }}>
               Page {currentPage} of {totalPages}
@@ -57,7 +57,7 @@ export default function ListPending({ onSelectResto }) {
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
             >
-              Next
+              &gt;
             </button>
           </div>
         </>

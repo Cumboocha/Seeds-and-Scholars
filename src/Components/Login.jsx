@@ -29,7 +29,7 @@ export default function Login({ onLoginClose, onLoginSuccess }) {
       );
       const querySnapshot = await getDocs(q);
       if (querySnapshot.empty) {
-        setError(<p className="error-login">User does not exist.</p>);
+        setError(<p className="error-form">User does not exist.</p>);
         setLoading(false);
         return;
       }
@@ -42,13 +42,12 @@ export default function Login({ onLoginClose, onLoginSuccess }) {
         }
       });
       if (!userDoc) {
-        setError("Incorrect password.");
+        setError(<p className="error-form">Incorrect password.</p>);
         setLoading(false);
         return;
       }
       await signInWithEmailAndPassword(auth, form.email, form.password);
       console.log("Logged in user ID:", userId);
-      alert("Login successful!");
       if (onLoginSuccess) onLoginSuccess(userId);
     } catch (err) {
       setError(err.message);
@@ -90,11 +89,12 @@ export default function Login({ onLoginClose, onLoginSuccess }) {
                 border: "none",
                 background: "none",
                 cursor: "pointer",
-                color: "#333"
+                color: "#333",
+                outline: "none"
               }}
               tabIndex={-1}
             >
-              {showPassword ? "Hide" : "Show"}
+              {showPassword ? <img className="pass-show-hide" src="assets/password_shown.png"/> : <img className="pass-show-hide" src="assets/password_hidden.png"/>}
             </button>
           
           {error &&             <div style={{ color: "red", margin: "10px 0", fontWeight: "bold" }}>{error}</div>}

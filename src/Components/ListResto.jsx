@@ -99,13 +99,13 @@ export default function ListResto({ onscreenChange, searchTerm }) {
       </div>
       <div className="pagination-controls">
         <button onClick={handlePrevPage} disabled={currentPage === 1}>
-          Prev
+          &lt;
         </button>
         <span style={{ margin: "0 8px" }}>
           Page {currentPage} of {totalPages}
         </span>
         <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          Next
+          &gt;
         </button>
       </div>
     </div>

@@ -17,9 +17,70 @@ import {
 } from "firebase/firestore";
 import { firebaseConfig } from "../firebaseConfig";
 import { initializeApp } from "firebase/app";
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import 'animate.css';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+// SweetAlert2 Styling Configuration
+const swalWithCrossfade = Swal.mixin({
+  showClass: {
+    popup: 'animate__animated animate__fadeIn'
+  },
+  hideClass: {
+    popup: 'animate__animated animate__fadeOut'
+  }
+});
+
+const applySwalStyling = () => {
+  setTimeout(() => {
+    const confirmButton = document.querySelector('.swal2-confirm');
+    if (confirmButton) {
+      confirmButton.style.backgroundColor = '#89bd2e';
+      confirmButton.style.color = 'white';
+      confirmButton.style.borderRadius = '15px';
+      confirmButton.style.fontFamily = 'Montserrat';
+      confirmButton.style.boxShadow = 'none';
+      confirmButton.style.padding = '10px 24px';
+      confirmButton.style.outline = 'none';
+    }
+
+    const cancelButton = document.querySelector('.swal2-cancel');
+    if (cancelButton) {
+      cancelButton.style.backgroundColor = '#dd2e44';
+      cancelButton.style.color = 'white';
+      cancelButton.style.borderRadius = '15px';
+      cancelButton.style.fontFamily = 'Montserrat';
+      cancelButton.style.boxShadow = 'none';
+      cancelButton.style.padding = '10px 24px';
+      cancelButton.style.outline = 'none';
+    }
+
+    const swalContainer = document.querySelector('.swal2-popup');
+    if (swalContainer) {
+      swalContainer.style.width = '600px';
+      swalContainer.style.borderRadius = '20px';
+      swalContainer.style.backgroundColor = '#f8f9fa';
+    }
+
+    const swalTitle = document.querySelector('.swal2-title');
+    if (swalTitle) {
+      swalTitle.style.color = '#2c3e50';
+      swalTitle.style.fontFamily = 'Montserrat';
+      swalTitle.style.fontSize = '24px';
+      swalTitle.style.fontWeight = 'bold';
+    }
+
+    const swalContent = document.querySelector('.swal2-html-container');
+    if (swalContent) {
+      swalContent.style.color = '#34495e';
+      swalContent.style.fontFamily = 'Montserrat';
+      swalContent.style.fontSize = '18px';
+    }
+  }, 10);
+};
 
 export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
   const userId = sessionStorage.getItem("userId");
@@ -27,15 +88,6 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
     sessionStorage.getItem("userType") || localStorage.getItem("userType");
   const [restoProfileScreen, setRestoProfileScreen] = useState("about");
   const [favorite, setFavorite] = useState("unfavorited");
-
-  console.log(
-    "userId:",
-    userId,
-    "resto.createdBy:",
-    resto.createdBy,
-    "userType:",
-    userType
-  );
 
   useEffect(() => {
     const checkIfFavorited = async () => {
@@ -69,7 +121,12 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
           createdAt: serverTimestamp(),
         });
       } catch (error) {
-        alert("Failed to add favorite: " + error.message);
+        swalWithCrossfade.fire({
+          title: "Error",
+          text: "Failed to add favorite: " + error.message,
+          confirmButtonText: "OK",
+          didOpen: () => applySwalStyling()
+        });
       }
     } else if (fav === "unfavorited" && userId && resto && resto.id) {
       try {
@@ -83,41 +140,89 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
           await deleteDoc(doc(db, "favorites", docSnap.id));
         });
       } catch (error) {
-        alert("Failed to remove favorite: " + error.message);
+        swalWithCrossfade.fire({
+          title: "Error",
+          text: "Failed to remove favorite: " + error.message,
+          confirmButtonText: "OK",
+          didOpen: () => applySwalStyling()
+        });
       }
     }
   };
 
   const handleAccept = async () => {
     if (!resto?.id) return;
-    if (!window.confirm("Are you sure you want to accept this establishment?"))
-      return;
+    
+    const { isConfirmed } = await swalWithCrossfade.fire({
+      title: "Confirm Acceptance",
+      html: "Are you sure you want to accept this establishment?",
+      showCancelButton: true,
+      confirmButtonText: "Accept",
+      cancelButtonText: "Cancel",
+      width: 600,
+      didOpen: () => applySwalStyling()
+    });
+
+    if (!isConfirmed) return;
+
     try {
       await updateDoc(doc(db, "restaurants", resto.id), { isAccepted: true });
       showPopup?.("Establishment accepted!");
       if (onClose) onClose();
     } catch (error) {
-      alert("Failed to accept establishment: " + error.message);
+      swalWithCrossfade.fire({
+        title: "Error",
+        text: "Failed to accept establishment: " + error.message,
+        confirmButtonText: "OK",
+        didOpen: () => applySwalStyling()
+      });
     }
   };
 
   const handleDecline = async () => {
     if (!resto?.id) return;
-    if (!window.confirm("Are you sure you want to decline this establishment?"))
-      return;
+    
+    const { isConfirmed } = await swalWithCrossfade.fire({
+      title: "Confirm Decline",
+      html: "Are you sure you want to decline this establishment?",
+      showCancelButton: true,
+      confirmButtonText: "Decline",
+      cancelButtonText: "Cancel",
+      width: 600,
+      didOpen: () => applySwalStyling()
+    });
+
+    if (!isConfirmed) return;
+
     try {
       await deleteDoc(doc(db, "restaurants", resto.id));
       showPopup?.("Establishment declined.");
       if (onClose) onClose();
     } catch (error) {
-      alert("Failed to decline establishment: " + error.message);
+      swalWithCrossfade.fire({
+        title: "Error",
+        text: "Failed to decline establishment: " + error.message,
+        confirmButtonText: "OK",
+        didOpen: () => applySwalStyling()
+      });
     }
   };
 
   const handleDelete = async () => {
     if (!resto?.id) return;
-    if (!window.confirm("Are you sure you want to delete this restaurant?"))
-      return;
+    
+    const { isConfirmed } = await swalWithCrossfade.fire({
+      title: "Confirm Deletion",
+      html: "Are you sure you want to delete this restaurant?",
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
+      width: 600,
+      didOpen: () => applySwalStyling()
+    });
+
+    if (!isConfirmed) return;
+
     try {
       await deleteDoc(doc(db, "restaurants", resto.id));
 
@@ -129,10 +234,26 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
         }
       }
 
-      alert("Restaurant deleted.");
-      window.location.reload(); 
+      await swalWithCrossfade.fire({
+        title: "Success",
+        text: "Restaurant deleted successfully.",
+        confirmButtonText: "OK",
+        didOpen: () => {
+          applySwalStyling();
+          const confirmButton = document.querySelector('.swal2-confirm');
+          if (confirmButton) confirmButton.style.backgroundColor = '#3b86b6';
+        },
+        willClose: () => {
+          window.location.reload();
+        }
+      });
     } catch (error) {
-      alert("Failed to delete restaurant: " + error.message);
+      swalWithCrossfade.fire({
+        title: "Error",
+        text: "Failed to delete restaurant: " + error.message,
+        confirmButtonText: "OK",
+        didOpen: () => applySwalStyling()
+      });
     }
   };
 

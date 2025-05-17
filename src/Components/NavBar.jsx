@@ -3,15 +3,76 @@ import { useState, useEffect } from "react";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { firebaseConfig } from "../firebaseConfig";
 import { initializeApp } from "firebase/app";
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import 'animate.css';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+// Reuse the same alert styling configuration
+const swalWithCrossfade = Swal.mixin({
+  showClass: {
+    popup: 'animate__animated animate__fadeIn'
+  },
+  hideClass: {
+    popup: 'animate__animated animate__fadeOut'
+  }
+});
+
+// Reuse the same styling function
+const applySwalStyling = () => {
+  setTimeout(() => {
+    const confirmButton = document.querySelector('.swal2-confirm');
+    if (confirmButton) {
+      confirmButton.style.backgroundColor = '#89bd2e';
+      confirmButton.style.color = 'white';
+      confirmButton.style.borderRadius = '15px';
+      confirmButton.style.fontFamily = 'Montserrat';
+      confirmButton.style.boxShadow = 'none';
+      confirmButton.style.padding = '10px 24px';
+      confirmButton.style.outline = 'none';
+    }
+
+    const cancelButton = document.querySelector('.swal2-cancel');
+    if (cancelButton) {
+      cancelButton.style.backgroundColor = '#dd2e44';
+      cancelButton.style.color = 'white';
+      cancelButton.style.borderRadius = '15px';
+      cancelButton.style.fontFamily = 'Montserrat';
+      cancelButton.style.boxShadow = 'none';
+      cancelButton.style.padding = '10px 24px';
+      cancelButton.style.outline = 'none';
+    }
+
+    const swalContainer = document.querySelector('.swal2-popup');
+    if (swalContainer) {
+      swalContainer.style.width = '600px';
+      swalContainer.style.borderRadius = '20px';
+      swalContainer.style.backgroundColor = '#f8f9fa';
+    }
+
+    const swalTitle = document.querySelector('.swal2-title');
+    if (swalTitle) {
+      swalTitle.style.color = '#2c3e50';
+      swalTitle.style.fontFamily = 'Montserrat';
+      swalTitle.style.fontSize = '24px';
+      swalTitle.style.fontWeight = 'bold';
+    }
+
+    const swalContent = document.querySelector('.swal2-html-container');
+    if (swalContent) {
+      swalContent.style.color = '#34495e';
+      swalContent.style.fontFamily = 'Montserrat';
+      swalContent.style.fontSize = '18px';
+    }
+  }, 10);
+};
 
 export default function NavBar({ handleLogout, onSearch }) {
   const navigate = useNavigate();
   const userId = sessionStorage.getItem("userId")
   const [searchTerm, setSearchTerm] = useState("");
-  const [logoutMessage, setLogoutMessage] = useState("");
   const [userType, setUserType] = useState(null);
   const [userName, setUserName] = useState(""); 
 
@@ -24,34 +85,58 @@ export default function NavBar({ handleLogout, onSearch }) {
           const data = userSnap.data();
           setUserType(data.userType);
           setUserName(`${data.firstName || ""} ${data.lastName || ""}`.trim());
-          console.log("Fetched userType:", data.userType); // <-- Add this
+          console.log("Fetched userType:", data.userType);
         }
       }
     }
     fetchUserTypeAndName();
   }, [userId]);
 
-  const onLogoutClick = (e) => {
+  const onLogoutClick = async (e) => {
     e.preventDefault();
-    const confirmed = window.confirm("Are you sure you want to logout?");
-    if (!confirmed) return;
+    
+    const { isConfirmed } = await swalWithCrossfade.fire({
+      title: "Confirm Logout",
+      html: "Are you sure you want to logout?",
+      showCancelButton: true,
+      confirmButtonText: "Confirm",
+      cancelButtonText: "Cancel",
+      width: 600,
+      didOpen: () => {
+        applySwalStyling();
+      }
+    });
+
+    if (!isConfirmed) return;
+    
     if (handleLogout) handleLogout();
 
     sessionStorage.removeItem("userId");
     localStorage.removeItem("userId");
 
-    setLogoutMessage("Logout successful!");
-    setTimeout(() => setLogoutMessage(""), 2000);
+    await swalWithCrossfade.fire({
+      title: "Logout Successful!",
+      text: "You have been logged out successfully.",
+      confirmButtonText: "OK",
+      didOpen: () => {
+        applySwalStyling();
+        const confirmButton = document.querySelector('.swal2-confirm');
+        if (confirmButton) {
+          confirmButton.style.backgroundColor = '#3b86b6';
+        }
+      },
+      willClose: () => {
+        window.history.pushState(null, "", window.location.pathname);
+        window.history.replaceState(null, "", window.location.pathname);
+        navigate("/");
 
-    window.history.pushState(null, "", window.location.pathname);
-    window.history.replaceState(null, "", window.location.pathname);
-    navigate("/");
-
-    window.onpopstate = () => {
-      if (!sessionStorage.getItem("userId") && !localStorage.getItem("userId")) {
-        window.location.href = "/"; 
+        window.onpopstate = () => {
+          if (!sessionStorage.getItem("userId") && !localStorage.getItem("userId")) {
+            window.location.href = "/"; 
+          }
+        };
       }
-    };
+    });
   };
 
   const handleSearchInput = (e) => {
@@ -92,12 +177,6 @@ export default function NavBar({ handleLogout, onSearch }) {
           onClick={handleSearchSubmit}
         />
       </div>
-
-      {logoutMessage && (
-        <div className="logout-message" style={{ color: "green", marginTop: "10px" }}>
-          {logoutMessage}
-        </div>
-      )}
 
       <div className="button-container">
         {userType && userType.trim() === "WcjOVRmHYXKZHsMzAVY2" && (

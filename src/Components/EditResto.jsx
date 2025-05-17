@@ -2,9 +2,70 @@ import { useState } from "react";
 import { getFirestore, doc, updateDoc } from "firebase/firestore";
 import { firebaseConfig } from "../firebaseConfig";
 import { initializeApp } from "firebase/app";
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import 'animate.css';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+// SweetAlert2 Styling Configuration
+const swalWithCrossfade = Swal.mixin({
+  showClass: {
+    popup: 'animate__animated animate__fadeIn'
+  },
+  hideClass: {
+    popup: 'animate__animated animate__fadeOut'
+  }
+});
+
+const applySwalStyling = () => {
+  setTimeout(() => {
+    const confirmButton = document.querySelector('.swal2-confirm');
+    if (confirmButton) {
+      confirmButton.style.backgroundColor = '#89bd2e';
+      confirmButton.style.color = 'white';
+      confirmButton.style.borderRadius = '15px';
+      confirmButton.style.fontFamily = 'Montserrat';
+      confirmButton.style.boxShadow = 'none';
+      confirmButton.style.padding = '10px 24px';
+      confirmButton.style.outline = 'none';
+    }
+
+    const cancelButton = document.querySelector('.swal2-cancel');
+    if (cancelButton) {
+      cancelButton.style.backgroundColor = '#dd2e44';
+      cancelButton.style.color = 'white';
+      cancelButton.style.borderRadius = '15px';
+      cancelButton.style.fontFamily = 'Montserrat';
+      cancelButton.style.boxShadow = 'none';
+      cancelButton.style.padding = '10px 24px';
+      cancelButton.style.outline = 'none';
+    }
+
+    const swalContainer = document.querySelector('.swal2-popup');
+    if (swalContainer) {
+      swalContainer.style.width = '600px';
+      swalContainer.style.borderRadius = '20px';
+      swalContainer.style.backgroundColor = '#f8f9fa';
+    }
+
+    const swalTitle = document.querySelector('.swal2-title');
+    if (swalTitle) {
+      swalTitle.style.color = '#2c3e50';
+      swalTitle.style.fontFamily = 'Montserrat';
+      swalTitle.style.fontSize = '24px';
+      swalTitle.style.fontWeight = 'bold';
+    }
+
+    const swalContent = document.querySelector('.swal2-html-container');
+    if (swalContent) {
+      swalContent.style.color = '#34495e';
+      swalContent.style.fontFamily = 'Montserrat';
+      swalContent.style.fontSize = '18px';
+    }
+  }, 10);
+};
 
 export default function EditResto({ resto, onClose, onProfileUpdated }) {
   const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -83,9 +144,17 @@ export default function EditResto({ resto, onClose, onProfileUpdated }) {
       return;
     }
 
-    // Confirm before saving
-    const confirmed = window.confirm("Are you sure you want to save these changes?");
-    if (!confirmed) return;
+    const { isConfirmed } = await swalWithCrossfade.fire({
+      title: "Confirm Changes",
+      html: "Are you sure you want to save these changes?",
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      cancelButtonText: "Cancel",
+      width: 600,
+      didOpen: () => applySwalStyling()
+    });
+
+    if (!isConfirmed) return;
 
     const openingHours = `${pad(openingHour)}:${pad(openingMinute)} ${openingPeriod}`;
     const closingHours = `${pad(closingHour)}:${pad(closingMinute)} ${closingPeriod}`;
@@ -101,11 +170,28 @@ export default function EditResto({ resto, onClose, onProfileUpdated }) {
         closingHours,
         daysClosed,
       });
-      if (onProfileUpdated) onProfileUpdated();
-      if (onClose) onClose();
-      alert("Profile updated!");
+      
+      await swalWithCrossfade.fire({
+        title: "Success",
+        text: "Profile updated successfully!",
+        confirmButtonText: "OK",
+        didOpen: () => {
+          applySwalStyling();
+          const confirmButton = document.querySelector('.swal2-confirm');
+          if (confirmButton) confirmButton.style.backgroundColor = '#3b86b6';
+        },
+        willClose: () => {
+          if (onProfileUpdated) onProfileUpdated();
+          if (onClose) onClose();
+        }
+      });
     } catch (error) {
-      setError("Failed to update profile: " + error.message);
+      await swalWithCrossfade.fire({
+        title: "Error",
+        text: "Failed to update profile: " + error.message,
+        confirmButtonText: "OK",
+        didOpen: () => applySwalStyling()
+      });
     }
   };
 
@@ -122,10 +208,10 @@ export default function EditResto({ resto, onClose, onProfileUpdated }) {
               <div className="resto-name-fav">
                 <input
                   className="resto-edit-input"
+                  id="resto-name-edit"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Restaurant Name"
-                  style={{ fontSize: "1.5em", fontWeight: "bold" }}
+                  placeholder="Name"
                   required
                 />
               </div>
