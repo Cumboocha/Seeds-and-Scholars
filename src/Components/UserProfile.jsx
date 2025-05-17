@@ -21,12 +21,14 @@ const db = getFirestore(app);
 export default function UserProfile() {
   const userId = sessionStorage.getItem("userId");
   const [userName, setUserName] = useState("");
-  const [favoriteRestos, setFavoriteRestos] = useState([]);
-  const [loadingFavs, setLoadingFavs] = useState(true);
   const [selectedResto, setSelectedResto] = useState(null);
   const [rightScreen, setRightScreen] = useState("favorites");
   const [myRestos, setMyRestos] = useState([]);
   const [loadingMyRestos, setLoadingMyRestos] = useState(true);
+
+  // Get userType
+  const userType =
+    sessionStorage.getItem("userType") || localStorage.getItem("userType");
 
   useEffect(() => {
     async function fetchUserName() {
@@ -40,31 +42,6 @@ export default function UserProfile() {
       }
     }
     fetchUserName();
-  }, [userId]);
-
-  useEffect(() => {
-    async function fetchFavorites() {
-      if (!userId) return;
-      setLoadingFavs(true);
-      const favQuery = query(
-        collection(db, "favorites"),
-        where("userId", "==", userId)
-      );
-      const favSnapshot = await getDocs(favQuery);
-      const restoIds = favSnapshot.docs.map((doc) => doc.data().restoId);
-
-      const restoPromises = restoIds.map((restoId) =>
-        getDoc(doc(db, "restaurants", restoId))
-      );
-      const restoSnaps = await Promise.all(restoPromises);
-      const restos = restoSnaps
-        .filter((snap) => snap.exists())
-        .map((snap) => ({ id: snap.id, ...snap.data() }));
-
-      setFavoriteRestos(restos);
-      setLoadingFavs(false);
-    }
-    fetchFavorites();
   }, [userId]);
 
   useEffect(() => {
@@ -117,29 +94,26 @@ export default function UserProfile() {
             </div>
           ) : (
             <>
-              <div className="my-restos-section">
-                <h1 className="favorites-text">Your Restaurant</h1>
-                {loadingMyRestos ? (
-                  <p>Loading...</p>
-                ) : myRestos.length === 0 ? (
-                  <p>You have not added a restaurant yet.</p>
-                ) : (
-                  myRestos.map((resto) => (
-                    <div
-                      key={resto.id}
-                      onClick={() => handleSelectResto(resto)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <CardResto resto={resto} userId={userId} />
-                    </div>
-                  ))
-                )}
-              </div>
-              <ListFavorites
-                favorites={favoriteRestos}
-                loading={loadingFavs}
-                onSelectResto={handleSelectResto}
-              />
+              {userType !== "WcjOVRmHYXKZHsMzAVY2" && (
+                <div className="my-restos-section">
+                  <h1 className="favorites-text">Your Restaurant</h1>
+                  {loadingMyRestos ? (
+                    <p>Loading...</p>
+                  ) : myRestos.length === 0 ? (
+                    <p>You have not added a restaurant yet.</p>
+                  ) : (
+                    myRestos.map((resto) => (
+                      <div
+                        key={resto.id}
+                        onClick={() => handleSelectResto(resto)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        <CardResto resto={resto} userId={userId} />
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
             </>
           )}
         </div>
