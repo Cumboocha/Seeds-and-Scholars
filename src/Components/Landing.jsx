@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import 'animate.css';
 
 export default function Landing({ onLoginBtnClick, onSignupBtnClick }) {
   useEffect(() => {
@@ -10,16 +11,16 @@ export default function Landing({ onLoginBtnClick, onSignupBtnClick }) {
 
   return (
     <div className="landing-body">
-      <div className="landing-side">
+      <div className="landing-side animate__animated animate__slideInLeft">
         <img src="assets/landing_logo_icon_mini.png" />
       </div>
-      <div className="landing-elements">
-        <img src="assets/landing_logo.png" />
+      <div className="landing-elements" >
+        <img src="assets/landing_logo.png" class="animate__animated animate__zoomIn"/>
         <div className="landing-buttons">
-          <button className="login-btn" onClick={onLoginBtnClick}>
+          <button className="login-btn animate__animated animate__fadeIn animate__delay-1s" onClick={onLoginBtnClick}>
             &nbsp;LOG IN
           </button>
-          <button className="signup-btn" onClick={onSignupBtnClick}>
+          <button className="signup-btn animate__animated animate__fadeIn animate__delay-1s" onClick={onSignupBtnClick}>
             &nbsp;SIGN UP
           </button>
         </div>

@@ -101,7 +101,9 @@ export default function UserProfile() {
                   {loadingMyRestos ? (
                     <p>Loading...</p>
                   ) : myRestos.length === 0 ? (
-                    <p>You have not added a restaurant yet.</p>
+                    <div className="no-est-found">
+                      <img src="assets/no_establishment_found.png"/>
+                    </div>
                   ) : (
                     myRestos.map((resto) => (
                       <div

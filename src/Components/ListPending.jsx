@@ -33,7 +33,9 @@ export default function ListPending({ onSelectResto }) {
     <div className="list-admin-container">
       <h1 className="pending-text">To Approve</h1>
       {restaurants.length === 0 ? (
-        <p className="results-list">No pending restaurants.</p>
+        <div className="no-est-found">
+          <img src="assets/nothing_here.png"/>
+        </div>
       ) : (
         <>
           {currentRestos.map(resto => (

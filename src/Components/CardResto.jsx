@@ -22,7 +22,7 @@ export default function CardResto({ resto, setScreen, onClick }) {
         <p className="resto-card-desc">
           {resto.address}
         </p>
-        <p className="resto-card-desc">          
+        <p className="resto-card-phone">          
           {resto.contactNumber}
         </p>
       </div>

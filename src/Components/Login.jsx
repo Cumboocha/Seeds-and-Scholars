@@ -59,7 +59,7 @@ export default function Login({ onLoginClose, onLoginSuccess }) {
     <div className="login-body">
       {/* Left Side */}
       <div className="login-container">
-        <img src="assets/login_bg.png" />
+        <img src="assets/login_bg.png" onload="this.style.opacity=1"/>
         <form onSubmit={handleSubmit}>
           <input
             name="email"
