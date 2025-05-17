@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RestoAbout from "./RestoAbout";
 import RestoMenu from "./RestoMenu";
 import RestoReviews from "./RestoReviews";
@@ -36,6 +36,25 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
     "userType:",
     userType
   );
+
+  useEffect(() => {
+    const checkIfFavorited = async () => {
+      if (userId && resto?.id) {
+        const favQuery = query(
+          collection(db, "favorites"),
+          where("userId", "==", userId),
+          where("restoId", "==", resto.id)
+        );
+        const favSnapshot = await getDocs(favQuery);
+        if (!favSnapshot.empty) {
+          setFavorite("favorited");
+        } else {
+          setFavorite("unfavorited");
+        }
+      }
+    };
+    checkIfFavorited();
+  }, [userId, resto?.id]);
 
   const handleRestoScreenChange = (screen) => setRestoProfileScreen(screen);
 
