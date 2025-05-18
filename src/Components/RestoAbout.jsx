@@ -9,9 +9,10 @@ export default function RestoAbout({ resto, onProfileUpdated }) {
 
   const userId = sessionStorage.getItem("userId");
   const userType =
-    sessionStorage.getItem("userType") || localStorage.getItem("userType");
+    sessionStorage.getItem("userType") 
 
-  if (!resto) return <div className="spinner"></div>;
+  if (!resto) return <div>Loading...</div>;
+
   if (isEditing) {
     return (
       <AnimatePresence>
@@ -42,25 +43,18 @@ export default function RestoAbout({ resto, onProfileUpdated }) {
     );
   }
 
-  let daysClosed = [];
-  if (Array.isArray(resto.daysClosed)) {
-    daysClosed = resto.daysClosed;
-  } else if (typeof resto.daysClosed === "string") {
-    daysClosed = resto.daysClosed
-      .split(",")
-      .map((day) => day.trim())
-      .filter(Boolean);
-  }
-
-  const allDays = Array.from(new Set([...DAYS, ...daysClosed]));
+  const daysClosed = Array.isArray(resto.daysClosed)
+    ? resto.daysClosed
+    : typeof resto.daysClosed === "string"
+    ? resto.daysClosed.split(",").map(day => day.trim()).filter(Boolean)
+    : [];
 
   return (
     <div className="resto-container-white-part">
       <div className="resto-about-header">
         <h2 className="resto-text-header">About the Establishment</h2>
-        {resto.isAccepted === true &&
-          (userId === resto.createdBy ||
-            userType === "WcjOVRmHYXKZHsMzAVY2") && (
+        {resto.isAccepted &&
+          (userId === resto.createdBy || userType === "WcjOVRmHYXKZHsMzAVY2") && (
             <img
               src="assets/edit_btn.png"
               onClick={() => setIsEditing(true)}
@@ -74,7 +68,7 @@ export default function RestoAbout({ resto, onProfileUpdated }) {
 
       <div className="resto-address-container">
         <div className="address-img-container">
-          <img src="assets/address_symbol.png" />
+          <img src="assets/address_symbol.png" alt="Address" />
         </div>
         <div className="address-details-container">
           <p>{resto.address}</p>
@@ -83,7 +77,7 @@ export default function RestoAbout({ resto, onProfileUpdated }) {
 
       <div className="resto-phone-container">
         <div className="phone-img-container">
-          <img src="assets/phone_symbol.png" />
+          <img src="assets/phone_symbol.png" alt="Phone" />
         </div>
         <div className="phone-details-container">
           <p>{resto.contactNumber}</p>
@@ -92,15 +86,13 @@ export default function RestoAbout({ resto, onProfileUpdated }) {
 
       <div className="resto-schedule-container">
         <div className="schedule-img-container">
-          <img src="assets/clock_symbol.png" />
+          <img src="assets/clock_symbol.png" alt="Schedule" />
         </div>
         <div className="schedule-details-container">
+          <div style={{ marginBottom: "5px", fontWeight: "bold" }}>Schedule:</div>
           <table>
             <tbody>
-              <div style={{ marginBottom: "5px", fontWeight: "bold" }}>
-                Schedule:{" "}
-              </div>
-              {allDays.map((day) => (
+              {DAYS.map(day => (
                 <tr key={day}>
                   <td>{day}</td>
                   <td className="second-col">

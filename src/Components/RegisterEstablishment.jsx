@@ -13,11 +13,9 @@ import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import 'animate.css';
 
-// Initialize Firebase app and Firestore
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// SweetAlert2 Styling Configuration
 const swalWithCrossfade = Swal.mixin({
   showClass: {
     popup: 'animate__animated animate__fadeIn'
@@ -118,7 +116,6 @@ export default function RegisterEstablishment({
     e.preventDefault();
     setError("");
 
-    // Validate hours and minutes
     const pad = (val) => val.toString().padStart(2, "0");
     const oh = Number(openingHour);
     const om = Number(openingMinute);
@@ -164,13 +161,11 @@ export default function RegisterEstablishment({
       return;
     }
 
-    // Validate contact number
     if (!/^\d{10,12}$/.test(form.contactNumber)) {
       setError(<p className="error-est">Contact number must be numeric and 10 to 12 digits.</p>);
       return;
     }
 
-    // Confirmation before registering - using SweetAlert2
     const { isConfirmed } = await swalWithCrossfade.fire({
       title: "DATA PRIVACY AGREEMENT",
       html: "The personal information gathered after registration will be processed with the utmost confidentiality in accordance with the Data Privacy Act of 2012. The personal data of the participants will be collected, recorded and used according to their privacy policy.<br><br>I give my consent to the site's management to use my data as intended by the privacy policy.",
@@ -215,7 +210,6 @@ export default function RegisterEstablishment({
         await updateDoc(userRef, { userType: "SHdfMU3Swb1UjJCP25VE" });
       }
 
-      // Success message using SweetAlert2
       await swalWithCrossfade.fire({
         title: "Registration Successful!",
         html: "Establishment registered successfully! Please wait for admin approval.",
@@ -233,7 +227,6 @@ export default function RegisterEstablishment({
       });
       
     } catch (error) {
-      // Error message using SweetAlert2
       await swalWithCrossfade.fire({
         title: "Registration Failed",
         text: "Failed to register establishment: " + error.message,
@@ -245,11 +238,58 @@ export default function RegisterEstablishment({
     }
   };
 
+  const handleCancel = async (e) => {
+    e.preventDefault();
+    const { isConfirmed } = await swalWithCrossfade.fire({
+      title: "Cancel Registration?",
+      html: "Are you sure you want to cancel? Any unsaved changes will be lost.",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Cancel",
+      cancelButtonText: "Continue Editing",
+      width: 600,
+      didOpen: () => {
+        applySwalStyling();
+        setTimeout(() => {
+          const confirmButton = document.querySelector('.swal2-confirm');
+          if (confirmButton) {
+            confirmButton.style.backgroundColor = '#dd2e44';
+            confirmButton.style.color = 'white';
+            confirmButton.style.borderRadius = '15px';
+            confirmButton.style.fontFamily = 'Montserrat';
+            confirmButton.style.boxShadow = 'none';
+            confirmButton.style.padding = '10px 24px';
+            confirmButton.style.outline = 'none';
+          }
+          const cancelButton = document.querySelector('.swal2-cancel');
+          if (cancelButton) {
+            cancelButton.style.backgroundColor = '#89bd2e';
+            cancelButton.style.color = 'white';
+            cancelButton.style.borderRadius = '15px';
+            cancelButton.style.fontFamily = 'Montserrat';
+            cancelButton.style.boxShadow = 'none';
+            cancelButton.style.padding = '10px 24px';
+            cancelButton.style.outline = 'none';
+          }
+        }, 20);
+      },
+    });
+    if (isConfirmed) {
+      await swalWithCrossfade.fire({
+        title: "Cancelled",
+        text: "Registration was cancelled.",
+        confirmButtonText: "OK",
+        width: 600,
+        didOpen: applySwalStyling,
+      });
+      if (onRegEstablishClose) onRegEstablishClose();
+    }
+  };
+
   return (
     <div className="reg-est-body">
       {/*Left Side*/}
       <div className="reg-est-logo-container">
-        <a href="#" onClick={onRegEstablishClose}>
+        <a href="#" onClick={handleCancel}>
           <img className="reg-est-x-btn" src="assets/login_x_btn.png" />
         </a>
         <img src="assets/reg_establishment_logo.png" />
@@ -407,7 +447,6 @@ export default function RegisterEstablishment({
               ))}
             </div>
           </div>
-          {/* Error message before the register button */}
           {error && (
             <div style={{ color: "red", margin: "10px 0", fontWeight: "bold" }}>
               {error}

@@ -9,7 +9,6 @@ import 'animate.css';
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// SweetAlert2 Styling Configuration
 const swalWithCrossfade = Swal.mixin({
   showClass: {
     popup: 'animate__animated animate__fadeIn'
@@ -70,7 +69,6 @@ const applySwalStyling = () => {
 export default function EditResto({ resto, onClose, onProfileUpdated }) {
   const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
-  // Split opening/closing hours into hour, minute, period for validation
   const parseTime = (timeStr = "") => {
     const match = timeStr.match(/^(\d{2}):(\d{2})\s?(AM|PM)$/i);
     if (!match) return ["", "", "AM"];
@@ -108,7 +106,6 @@ export default function EditResto({ resto, onClose, onProfileUpdated }) {
 
   const handleSave = async () => {
     setError("");
-    // Validate hours and minutes
     const oh = Number(openingHour);
     const om = Number(openingMinute);
     const ch = Number(closingHour);
@@ -138,7 +135,6 @@ export default function EditResto({ resto, onClose, onProfileUpdated }) {
       return;
     }
 
-    // Validate contact number
     if (!/^\d{10,12}$/.test(contactNumber)) {
       setError("Contact number must be numeric and 10 to 12 digits.");
       return;
@@ -170,28 +166,77 @@ export default function EditResto({ resto, onClose, onProfileUpdated }) {
         closingHours,
         daysClosed,
       });
-      
+
       await swalWithCrossfade.fire({
         title: "Success",
         text: "Profile updated successfully!",
         confirmButtonText: "OK",
+        width: 600,
         didOpen: () => {
           applySwalStyling();
-          const confirmButton = document.querySelector('.swal2-confirm');
-          if (confirmButton) confirmButton.style.backgroundColor = '#3b86b6';
+          setTimeout(() => {
+            const confirmButton = document.querySelector('.swal2-confirm');
+            if (confirmButton) confirmButton.style.backgroundColor = '#3b86b6';
+          }, 20);
         },
-        willClose: () => {
-          if (onProfileUpdated) onProfileUpdated();
-          if (onClose) onClose();
-        }
       });
+
+      if (onProfileUpdated) onProfileUpdated();
+      if (onClose) onClose();
     } catch (error) {
       await swalWithCrossfade.fire({
         title: "Error",
         text: "Failed to update profile: " + error.message,
         confirmButtonText: "OK",
+        width: 600,
         didOpen: () => applySwalStyling()
       });
+    }
+  };
+
+  const handleCancel = async () => {
+    const { isConfirmed } = await swalWithCrossfade.fire({
+      title: "Cancel Editing?",
+      html: "Are you sure you want to cancel? Any unsaved changes will be lost.",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Cancel",
+      cancelButtonText: "Continue Editing",
+      width: 600,
+      didOpen: () => {
+        applySwalStyling();
+        setTimeout(() => {
+          const confirmButton = document.querySelector('.swal2-confirm');
+          if (confirmButton) {
+            confirmButton.style.backgroundColor = '#dd2e44';
+            confirmButton.style.color = 'white';
+            confirmButton.style.borderRadius = '15px';
+            confirmButton.style.fontFamily = 'Montserrat';
+            confirmButton.style.boxShadow = 'none';
+            confirmButton.style.padding = '10px 24px';
+            confirmButton.style.outline = 'none';
+          }
+          const cancelButton = document.querySelector('.swal2-cancel');
+          if (cancelButton) {
+            cancelButton.style.backgroundColor = '#89bd2e';
+            cancelButton.style.color = 'white';
+            cancelButton.style.borderRadius = '15px';
+            cancelButton.style.fontFamily = 'Montserrat';
+            cancelButton.style.boxShadow = 'none';
+            cancelButton.style.padding = '10px 24px';
+            cancelButton.style.outline = 'none';
+          }
+        }, 20);
+      },
+    });
+    if (isConfirmed) {
+      await swalWithCrossfade.fire({
+        title: "Cancelled",
+        text: "Editing was cancelled.",
+        confirmButtonText: "OK",
+        width: 600,
+        didOpen: applySwalStyling,
+      });
+      if (onClose) onClose();
     }
   };
 
@@ -373,7 +418,6 @@ export default function EditResto({ resto, onClose, onProfileUpdated }) {
                   </div>
                 </div>
               </div>
-              {/* Error message before the save button */}
               {error && (
                 <div style={{ color: "red", margin: "10px 0", fontWeight: "bold" }}>
                   {error}
@@ -386,7 +430,7 @@ export default function EditResto({ resto, onClose, onProfileUpdated }) {
           <img src="assets/edit_mode_logo.png" className="edit-logo" />
           <div className="edit-buttons">
             <button className="edit-save" onClick={handleSave} type="button">SAVE</button>
-            <button className="edit-cancel" onClick={onClose} type="button">CANCEL</button>
+            <button className="edit-cancel" onClick={handleCancel} type="button">CANCEL</button>
           </div>
         </div>
       </div>

@@ -72,10 +72,13 @@ const applySwalStyling = () => {
   }, 10);
 };
 
+const PAGE_SIZE = 10;
+
 export default function RestoMenu({ resto }) {
   const [menuItems, setMenuItems] = useState([]);
   const [menuScreen, setMenuScreen] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const userId = sessionStorage.getItem("userId");
   const userType = sessionStorage.getItem("userType") || localStorage.getItem("userType");
 
@@ -96,6 +99,7 @@ export default function RestoMenu({ resto }) {
         ...docSnap.data(),
       }));
       setMenuItems(fetchedMenu);
+      setCurrentPage(1); 
     }, (error) => {
       console.error("Error with onSnapshot:", error);
     });
@@ -109,7 +113,7 @@ export default function RestoMenu({ resto }) {
   const handleMenuAdd = (newMenuItem) => {
     handleMenuClose();
   };
-
+  
   const handleDeleteMenuItem = async (menuItemId) => {
     const { isConfirmed } = await swalWithCrossfade.fire({
       html: "Are you sure you want to delete this menu item?",
@@ -120,27 +124,43 @@ export default function RestoMenu({ resto }) {
       didOpen: applySwalStyling,
     });
 
-    if (!isConfirmed) return;
-
-    try {
-      await deleteDoc(doc(db, "menu", menuItemId));
-      swalWithCrossfade.fire({
-        title: "Success",
-  text: "Menu item deleted successfully.",
-  confirmButtonText: "OK",
-  didOpen: applySwalStyling,
-});
-
-    } catch (error) {
-      swalWithCrossfade.fire({
-
-        text: "Failed to delete menu item: " + error.message,
-        icon: "error",
+    if (isConfirmed) {
+      try {
+        await deleteDoc(doc(db, "menu", menuItemId));
+        await swalWithCrossfade.fire({
+          title: "Deleted",
+          text: "Menu item deleted successfully.",
+          confirmButtonText: "OK",
+          width: 600,
+          didOpen: applySwalStyling,
+        });
+      } catch (error) {
+        swalWithCrossfade.fire({
+          text: "Failed to delete menu item: " + error.message,
+          icon: "error",
+          confirmButtonText: "OK",
+          didOpen: applySwalStyling,
+        });
+      }
+    } else {
+      await swalWithCrossfade.fire({
+        title: "Cancelled",
+        text: "Deletion was cancelled.",
         confirmButtonText: "OK",
+        width: 600,
         didOpen: applySwalStyling,
       });
     }
   };
+
+  const totalPages = Math.max(1, Math.ceil(menuItems.length / PAGE_SIZE));
+  const paginatedMenuItems = menuItems.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
+
+  const handlePrevPage = () => setCurrentPage((p) => Math.max(1, p - 1));
+  const handleNextPage = () => setCurrentPage((p) => Math.min(totalPages, p + 1));
 
   return (
     <div className="resto-container-white-part">
@@ -159,15 +179,35 @@ export default function RestoMenu({ resto }) {
           <img src="assets/nothing_here.png" alt="Nothing here" />
         </div>
       ) : (
-        menuItems.map((item) => (
-          <MenuItem
-            key={item.id}
-            item={item}
-            userId={userId}
-            userType={userType}
-            onDelete={handleDeleteMenuItem}
-          />
-        ))
+        <>
+          {paginatedMenuItems.map((item) => (
+            <MenuItem
+              key={item.id}
+              item={item}
+              userId={userId}
+              userType={userType}
+              onDelete={handleDeleteMenuItem}
+            />
+          ))}
+          <div className="pagination-controls" style={{ marginTop: 16 }}>
+            <button onClick={handlePrevPage} disabled={currentPage === 1}>
+              &lt;
+            </button>
+            <span style={{ margin: "0 8px" }}>
+              Page {currentPage} of {totalPages}
+            </span>
+            <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+              &gt;
+            </button>
+          </div>
+          <div className="menu-list-summary" style={{ marginTop: 12 }}>
+            <span className="results-list">
+              Showing {paginatedMenuItems.length} result
+              {paginatedMenuItems.length !== 1 && "s"}
+              {" (Page "}{currentPage} of {totalPages}{")"}
+            </span>
+          </div>
+        </>
       )}
 
       {isOwner && menuScreen === "add-item" && (

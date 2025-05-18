@@ -54,7 +54,6 @@ export default function Map({
       const restoMarkers = [];
       querySnapshot.forEach(doc => {
         const data = doc.data();
-        // Only show markers for businesses with isAccepted === true
         if (
           data.isAccepted === true &&
           typeof data.latitude === "number" &&
@@ -112,7 +111,7 @@ export default function Map({
     );
   };
 
-  // Get userType from session or local storage
+
   const userType =
     sessionStorage.getItem("userType") || localStorage.getItem("userType");
 
@@ -131,7 +130,6 @@ export default function Map({
       >
         <TileLayer url={tileUrl} />
         <AddMarkerOnClick />
-        {/* Show all restaurant markers */}
         {markers.map((marker, idx) => (
           <Marker
             key={marker.id || idx}
@@ -140,11 +138,9 @@ export default function Map({
             eventHandlers={{
               click: () => {
                 if (selectedMarkerId === marker.id) {
-                  // If already selected, close profile and remove emphasis
                   if (setSelectedMarkerId) setSelectedMarkerId(null);
                   if (setScreen) setScreen("list");
                 } else {
-                  // Otherwise, select and show profile
                   if (setSelectedMarkerId) setSelectedMarkerId(marker.id);
                   if (onMarkerPlaced) {
                     onMarkerPlaced({ lat: marker.lat, lng: marker.lng, id: marker.id, name: marker.name });
@@ -155,7 +151,6 @@ export default function Map({
             }}
           />
         ))}
-        {/* Show temp marker if adding */}
         {tempPosition && (
           <Marker position={tempPosition} icon={largeIcon} />
         )}

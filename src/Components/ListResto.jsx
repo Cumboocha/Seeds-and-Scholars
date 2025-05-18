@@ -10,7 +10,7 @@ const db = getFirestore(app);
 const PAGE_SIZE = 10;
 
 export default function ListResto({ onscreenChange, searchTerm }) {
-  const userId = sessionStorage.getItem("userId")
+  const userId = sessionStorage.getItem("userId");
   const [restaurants, setRestaurants] = useState([]);
   const [currentSort, setCurrentSort] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,12 +28,12 @@ export default function ListResto({ onscreenChange, searchTerm }) {
   }, []);
 
   useEffect(() => {
-    setCurrentPage(1);
+    setCurrentPage(1); 
   }, [searchTerm]);
 
   const handleSort = (order) => {
     setCurrentSort(order);
-    setCurrentPage(1);
+    setCurrentPage(1); 
   };
 
   const filteredRestaurants = searchTerm
@@ -50,7 +50,7 @@ export default function ListResto({ onscreenChange, searchTerm }) {
     }
   });
 
-  const totalPages = Math.ceil(sortedRestaurants.length / PAGE_SIZE);
+  const totalPages = Math.max(1, Math.ceil(sortedRestaurants.length / PAGE_SIZE));
   const paginatedRestaurants = sortedRestaurants.slice(
     (currentPage - 1) * PAGE_SIZE,
     currentPage * PAGE_SIZE
@@ -86,6 +86,7 @@ export default function ListResto({ onscreenChange, searchTerm }) {
             onClick={() => handleSort("desc")}
             className="sort-btn-asc"
             alt="Sort Z-A"
+            style={{ cursor: "pointer" }}
           />
         )}
         {currentSort === "desc" && (
@@ -94,6 +95,7 @@ export default function ListResto({ onscreenChange, searchTerm }) {
             onClick={() => handleSort("asc")}
             className="sort-btn-desc"
             alt="Sort A-Z"
+            style={{ cursor: "pointer" }}
           />
         )}
       </div>

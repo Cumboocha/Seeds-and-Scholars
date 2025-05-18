@@ -42,7 +42,7 @@ function App() {
       if (userSnap.exists()) {
         const data = userSnap.data();
         setUserType(data.userType);
-        sessionStorage.setItem("userType", data.userType); // Save for later use
+        sessionStorage.setItem("userType", data.userType); 
       }
     }
   };

@@ -78,9 +78,12 @@ const applySwalStyling = () => {
   }, 10);
 };
 
+const PAGE_SIZE = 10;
+
 export default function RestoReviews({ resto, userId }) {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
   const userType = sessionStorage.getItem("userType") || localStorage.getItem("userType");
 
   useEffect(() => {
@@ -213,22 +216,31 @@ export default function RestoReviews({ resto, userId }) {
       didOpen: applySwalStyling,
     });
 
-    if (!isConfirmed) return;
-
-    try {
-      await deleteDoc(doc(db, "comments", reviewId));
-      setComments((prev) => prev.filter((r) => r.id !== reviewId));
-      swalWithCrossfade.fire({
-        title: "Success",
-        text: "Review deleted.",
+    if (isConfirmed) {
+      try {
+        await deleteDoc(doc(db, "comments", reviewId));
+        setComments((prev) => prev.filter((r) => r.id !== reviewId));
+        await swalWithCrossfade.fire({
+          title: "Deleted",
+          text: "Review deleted.",
+          confirmButtonText: "OK",
+          width: 600,
+          didOpen: applySwalStyling,
+        });
+      } catch (error) {
+        swalWithCrossfade.fire({
+          title: "Error",
+          text: "Failed to delete review: " + error.message,
+          confirmButtonText: "OK",
+          didOpen: applySwalStyling,
+        });
+      }
+    } else {
+      await swalWithCrossfade.fire({
+        title: "Cancelled",
+        text: "Deletion was cancelled.",
         confirmButtonText: "OK",
-        didOpen: applySwalStyling,
-      });
-    } catch (error) {
-      swalWithCrossfade.fire({
-        title: "Error",
-        text: "Failed to delete review: " + error.message,
-        confirmButtonText: "OK",
+        width: 600,
         didOpen: applySwalStyling,
       });
     }
@@ -242,30 +254,65 @@ export default function RestoReviews({ resto, userId }) {
     );
   };
 
+  const totalPages = Math.max(1, Math.ceil(comments.length / PAGE_SIZE));
+  const paginatedComments = comments.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
+
+  const handlePrevPage = () => setCurrentPage((p) => Math.max(1, p - 1));
+  const handleNextPage = () => setCurrentPage((p) => Math.min(totalPages, p + 1));
+
   return (
     <div className="resto-container-white-part">
-      <AddComment handleAddComment={handleAddComment} />
-
-      <hr style={{ margin: "1.5rem 0" }} />
+      {
+        userId && resto?.createdBy && userId !== resto.createdBy && (
+          <>
+            <AddComment handleAddComment={handleAddComment} />
+            <hr style={{ margin: "1.5rem 0" }} />
+          </>
+        )
+      }
       <h2 className="resto-text-header" style={{ marginBottom: "25px" }}>
         Reviews
       </h2>
 
+
       {loading ? (
-        <p>Loading reviews...</p>
+        <div className="spinner"></div>
       ) : comments.length === 0 ? (
         <div className="nothing-here">
           <img src="assets/nothing_here.png" />
         </div>
       ) : (
-        comments.map((comment) => (
-          <Comment
-            key={comment.id}
-            comment={comment}
-            canDelete={canDeleteComment(comment)}
-            onDelete={handleDeleteReview}
-          />
-        ))
+        <>
+          {paginatedComments.map((comment) => (
+            <Comment
+              key={comment.id}
+              comment={comment}
+              canDelete={canDeleteComment(comment)}
+              onDelete={handleDeleteReview}
+            />
+          ))}
+          <div className="pagination-controls" style={{ marginTop: 16 }}>
+            <button onClick={handlePrevPage} disabled={currentPage === 1}>
+              &lt;
+            </button>
+            <span style={{ margin: "0 8px" }}>
+              Page {currentPage} of {totalPages}
+            </span>
+            <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+              &gt;
+            </button>
+          </div>
+                <div className="menu-list-summary" style={{ marginTop: 12 }}>
+            <span className="results-list">
+              Showing {paginatedComments.length} review
+              {paginatedComments.length !== 1 && "s"}
+              {" (Page "}{currentPage} of {totalPages}{")"}
+            </span>
+          </div>
+        </>
       )}
     </div>
   );

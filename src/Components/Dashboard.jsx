@@ -22,10 +22,15 @@ export default function Dashboard({ handleLogout }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [selectedMarkerId, setSelectedMarkerId] = useState(null);
 
+  const reloadDashboard = () => {
+    window.location.reload();
+  };
+
   const handleRegEstClose = () => {
     setDashboardScreen(null);
     setScreen("list");
     setMarkerCoords(null);
+    reloadDashboard();
   };
 
   const handlescreenChange = (screenName, restoData) => {

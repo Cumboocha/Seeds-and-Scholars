@@ -8,7 +8,9 @@ export default function ListFavorites({ favorites = [], loading, onSelectResto }
       {loading ? (
         <div className="spinner"></div>
       ) : favorites.length === 0 ? (
-        <p>No favorites yet.</p>
+        <div className="no-est-found">
+          <img src="assets/no_establishment_found.png"/>
+        </div>
       ) : (
         favorites.map((resto) => (
           <div

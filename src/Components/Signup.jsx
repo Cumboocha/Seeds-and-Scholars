@@ -11,7 +11,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Alert Styling
 const swalWithCrossfade = Swal.mixin({
   showClass: {
     popup: 'animate__animated animate__fadeIn'
@@ -157,17 +156,62 @@ export default function Signup({ onSignupClose }) {
     setLoading(false);
   };
 
+  const handleCancel = async (e) => {
+    e.preventDefault();
+    const { isConfirmed } = await swalWithCrossfade.fire({
+      title: "Cancel Registration?",
+      html: "Are you sure you want to cancel? Any unsaved changes will be lost.",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Cancel",
+      cancelButtonText: "Continue Editing",
+      width: 600,
+      didOpen: () => {
+        applySwalStyling();
+        setTimeout(() => {
+          const confirmButton = document.querySelector('.swal2-confirm');
+          if (confirmButton) {
+            confirmButton.style.backgroundColor = '#dd2e44';
+            confirmButton.style.color = 'white';
+            confirmButton.style.borderRadius = '15px';
+            confirmButton.style.fontFamily = 'Montserrat';
+            confirmButton.style.boxShadow = 'none';
+            confirmButton.style.padding = '10px 24px';
+            confirmButton.style.outline = 'none';
+          }
+          const cancelButton = document.querySelector('.swal2-cancel');
+          if (cancelButton) {
+            cancelButton.style.backgroundColor = '#89bd2e';
+            cancelButton.style.color = 'white';
+            cancelButton.style.borderRadius = '15px';
+            cancelButton.style.fontFamily = 'Montserrat';
+            cancelButton.style.boxShadow = 'none';
+            cancelButton.style.padding = '10px 24px';
+            cancelButton.style.outline = 'none';
+          }
+        }, 20);
+      },
+    });
+    if (isConfirmed) {
+      await swalWithCrossfade.fire({
+        title: "Cancelled",
+        text: "Registration was cancelled.",
+        confirmButtonText: "OK",
+        width: 600,
+        didOpen: applySwalStyling,
+      });
+      if (onSignupClose) onSignupClose();
+    }
+  };
+
   return (
     <div className="signup-body">
-      {/* Left Side */}
       <div className="signup-logo-container">
-        <a href="#" onClick={onSignupClose}>
+        <a href="#" onClick={handleCancel}>
           <img className="signup-x-btn" src="assets/signup_x_btn.png" />
         </a>
         <img src="assets/signup_logo.png" />
       </div>
 
-      {/* Right Side */}
       <div className="signup-container">
         <img src="assets/signup_bg.png" />
         <form onSubmit={handleSubmit}>

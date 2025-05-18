@@ -1,5 +1,5 @@
 export default function CardResto({ resto, setScreen, onClick }) {
-  // If onClick is provided, use it; otherwise, fallback to setScreen
+
   const handleClick = () => {
     if (onClick) {
       onClick();

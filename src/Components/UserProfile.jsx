@@ -2,7 +2,7 @@ import ListFavorites from "./ListFavorites";
 import NavBar from "./NavBar";
 import RestoProfile from "./RestoProfile";
 import CardResto from "./CardResto";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   getFirestore,
   doc,
@@ -27,10 +27,10 @@ export default function UserProfile() {
   const [loadingMyRestos, setLoadingMyRestos] = useState(true);
   const [favorites, setFavorites] = useState([]);
   const [loadingFavorites, setLoadingFavorites] = useState(true);
+  const [favoritesChanged, setFavoritesChanged] = useState(false); 
 
   const userType =
     sessionStorage.getItem("userType") || localStorage.getItem("userType");
-
 
   useEffect(() => {
     async function fetchUserName() {
@@ -95,7 +95,12 @@ export default function UserProfile() {
     }
 
     fetchFavorites();
-  }, [userId]);
+  }, [userId, favoritesChanged]); 
+
+  const handleUnfavorite = useCallback((restoId) => {
+    setFavorites((prev) => prev.filter((resto) => resto.id !== restoId));
+    setFavoritesChanged((prev) => !prev); 
+  }, []);
 
   const handleSelectResto = (resto) => {
     setSelectedResto(resto);
@@ -115,7 +120,7 @@ export default function UserProfile() {
             </div>
           </div>
         </div>
-        <div className="user-right">
+        <div className="user-right" style={{ overflowY: "auto", maxHeight: "calc(100vh - 40px)" }}>
           {rightScreen === "resto-profile" && selectedResto ? (
             <div className="resto-container" style={{ width: "100%" }}>
               <RestoProfile
@@ -124,6 +129,7 @@ export default function UserProfile() {
                 resto={selectedResto}
                 onClose={() => setRightScreen("favorites")}
                 style={{ width: "100%" }}
+                onUnfavorite={handleUnfavorite}
               />
             </div>
           ) : (
@@ -154,6 +160,7 @@ export default function UserProfile() {
                       favorites={favorites}
                       loading={loadingFavorites}
                       onSelectResto={handleSelectResto}
+                      onUnfavorite={handleUnfavorite} 
                     />
                   </div>
                 </div>

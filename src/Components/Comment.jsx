@@ -6,18 +6,9 @@ export default function Comment({
   onDelete,
 }) {
   return (
-    <div
-      className="comment-item"
-      style={{
-        marginBottom: "1rem",
-        padding: "1rem",
-        border: "1px solid #ddd",
-        borderRadius: "8px",
-        position: "relative",
-      }}
-    >
-      <p style={{ marginBottom: "0.5rem" }}>{comment.text}</p>
-      <small style={{ color: "#666" }}>
+    <div className="comment-container">
+      <p className="comment">{comment.text}</p>
+      <small className="user-comment">
         {comment.userName || comment.userId} –{" "}
         {comment.createdAt?.toDate
           ? comment.createdAt.toDate().toLocaleString()
@@ -25,22 +16,13 @@ export default function Comment({
       </small>
 
       {canDelete && (
-        <button
+        <img
+          src="assets/gen_x_btn.png"
+          className="comment-x-btn"
+          alt="Delete"
           onClick={() => onDelete(comment.id, comment.userId)}
-          style={{
-            position: "absolute",
-            right: "0.5rem",
-            top: "2rem",
-            backgroundColor: "#f44336",
-            color: "#fff",
-            border: "none",
-            borderRadius: "4px",
-            padding: "0.25rem 0.5rem",
-            cursor: "pointer",
-          }}
-        >
-          Delete
-        </button>
+          style={{ cursor: "pointer" }}
+        />
       )}
     </div>
   );

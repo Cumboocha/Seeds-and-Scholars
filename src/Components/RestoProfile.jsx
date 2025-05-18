@@ -81,12 +81,13 @@ const applySwalStyling = () => {
   }, 10);
 };
 
-export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
+export default function RestoProfile({ resto, onClose, showPopup, onUnfavorite }) {
   const userId = sessionStorage.getItem("userId");
   const userType =
     sessionStorage.getItem("userType") || localStorage.getItem("userType");
   const [restoProfileScreen, setRestoProfileScreen] = useState("about");
   const [favorite, setFavorite] = useState("unfavorited");
+  const [isUnfavorited, setIsUnfavorited] = useState(false);
 
   useEffect(() => {
     const checkIfFavorited = async () => {
@@ -106,6 +107,14 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
     };
     checkIfFavorited();
   }, [userId, resto?.id]);
+
+  useEffect(() => {
+    if (isUnfavorited && onUnfavorite && resto?.id) {
+      onUnfavorite(resto.id);
+      setIsUnfavorited(false); 
+    }
+    
+  }, [isUnfavorited]);
 
   const handleRestoScreenChange = (screen) => setRestoProfileScreen(screen);
 
@@ -138,6 +147,7 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
         favSnapshot.forEach(async (docSnap) => {
           await deleteDoc(doc(db, "favorites", docSnap.id));
         });
+        setIsUnfavorited(true);
       } catch (error) {
         swalWithCrossfade.fire({
           title: "Error",
@@ -162,18 +172,35 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
       didOpen: () => applySwalStyling()
     });
 
-    if (!isConfirmed) return;
+    if (isConfirmed) {
+      try {
+        await updateDoc(doc(db, "restaurants", resto.id), { isAccepted: true });
 
-    try {
-      await updateDoc(doc(db, "restaurants", resto.id), { isAccepted: true });
-      showPopup?.("Establishment accepted!");
-      if (onClose) onClose();
-    } catch (error) {
-      swalWithCrossfade.fire({
-        title: "Error",
-        text: "Failed to accept establishment: " + error.message,
+        await swalWithCrossfade.fire({
+          title: "Accepted",
+          text: "Establishment was accepted.",
+          confirmButtonText: "OK",
+          width: 600,
+          didOpen: applySwalStyling,
+        });
+
+        showPopup?.("Establishment accepted!");
+        if (onClose) onClose();
+      } catch (error) {
+        swalWithCrossfade.fire({
+          title: "Error",
+          text: "Failed to accept establishment: " + error.message,
+          confirmButtonText: "OK",
+          didOpen: () => applySwalStyling()
+        });
+      }
+    } else {
+      await swalWithCrossfade.fire({
+        title: "Cancelled",
+        text: "Restaurant Acceptance was cancelled.",
         confirmButtonText: "OK",
-        didOpen: () => applySwalStyling()
+        width: 600,
+        didOpen: applySwalStyling,
       });
     }
   };
@@ -191,18 +218,40 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
       didOpen: () => applySwalStyling()
     });
 
-    if (!isConfirmed) return;
+    if (isConfirmed) {
+      try {
+        await deleteDoc(doc(db, "restaurants", resto.id));
 
-    try {
-      await deleteDoc(doc(db, "restaurants", resto.id));
-      showPopup?.("Establishment declined.");
-      if (onClose) onClose();
-    } catch (error) {
-      swalWithCrossfade.fire({
-        title: "Error",
-        text: "Failed to decline establishment: " + error.message,
+        if (resto.createdBy) {
+          const userRef = doc(db, "users", resto.createdBy);
+          await updateDoc(userRef, { userType: "SXduDAM4N2f9FN3bS3vZ" });
+        }
+
+        await swalWithCrossfade.fire({
+          title: "Declined",
+          text: "Establishment was declined.",
+          confirmButtonText: "OK",
+          width: 600,
+          didOpen: applySwalStyling,
+        });
+
+        showPopup?.("Establishment declined.");
+        if (onClose) onClose();
+      } catch (error) {
+        swalWithCrossfade.fire({
+          title: "Error",
+          text: "Failed to decline establishment: " + error.message,
+          confirmButtonText: "OK",
+          didOpen: () => applySwalStyling()
+        });
+      }
+    } else {
+      await swalWithCrossfade.fire({
+        title: "Cancelled",
+        text: "Restaurant Decline was cancelled.",
         confirmButtonText: "OK",
-        didOpen: () => applySwalStyling()
+        width: 600,
+        didOpen: applySwalStyling,
       });
     }
   };
@@ -279,20 +328,22 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
               </div>
             ) : (
               <div className="user-buttons">
-                {favorite === "unfavorited" ? (
-                  <img
-                    className="favorite-btn"
-                    src="assets/favorite_btn.png"
-                    onClick={() => handleFavorite("favorited")}
-                    alt="Favorite"
-                  />
-                ) : (
-                  <img
-                    className="favorite-btn"
-                    src="assets/favorite_btn_selected.png"
-                    onClick={() => handleFavorite("unfavorited")}
-                    alt="Unfavorite"
-                  />
+                {userType !== "WcjOVRmHYXKZHsMzAVY2" && (
+                  favorite === "unfavorited" ? (
+                    <img
+                      className="favorite-btn"
+                      src="assets/favorite_btn.png"
+                      onClick={() => handleFavorite("favorited")}
+                      alt="Favorite"
+                    />
+                  ) : (
+                    <img
+                      className="favorite-btn"
+                      src="assets/favorite_btn_selected.png"
+                      onClick={() => handleFavorite("unfavorited")}
+                      alt="Unfavorite"
+                    />
+                  )
                 )}
                 {(userId === resto.createdBy ||
                   userType === "WcjOVRmHYXKZHsMzAVY2") && (
@@ -359,7 +410,7 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
             if (onClose) {
               onClose();
             } else {
-              setScreen("list");
+              window.location.reload();
             }
           }}
           alt="Close"

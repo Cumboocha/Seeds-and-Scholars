@@ -10,7 +10,6 @@ import 'animate.css';
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Reuse the same alert styling configuration
 const swalWithCrossfade = Swal.mixin({
   showClass: {
     popup: 'animate__animated animate__fadeIn'
@@ -20,7 +19,6 @@ const swalWithCrossfade = Swal.mixin({
   }
 });
 
-// Reuse the same styling function
 const applySwalStyling = () => {
   setTimeout(() => {
     const confirmButton = document.querySelector('.swal2-confirm');
