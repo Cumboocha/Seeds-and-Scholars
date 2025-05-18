@@ -1,13 +1,48 @@
-export default function Comment() {
+import React from "react";
+
+export default function Comment({
+  comment,
+  canDelete,
+  onDelete,
+}) {
   return (
-    <div className="comment-container">
-      <p className="comment">
-        This is a hidden gem for vegetarian Filipino comfort food! Their laing and gising-gising were full of flavor—rich, creamy, and satisfying without any meat or seafood. I loved how the dishes tasted just like home-cooked meals, and the prices are very affordable. Even my non-vegetarian friends enjoyed the food. It’s rare to find a karinderya that puts gulay front and center—definitely coming back!
-      </p>
-      <p className="user-comment">- Juan Dela Cruz</p>
-      <div className="menu-x-btn-wrapper" onClick={(e) => e.stopPropagation()}>
-        <img src="assets/gen_x_btn.png" className="comment-x-btn" />
-      </div>
+    <div
+      className="comment-item"
+      style={{
+        marginBottom: "1rem",
+        padding: "1rem",
+        border: "1px solid #ddd",
+        borderRadius: "8px",
+        position: "relative",
+      }}
+    >
+      <p style={{ marginBottom: "0.5rem" }}>{comment.text}</p>
+      <small style={{ color: "#666" }}>
+        {comment.userName || comment.userId} –{" "}
+        {comment.createdAt?.toDate
+          ? comment.createdAt.toDate().toLocaleString()
+          : ""}
+      </small>
+
+      {canDelete && (
+        <button
+          onClick={() => onDelete(comment.id, comment.userId)}
+          style={{
+            position: "absolute",
+            right: "0.5rem",
+            top: "2rem",
+            backgroundColor: "#f44336",
+            color: "#fff",
+            border: "none",
+            borderRadius: "4px",
+            padding: "0.25rem 0.5rem",
+            cursor: "pointer",
+          }}
+        >
+          Delete
+        </button>
+      )}
     </div>
   );
 }
+

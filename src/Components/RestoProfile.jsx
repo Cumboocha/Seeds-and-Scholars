@@ -24,7 +24,6 @@ import 'animate.css';
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// SweetAlert2 Styling Configuration
 const swalWithCrossfade = Swal.mixin({
   showClass: {
     popup: 'animate__animated animate__fadeIn'

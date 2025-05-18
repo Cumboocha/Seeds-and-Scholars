@@ -15,7 +15,6 @@ import {
 import { firebaseConfig } from "../firebaseConfig";
 import { initializeApp } from "firebase/app";
 
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
@@ -26,10 +25,12 @@ export default function UserProfile() {
   const [rightScreen, setRightScreen] = useState("favorites");
   const [myRestos, setMyRestos] = useState([]);
   const [loadingMyRestos, setLoadingMyRestos] = useState(true);
+  const [favorites, setFavorites] = useState([]);
+  const [loadingFavorites, setLoadingFavorites] = useState(true);
 
-  // Get userType
   const userType =
     sessionStorage.getItem("userType") || localStorage.getItem("userType");
+
 
   useEffect(() => {
     async function fetchUserName() {
@@ -62,6 +63,38 @@ export default function UserProfile() {
       setLoadingMyRestos(false);
     }
     fetchMyRestos();
+  }, [userId]);
+
+  useEffect(() => {
+    async function fetchFavorites() {
+      if (!userId) return;
+      setLoadingFavorites(true);
+      try {
+        const favsQuery = query(
+          collection(db, "favorites"),
+          where("userId", "==", userId)
+        );
+        const favsSnapshot = await getDocs(favsQuery);
+
+        const favRestos = await Promise.all(
+          favsSnapshot.docs.map(async (docSnap) => {
+            const favData = docSnap.data();
+            const restoRef = doc(db, "restaurants", favData.restoId);
+            const restoSnap = await getDoc(restoRef);
+            return restoSnap.exists()
+              ? { id: restoSnap.id, ...restoSnap.data() }
+              : null;
+          })
+        );
+
+        setFavorites(favRestos.filter((r) => r !== null));
+      } catch (error) {
+        console.error("Error fetching favorites:", error);
+      }
+      setLoadingFavorites(false);
+    }
+
+    fetchFavorites();
   }, [userId]);
 
   const handleSelectResto = (resto) => {
@@ -113,6 +146,14 @@ export default function UserProfile() {
                       </div>
                     ))
                   )}
+
+                  <div className="favorites-section" style={{ marginTop: "2rem" }}>
+                    <ListFavorites
+                      favorites={favorites}
+                      loading={loadingFavorites}
+                      onSelectResto={handleSelectResto}
+                    />
+                  </div>
                 </div>
               )}
             </>
