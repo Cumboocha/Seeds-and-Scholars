@@ -110,7 +110,7 @@ export default function RestoMenu({ resto }) {
   const handleMenuScreenChange = () => setMenuScreen("add-item");
   const handleMenuClose = () => setMenuScreen(null);
 
-  const handleMenuAdd = (newMenuItem) => {
+  const handleMenuAdd = () => {
     handleMenuClose();
   };
   
