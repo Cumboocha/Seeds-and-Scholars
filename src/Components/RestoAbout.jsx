@@ -11,7 +11,7 @@ export default function RestoAbout({ resto, onProfileUpdated }) {
   const userType =
     sessionStorage.getItem("userType") || localStorage.getItem("userType");
 
-  if (!resto) return <div>Loading...</div>;
+  if (!resto) return <div className="spinner"></div>;
   if (isEditing) {
     return (
       <AnimatePresence>

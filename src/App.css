@@ -100,6 +100,22 @@
 }
 
 
+.side-logo {
+  width: 90%;
+  height: auto;
+}
+
+.devs-btn {
+  width: 60px;
+  height: auto;
+  position: absolute;
+  bottom: 20px;
+  right: 0;
+  padding-right: 8px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+
 .landing-elements {
   display: flex;
   flex-direction: column;
@@ -361,7 +377,7 @@
 .edit-save:hover,
 .edit-cancel:hover,
 .edit-resto-btn:hover,
-.resto-about-header img:hover {
+.resto-about-header img:hover, .our-devs-txt img:hover {
   transform: scale(1.05);
   transition: .2s;
 }
@@ -1712,4 +1728,113 @@ table {
 
 .pagionation-controls button:disabled {
   cursor: default;
+}
+
+/* Devs Page */
+.devs-body {
+  background-image: url("assets/landing_bg.png");
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+}
+
+.our-devs-txt {
+  height: 15%;
+  letter-spacing: -5px;
+  color: #643e27;
+  text-align: center;
+  font-family: "Montserrat";
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.our-devs-txt img {
+  width: 75px;
+  height: 75px;
+  cursor: pointer;
+  position: absolute;
+  right: 30px;
+}
+
+.devs-container {
+  height: 80%;
+  display: flex;
+  flex-direction: row;
+  margin: 0 40px;
+  gap: 40px;
+}
+
+.dev-container {
+  width: 33.33%;
+  height: 90%;
+  background-image: url(assets/grid_bg.png);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 5px solid black;
+  border-radius: 25px;
+  padding-top: 25px;
+}
+
+.circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 5px solid black;
+  background-color: white;
+  position: relative;
+  top: -20%;
+}
+
+.dev-container img {
+  width: 250px;
+  height: 250px;
+  border-radius: 20px;
+  margin-top: -30px;
+  border: 3px solid black;
+}
+
+.dev-container h2, p {
+  font-family: "Montserrat";
+  color: #643e27;
+  letter-spacing: -2px;
+}
+
+.dev-container h2 {
+  font-size: 35px;
+  margin: 0;
+}
+
+.dev-container p {
+  font-size: 20px;
+  line-height: 1px;
+  margin: 0;
+}
+
+.coffee, .headphones {
+  width: 225px;
+  height: auto;
+  position: absolute;
+  animation: float 3s ease-in-out infinite;
+}
+
+.coffee {
+  left: 27%;
+  top: 25%;
+}
+
+.headphones {
+  right: 27%;
+  bottom: 18%;
 }
