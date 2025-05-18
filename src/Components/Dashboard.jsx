@@ -6,7 +6,6 @@ import ListResto from "./ListResto";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
-import EditResto from "./EditResto";
 
 const db = getFirestore();
 

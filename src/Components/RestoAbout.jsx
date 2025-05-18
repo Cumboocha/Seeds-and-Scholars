@@ -1,21 +1,44 @@
 import { useState } from "react";
 import EditResto from "./EditResto";
+import { AnimatePresence, motion } from "framer-motion";
+
 const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
 export default function RestoAbout({ resto, onProfileUpdated }) {
   const [isEditing, setIsEditing] = useState(false);
 
   const userId = sessionStorage.getItem("userId");
-  const userType = sessionStorage.getItem("userType") || localStorage.getItem("userType");
+  const userType =
+    sessionStorage.getItem("userType") || localStorage.getItem("userType");
 
   if (!resto) return <div>Loading...</div>;
   if (isEditing) {
     return (
-      <EditResto
-        resto={resto}
-        onClose={() => setIsEditing(false)}
-        onProfileUpdated={onProfileUpdated}
-      />
+      <AnimatePresence>
+        <motion.div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            zIndex: 10,
+            background: "rgba(0,0,0,0.4)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <EditResto
+            resto={resto}
+            onClose={() => setIsEditing(false)}
+            onProfileUpdated={onProfileUpdated}
+          />
+        </motion.div>
+      </AnimatePresence>
     );
   }
 
@@ -34,17 +57,17 @@ export default function RestoAbout({ resto, onProfileUpdated }) {
   return (
     <div className="resto-container-white-part">
       <div className="resto-about-header">
-        <h2 className="resto-text-header">
-          About the Establishment
-        </h2>
-        {(resto.isAccepted === true) && (userId === resto.createdBy || userType === "WcjOVRmHYXKZHsMzAVY2") && (
-          <img
-            src="assets/edit_btn.png"
-            onClick={() => setIsEditing(true)}
-            style={{ cursor: "pointer" }}
-            alt="Edit"
-          />
-        )}
+        <h2 className="resto-text-header">About the Establishment</h2>
+        {resto.isAccepted === true &&
+          (userId === resto.createdBy ||
+            userType === "WcjOVRmHYXKZHsMzAVY2") && (
+            <img
+              src="assets/edit_btn.png"
+              onClick={() => setIsEditing(true)}
+              style={{ cursor: "pointer" }}
+              alt="Edit"
+            />
+          )}
       </div>
       <p className="resto-desc">{resto.description}</p>
       <hr />
@@ -72,7 +95,6 @@ export default function RestoAbout({ resto, onProfileUpdated }) {
           <img src="assets/clock_symbol.png" />
         </div>
         <div className="schedule-details-container">
-
           <table>
             <tbody>
               <div style={{ marginBottom: "5px", fontWeight: "bold" }}>

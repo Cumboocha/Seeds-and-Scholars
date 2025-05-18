@@ -111,7 +111,7 @@ export default function UserProfile() {
             <img src="assets/profile_bg.png" className="profile-bg" />
             <div className="profile-info">
               <img src="assets/user_default_pfp.png" className="user-pfp" />
-              <p className="user-name">{userName || "Loading..."}</p>
+              <p className="user-name">{userName || <div className="spinner"></div>}</p>
             </div>
           </div>
         </div>
@@ -132,9 +132,11 @@ export default function UserProfile() {
                 <div className="my-restos-section">
                   <h1 className="favorites-text">Your Restaurants</h1>
                   {loadingMyRestos ? (
-                    <p>Loading...</p>
+                    <div className="spinner"></div>
                   ) : myRestos.length === 0 ? (
-                    <p>You have not added a restaurant yet.</p>
+                    <div className="no-est-found">
+                      <img src="assets/no_establishment_found.png"/>
+                    </div>
                   ) : (
                     myRestos.map((resto) => (
                       <div

@@ -6,7 +6,7 @@ export default function ListFavorites({ favorites = [], loading, onSelectResto }
     <div className="list-favs-container">
       <h1 className="favorites-text">Your Favorites</h1>
       {loading ? (
-        <p>Loading...</p>
+        <div className="spinner"></div>
       ) : favorites.length === 0 ? (
         <p>No favorites yet.</p>
       ) : (

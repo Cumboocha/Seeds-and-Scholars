@@ -256,7 +256,7 @@ export default function RestoProfile({ setScreen, resto, onClose, showPopup }) {
     }
   };
 
-  if (!resto) return <div>Loading...</div>;
+  if (!resto) return <div className="spinner"></div>;
 
   return (
     <>
