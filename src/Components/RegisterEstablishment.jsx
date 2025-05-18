@@ -287,7 +287,6 @@ export default function RegisterEstablishment({
 
   return (
     <div className="reg-est-body">
-      {/*Left Side*/}
       <div className="reg-est-logo-container">
         <a href="#" onClick={handleCancel}>
           <img className="reg-est-x-btn" src="assets/login_x_btn.png" />
@@ -295,7 +294,6 @@ export default function RegisterEstablishment({
         <img src="assets/reg_establishment_logo.png" />
       </div>
 
-      {/*Right Side*/}
       <div className="reg-est-container">
         <img src="assets/reg_establishment_bg.png" />
         <form onSubmit={handleSubmit}>
