@@ -269,7 +269,7 @@ export default function RestoReviews({ resto, userId }) {
         userId && resto?.createdBy && userId !== resto.createdBy && (
           <>
             <AddComment handleAddComment={handleAddComment} />
-            <hr style={{ margin: "1.5rem 0" }} />
+            <hr style={{ marginTop: "20px", marginBottom: "0" }} />
           </>
         )
       }
@@ -279,7 +279,9 @@ export default function RestoReviews({ resto, userId }) {
 
 
       {loading ? (
-        <div className="spinner"></div>
+        <div className="spinner-container">
+          <div className="spinner"></div>
+        </div>
       ) : comments.length === 0 ? (
         <div className="nothing-here">
           <img src="assets/nothing_here.png" />
@@ -305,8 +307,8 @@ export default function RestoReviews({ resto, userId }) {
               &gt;
             </button>
           </div>
-                <div className="menu-list-summary" style={{ marginTop: 12 }}>
-            <span className="results-list">
+                <div className="menu-list-summary" style={{ marginTop: 12, textAlign: "center"}}>
+            <span className="results-list" >
               Showing {paginatedComments.length} review
               {paginatedComments.length !== 1 && "s"}
               {" (Page "}{currentPage} of {totalPages}{")"}

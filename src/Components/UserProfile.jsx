@@ -27,7 +27,7 @@ export default function UserProfile() {
   const [loadingMyRestos, setLoadingMyRestos] = useState(true);
   const [favorites, setFavorites] = useState([]);
   const [loadingFavorites, setLoadingFavorites] = useState(true);
-  const [favoritesChanged, setFavoritesChanged] = useState(false); 
+  const [favoritesChanged, setFavoritesChanged] = useState(false);
 
   const userType =
     sessionStorage.getItem("userType") || localStorage.getItem("userType");
@@ -95,11 +95,11 @@ export default function UserProfile() {
     }
 
     fetchFavorites();
-  }, [userId, favoritesChanged]); 
+  }, [userId, favoritesChanged]);
 
   const handleUnfavorite = useCallback((restoId) => {
     setFavorites((prev) => prev.filter((resto) => resto.id !== restoId));
-    setFavoritesChanged((prev) => !prev); 
+    setFavoritesChanged((prev) => !prev);
   }, []);
 
   const handleSelectResto = (resto) => {
@@ -116,11 +116,16 @@ export default function UserProfile() {
             <img src="assets/profile_bg.png" className="profile-bg" />
             <div className="profile-info">
               <img src="assets/user_default_pfp.png" className="user-pfp" />
-              <p className="user-name">{userName || <div className="spinner"></div>}</p>
+              <p className="user-name">
+                {userName || <div className="spinner"></div>}
+              </p>
             </div>
           </div>
         </div>
-        <div className="user-right" style={{ overflowY: "auto", maxHeight: "calc(100vh - 40px)" }}>
+        <div
+          className="user-right"
+          style={{ overflowY: rightScreen === "resto-profile" ? "hidden" : "auto", maxHeight: "calc(100vh - 40px)" }}
+        >
           {rightScreen === "resto-profile" && selectedResto ? (
             <div className="resto-container" style={{ width: "100%" }}>
               <RestoProfile
@@ -136,31 +141,37 @@ export default function UserProfile() {
             <>
               {userType !== "WcjOVRmHYXKZHsMzAVY2" && (
                 <div className="my-restos-section">
-                  <h1 className="favorites-text">Your Restaurants</h1>
-                  {loadingMyRestos ? (
-                    <div className="spinner"></div>
-                  ) : myRestos.length === 0 ? (
-                    <div className="no-est-found">
-                      <img src="assets/no_establishment_found.png"/>
-                    </div>
-                  ) : (
-                    myRestos.map((resto) => (
-                      <div
-                        key={resto.id}
-                        onClick={() => handleSelectResto(resto)}
-                        style={{ cursor: "pointer" }}
-                      >
-                        <CardResto resto={resto} userId={userId} />
-                      </div>
-                    ))
+                  {userType === "SHdfMU3Swb1UjJCP25VE" && (
+                    <>
+                      <h1 className="favorites-text">Your Restaurants</h1>
+                      {loadingMyRestos ? (
+                        <div className="spinner-container">
+                          <div className="spinner"></div>
+                        </div>
+                      ) : myRestos.length === 0 ? (
+                        <div className="no-est-found">
+                          <img src="assets/no_establishment_found.png" />
+                        </div>
+                      ) : (
+                        myRestos.map((resto) => (
+                          <div
+                            key={resto.id}
+                            onClick={() => handleSelectResto(resto)}
+                            style={{ cursor: "pointer" }}
+                          >
+                            <CardResto resto={resto} userId={userId} />
+                          </div>
+                        ))
+                      )}
+                    </>
                   )}
 
-                  <div className="favorites-section" style={{ marginTop: "2rem" }}>
+                  <div className="favorites-section" style={{marginBottom: "75px"}}>
                     <ListFavorites
                       favorites={favorites}
                       loading={loadingFavorites}
                       onSelectResto={handleSelectResto}
-                      onUnfavorite={handleUnfavorite} 
+                      onUnfavorite={handleUnfavorite}
                     />
                   </div>
                 </div>

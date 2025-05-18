@@ -114,7 +114,7 @@ export default function NavBar({ handleLogout, onSearch }) {
 
     await swalWithCrossfade.fire({
       title: "Logout Successful!",
-      text: "You have been logged out successfully.",
+      text: "Come back soon!",
       confirmButtonText: "OK",
       didOpen: () => {
         applySwalStyling();
@@ -161,6 +161,7 @@ export default function NavBar({ handleLogout, onSearch }) {
         </Link>
       </div>
 
+      
       <div className="search-container">
         <input
           className="search-bar"

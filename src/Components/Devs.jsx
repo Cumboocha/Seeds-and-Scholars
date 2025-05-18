@@ -14,21 +14,21 @@ export default function Devs() {
           <div className="circle"></div>
           <img src="assets/daryl_pic.png" className="dev-pic" />
           <h2>Daryl Doctora</h2>
-          <p>Front-end Developer</p>
+          <p>Developer</p>
         </div>
 
         <div className="dev-container">
           <div className="circle"></div>
           <img src="assets/kevin_pic.png" className="dev-pic" />
           <h2>Kevin Sunga</h2>
-          <p>Back-end Developer</p>
+          <p>Developer</p>
         </div>
 
         <div className="dev-container">
           <div className="circle"></div>
           <img src="assets/bea_pic.png" className="dev-pic" />
           <h2>Bea Velasco</h2>
-          <p>Back-end Developer</p>
+          <p>Developer</p>
         </div>
       </div>
       <img src="assets/coffee.png" className="coffee" />

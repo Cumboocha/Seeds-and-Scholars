@@ -57,14 +57,22 @@
   z-index: 99999 !important;
 }
 
+.spinner-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 75px;
+}
+
 .spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-radius: 50%;
-  border-top-color: #89bd2e;
-  animation: spin 1s ease-in-out infinite;
-  margin: 20px auto;
+  width: 40px !important;
+  height: 40px !important;
+  border: 4px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: 50% !important;
+  border-top-color: #89bd2e !important;
+  animation: spin 1s ease-in-out infinite !important;
+  padding: 20px auto !important;
 }
 
 @keyframes spin {
@@ -698,7 +706,6 @@
   flex-direction: row;
   align-items: center;
   gap: 15px;
-  margin-top: 25px;
 }
 
 .resto-about-header img {
@@ -711,7 +718,8 @@
   font-family: "Montserrat";
   color: #643e27;
   letter-spacing: -2px;
-  margin: 0;
+  margin: 0 !important;
+  margin-top: 20px !important;
 }
 
 .resto-container,
@@ -815,7 +823,7 @@
   justify-content: flex-start;
   padding-left: 30px;
   padding-right: 30px;
-  padding-bottom: 75px;
+  padding-bottom: 100px;
   gap: 10px;
   overflow-x: hidden;
   overflow-y: visible;
@@ -1213,6 +1221,11 @@ table {
   cursor: pointer;
 }
 
+.user-comment {
+  font-family: "Montserrat";
+  color: black;
+}
+
 /* Review */
 .comment-container {
   display: flex;
@@ -1317,7 +1330,6 @@ table {
 .resto-card-desc {
   margin: 0;
   font-family: "Montserrat";
-  font-style: italic;
   color: black;
   overflow: hidden;
   display: -webkit-box;
@@ -1335,10 +1347,6 @@ table {
   -webkit-box-orient: vertical;
 }
 
-.resto-card-desc::before,
-.resto-card-desc::after {
-  content: '"';
-}
 
 .resto-card-arrow {
   width: 10%;
@@ -1437,25 +1445,16 @@ table {
   padding: 20px;
 }
 
-
-.list-favs-container {
-  padding-left: 5%;
-  padding-right: 5%;
-  margin-right: 1%;
-  padding-bottom: 5%;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
 .list-admin-container {
   width: 90%;
 }
 
 .favorites-text,
 .pending-text {
+  font-size: 36px;
   font-family: "Montserrat";
   color: #643e27;
-  letter-spacing: -5px;
+  letter-spacing: -3px;
   margin: 0;
   margin-right: auto;
   margin-top: 25px;
@@ -1809,7 +1808,7 @@ table {
   border: 3px solid black;
 }
 
-.dev-container h2, p {
+.dev-container h2, .dev-container p {
   font-family: "Montserrat";
   color: #643e27;
   letter-spacing: -2px;

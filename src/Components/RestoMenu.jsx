@@ -200,7 +200,7 @@ export default function RestoMenu({ resto }) {
               &gt;
             </button>
           </div>
-          <div className="menu-list-summary" style={{ marginTop: 12 }}>
+          <div className="menu-list-summary" style={{ marginTop: 12, textAlign: "center" }}>
             <span className="results-list">
               Showing {paginatedMenuItems.length} result
               {paginatedMenuItems.length !== 1 && "s"}
