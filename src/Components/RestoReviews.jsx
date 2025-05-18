@@ -238,7 +238,6 @@ export default function RestoReviews({ resto, userId }) {
     return (
       userId &&
       (comment.userId === userId ||
-        userId === resto.createdBy ||
         userType === "WcjOVRmHYXKZHsMzAVY2")
     );
   };
